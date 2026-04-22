@@ -14,11 +14,14 @@ export default function RequestModal({ isOpen, onClose, accent, sectionTitle, se
   const [selected, setSelected] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [consent, setConsent] = useState(false);
 
   if (!isOpen) return null;
 
   const toggle = (s: string) =>
     setSelected((prev) => prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]);
+
+  const canSubmit = name.trim() && phone.trim() && selected.length > 0 && consent;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -64,15 +67,34 @@ export default function RequestModal({ isOpen, onClose, accent, sectionTitle, se
           />
         </div>
 
+        {/* Обязательное согласие — галочка не стоит по умолчанию */}
+        <label className="modal-consent">
+          <div
+            className={`modal-consent-check${consent ? " checked" : ""}`}
+            style={consent ? { background: accent, borderColor: accent } : {}}
+            onClick={() => setConsent((v) => !v)}
+          >
+            {consent && <span>✓</span>}
+          </div>
+          <span>
+            Я согласен(а) на обработку персональных данных в соответствии с{" "}
+            <a href="/privacy" target="_blank" style={{ color: accent }}>
+              Политикой конфиденциальности
+            </a>
+          </span>
+        </label>
+
         <button
           className="modal-submit"
           style={{ background: accent }}
-          disabled={!name || !phone || selected.length === 0}
+          disabled={!canSubmit}
         >
           Отправить заявку →
         </button>
 
-        <p className="modal-note">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+        <p className="modal-note">
+          Данные используются исключительно для связи с вами. Цель сбора — консультация по услугам MAGIC Group NTS.
+        </p>
       </div>
     </div>
   );
