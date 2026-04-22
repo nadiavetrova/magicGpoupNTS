@@ -464,14 +464,17 @@ body {
 }
 
 .services-cta {
-  display: inline-block;
-  padding: 0.85rem 2.2rem;
-  border-radius: 4px;
-  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.88rem 2.2rem;
+  border-radius: 6px;
+  font-size: 0.84rem;
   font-weight: 700;
+  font-family: "PTSerif", Georgia, serif;
   letter-spacing: 0.04em;
   text-decoration: none;
   transition: opacity 0.2s, transform 0.15s;
+  line-height: 1;
 }
 
 .services-cta:hover {
@@ -1224,117 +1227,211 @@ body {
 
 /* ── Request button ── */
 .request-btn {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 0.9rem 2rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.88rem 2.2rem;
   border-radius: 6px;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   font-weight: 700;
   font-family: "PTSerif", Georgia, serif;
   color: #0a0a0a;
   border: none;
   cursor: pointer;
   transition: opacity 0.2s, transform 0.15s;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  line-height: 1;
 }
 .request-btn:hover { opacity: 0.88; transform: translateY(-1px); }
 
 /* ── Privacy Policy page ── */
-.privacy-page {
+.pp-root {
   min-height: 100dvh;
-  background: #0a0a0a;
-  color: #fff;
+  background: #f0ede8;
+  color: #1a1a1a;
   font-family: "PTSerif", Georgia, serif;
 }
 
-.privacy-header {
-  position: sticky;
-  top: 0;
+/* Nav */
+.pp-nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1.2rem 2.5rem;
-  background: rgba(10,10,10,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  z-index: 10;
+  justify-content: space-between;
+  padding: 1.1rem 2.5rem;
+  background: #0a0a0a;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
-.privacy-back {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.4);
+.pp-nav-back {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
   text-decoration: none;
   letter-spacing: 0.05em;
   transition: color 0.2s;
-  white-space: nowrap;
 }
-.privacy-back:hover { color: rgba(255,255,255,0.8); }
+.pp-nav-back:hover { color: #fff; }
+.pp-nav-arrow { font-size: 1rem; line-height: 1; }
 
-.privacy-main {
-  max-width: 780px;
+.pp-nav-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.25);
+  text-transform: uppercase;
+}
+
+/* Hero strip */
+.pp-hero {
+  background: #0a0a0a;
+  padding: 4rem 2.5rem 3.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.pp-hero-inner {
+  max-width: 860px;
   margin: 0 auto;
-  padding: 3.5rem 2rem 5rem;
 }
 
-.privacy-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
-}
-
-.privacy-meta {
-  font-size: 0.75rem;
+.pp-hero-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: rgba(255,255,255,0.3);
-  margin-bottom: 3rem;
+  margin-bottom: 1.2rem;
+}
+
+.pp-hero-title {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.pp-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.3);
   letter-spacing: 0.04em;
 }
 
-.privacy-section {
-  margin-bottom: 2.5rem;
+.pp-hero-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
 }
 
-.privacy-section h2 {
+/* Document body */
+.pp-body {
+  padding: 3rem 2.5rem 5rem;
+}
+
+.pp-doc {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.10);
+  overflow: hidden;
+}
+
+/* Section rows */
+.pp-section {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  border-bottom: 1px solid #ebebeb;
+  padding: 2rem 2.5rem;
+  gap: 1.5rem;
+  transition: background 0.15s;
+}
+.pp-section:last-child { border-bottom: none; }
+.pp-section:hover { background: #fafaf9; }
+
+.pp-section-num {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #b0a898;
+  padding-top: 0.3rem;
+  font-style: italic;
+}
+
+.pp-section-title {
   font-size: 1rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 0.9rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-}
-
-.privacy-section p {
-  font-size: 0.88rem;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.75;
+  color: #1a1a1a;
   margin-bottom: 0.75rem;
+  line-height: 1.3;
 }
 
-.privacy-section ul {
-  padding-left: 1.4rem;
-  margin-bottom: 0.75rem;
+.pp-section-text p {
+  font-size: 0.875rem;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 0.65rem;
+}
+.pp-section-text p:last-child { margin-bottom: 0; }
+
+.pp-section-text strong { color: #222; font-weight: 700; }
+
+.pp-section-text ul {
+  padding-left: 1.2rem;
+  margin: 0.5rem 0 0.65rem;
 }
 
-.privacy-section li {
-  font-size: 0.88rem;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.75;
-  margin-bottom: 0.3rem;
+.pp-section-text li {
+  font-size: 0.875rem;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 0.25rem;
 }
 
-.privacy-section a {
-  color: rgba(255,255,255,0.7);
+.pp-section-text a {
+  color: #1a1a1a;
   text-decoration: underline;
   text-underline-offset: 3px;
+  text-decoration-color: rgba(0,0,0,0.25);
+  transition: text-decoration-color 0.2s;
+}
+.pp-section-text a:hover { text-decoration-color: #1a1a1a; }
+
+/* Footer */
+.pp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2.5rem;
+  background: #0a0a0a;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+}
+
+.pp-footer-link {
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+  letter-spacing: 0.06em;
   transition: color 0.2s;
 }
-.privacy-section a:hover { color: #fff; }
+.pp-footer-link:hover { color: rgba(255,255,255,0.7); }
 
 @media (max-width: 768px) {
-  .privacy-header { padding: 1rem 1.2rem; }
-  .privacy-main { padding: 2.5rem 1.2rem 4rem; }
-  .privacy-h1 { font-size: 1.5rem; }
+  .pp-nav { padding: 1rem 1.2rem; }
+  .pp-nav-label { display: none; }
+  .pp-hero { padding: 2.5rem 1.2rem 2rem; }
+  .pp-body { padding: 1.5rem 1rem 3rem; }
+  .pp-section {
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1.2rem;
+    gap: 0.5rem;
+  }
+  .pp-section-num { padding-top: 0; }
+  .pp-footer { padding: 1.2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
 }
 
 /* Responsive */
