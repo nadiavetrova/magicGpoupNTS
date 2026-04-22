@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import SmoothScroll from "./components/SmoothScroll";
 
 type PanelId = "tourism" | "insurance" | "realty";
 type Panel = { id: PanelId; badge: string; title: string; bg: string; bgSize?: string; bgPos?: string; accent: string; label: string; heading: string; role: string; body: string[]; tags: string[]; stats: { num: string; label: string }[]; services: { title: string; subtitle: string; desc: string; items: { icon: string; name: string; hint: string }[]; cta: string; ctaHref: string } };
@@ -271,6 +272,8 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      <SmoothScroll active={!!active} />
 
       {/* FOOTER */}
       {active && (
