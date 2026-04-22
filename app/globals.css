@@ -90,8 +90,8 @@ body {
 .hero-panels {
   display: flex;
   width: 100%;
-  height: 100vh;
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
   flex-shrink: 0;
 }
 
@@ -1020,16 +1020,16 @@ body {
   .hero-panels {
     flex-direction: column;
     height: auto;
-    min-height: 100vh;
+    min-height: 100dvh;
   }
   .panel {
     flex: none;
-    height: 33.33vh;
+    height: 33.33dvh;
     min-height: 200px;
   }
   .panel:hover {
     flex: none;
-    height: 50vh;
+    height: 50dvh;
   }
   .panel-title {
     font-size: 0.75rem;
