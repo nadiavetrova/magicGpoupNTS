@@ -977,15 +977,16 @@ body {
 .footer {
   background: #050505;
   border-top: 1px solid rgba(255,255,255,0.07);
-  padding: 2.5rem 2.5rem;
+  padding: 0.7rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 0;
 }
 
 .footer-copy {
-  font-size: 0.72rem;
-  color: rgba(255,255,255,0.28);
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.25);
 }
 
 .social-links {
@@ -994,8 +995,8 @@ body {
 }
 
 .social-link {
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 50%;
   display: flex;
@@ -1003,7 +1004,7 @@ body {
   justify-content: center;
   color: rgba(255,255,255,0.45);
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.65rem;
   font-weight: 600;
   transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
@@ -1031,8 +1032,26 @@ body {
     height: 50vh;
   }
   .panel-title {
-    font-size: 1.2rem;
+    font-size: 0.75rem;
     white-space: normal;
+    letter-spacing: 0.2em;
+  }
+  .panel-content {
+    top: auto;
+    bottom: 1.4rem;
+    right: 1.4rem;
+    left: auto;
+    align-items: flex-end;
+    text-align: right;
+    transform: none;
+    padding: 0;
+  }
+  .panel:hover .panel-content {
+    transform: none;
+  }
+  .panel-badge {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
   }
   /* Mobile: active panel → full screen overlay */
   .panel--active {
@@ -1091,12 +1110,32 @@ body {
   .realty-numbers { padding-top: 0; }
   .ins-accent-block { position: static; }
   .header {
-    padding: 1rem 1.2rem;
+    padding: 0.8rem 1.2rem;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .logo-main {
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .logo-sub {
+    font-size: 0.45rem;
+    letter-spacing: 0.12em;
+  }
+  .header-phone {
+    font-size: 0.68rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .footer {
-    flex-direction: column;
-    gap: 1.5rem;
-    text-align: center;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem;
+  }
+  .footer-copy {
+    font-size: 0.55rem;
   }
   .fullscreen-content {
     padding: 7rem 1.5rem 4rem;

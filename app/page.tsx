@@ -22,7 +22,7 @@ const panels = [
       "Турция, Индия, ОАЭ — я знаю эти направления изнутри. Не по каталогам, а по реальному опыту: где лучшие пляжи, какой отель не обманет, что стоит посмотреть за пределами туристических троп.",
     ],
     tags: ["Пакетные туры", "Авторские маршруты", "Турция · Индия · ОАЭ"],
-    stats: [{ num: "15", label: "Лет опыта" }, { num: "3", label: "Страны" }],
+    stats: [{ num: "15", label: "Лет опыта" }, { num: "5+", label: "Стран" }],
     services: {
       title: "Подберём путёвку или экскурсию",
       subtitle: "Туристический продукт под ваш запрос",
@@ -206,7 +206,6 @@ export default function Home() {
             }}
           />
           <div className="fullscreen-gradient" />
-          <button className="fullscreen-back" onClick={handleClose}>← Назад</button>
 
           {/* SECTION 1 — О направлении */}
           <div className={`fullscreen-content${textVisible ? " fullscreen-content--visible" : ""}`}>
