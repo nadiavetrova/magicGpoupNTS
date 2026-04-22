@@ -44,7 +44,7 @@ const panels = [
     bg: "/images/insuranceAgent.jpg",
     bgSize: "cover",
     bgPos: "center top",
-    accent: "#a078ff",
+    accent: "#9B2335",
     label: "Направление 02",
     heading: "Страхование,\nкоторое работает",
     role: "Страховой агент · Все виды",
