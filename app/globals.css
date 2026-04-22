@@ -296,6 +296,7 @@ body {
   z-index: 2;
   max-width: 560px;
   padding: 8rem 3rem 6rem;
+  margin: 0 auto;
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -357,6 +358,7 @@ body {
   padding: 5rem 3rem 8rem;
   box-sizing: border-box;
   width: 100%;
+  margin: 0 auto;
 }
 
 .services-header {
