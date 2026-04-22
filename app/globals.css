@@ -1024,6 +1024,194 @@ body {
   background: rgba(255,255,255,0.05);
 }
 
+/* ── Modal ── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: modalFadeIn 0.25s ease;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-box {
+  position: relative;
+  background: #111113;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(30px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: rgba(255,255,255,0.07);
+  border: none;
+  color: rgba(255,255,255,0.5);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+.modal-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.modal-title {
+  font-family: "PTSerif", Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-style: italic;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.modal-sub {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 1.8rem;
+  line-height: 1.5;
+}
+
+.modal-services {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-service-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: rgba(255,255,255,0.03);
+}
+.modal-service-item:hover { background: rgba(255,255,255,0.06); }
+
+.modal-service-check {
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #000;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.modal-service-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.15rem;
+}
+
+.modal-service-hint {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+}
+
+.modal-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+
+.modal-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  color: #fff;
+  font-size: 0.88rem;
+  font-family: "PTSerif", Georgia, serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-input::placeholder { color: rgba(255,255,255,0.25); }
+.modal-input:focus { border-color: rgba(255,255,255,0.3); }
+
+.modal-submit {
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: "PTSerif", Georgia, serif;
+  color: #0a0a0a;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  margin-bottom: 1rem;
+}
+.modal-submit:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.modal-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.modal-note {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── Request button ── */
+.request-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.9rem 2rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: "PTSerif", Georgia, serif;
+  color: #0a0a0a;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.02em;
+}
+.request-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero-panels {

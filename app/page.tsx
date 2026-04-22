@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import SmoothScroll from "./components/SmoothScroll";
+import RequestModal from "./components/RequestModal";
 
 type PanelId = "tourism" | "insurance" | "realty";
 type Panel = { id: PanelId; badge: string; title: string; bg: string; bgSize?: string; bgPos?: string; accent: string; label: string; heading: string; role: string; body: string[]; tags: string[]; stats: { num: string; label: string }[]; services: { title: string; subtitle: string; desc: string; items: { icon: string; name: string; hint: string }[]; cta: string; ctaHref: string } };
@@ -107,6 +108,7 @@ export default function Home() {
   const [textVisible, setTextVisible] = useState(false);
   const [overlayExpanded, setOverlayExpanded] = useState(false);
   const [initialClip, setInitialClip] = useState("inset(0 0 0 0)");
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     if (active) {
@@ -261,19 +263,37 @@ export default function Home() {
                 ))}
               </div>
 
-              <a
-                href={p.services.ctaHref}
-                className="services-cta"
-                style={{ background: p.accent, color: "#0a0a0a" }}
-              >
-                {p.services.cta}
-              </a>
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <a
+                  href={p.services.ctaHref}
+                  className="services-cta"
+                  style={{ background: p.accent, color: "#0a0a0a" }}
+                >
+                  {p.services.cta}
+                </a>
+                <button
+                  className="request-btn"
+                  style={{ background: p.accent }}
+                  onClick={() => setModalOpen(true)}
+                >
+                  Оставить заявку
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
       <SmoothScroll active={!!active} />
+      {p && (
+        <RequestModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          accent={p.accent}
+          sectionTitle={p.services.title}
+          services={p.services.items}
+        />
+      )}
 
       {/* FOOTER */}
       {active && (
