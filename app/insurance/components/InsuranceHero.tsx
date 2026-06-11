@@ -10,8 +10,8 @@ interface Props {
 export default function InsuranceHero({ onOpenModal }: Props) {
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-white">
-      {/* Subtle background accent */}
-      <div className="absolute inset-0 bg-gradient-to-br from-rose-50/60 via-white to-white" />
+      {/* Radial gradient — no inline style */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_72%_48%,_#fdf0f2,_transparent)]" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9B2335]/15 to-transparent" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-0">
@@ -33,8 +33,8 @@ export default function InsuranceHero({ onOpenModal }: Props) {
                 </span>
               </div>
 
-              {/* Headline */}
-              <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-slate-900 leading-[1.0] tracking-[-0.02em]">
+              {/* Headline — PT Serif for premium editorial feel */}
+              <h1 className="font-['PTSerif'] text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-slate-900 leading-[1.0] tracking-[-0.02em]">
                 Страхование,
                 <br />
                 <span className="text-[#9B2335]">которое</span>

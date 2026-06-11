@@ -47,7 +47,7 @@ export default function InsuranceTypes({ onOpenModal }: Props) {
             className="group relative rounded-3xl bg-slate-950 p-8 lg:p-10 cursor-pointer overflow-hidden flex flex-col justify-between min-h-[420px] hover:shadow-2xl transition-all duration-300"
           >
             {/* Radial glow accent */}
-            <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-[#9B2335]/20 blur-3xl -translate-y-16 translate-x-16 group-hover:bg-[#9B2335]/30 transition-all duration-500" />
+            <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-[#9B2335]/18 blur-3xl -translate-y-16 translate-x-16 group-hover:bg-[#9B2335]/28 transition-all duration-500" />
             <div className="absolute bottom-0 left-0 h-48 w-48 rounded-full bg-[#9B2335]/6 blur-2xl translate-y-12 -translate-x-8" />
 
             <div className="relative z-10 space-y-7">
