@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import { ArrowRight, Shield, Star, CheckCircle } from "lucide-react";
+import { ArrowRight, Shield, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -10,9 +10,15 @@ interface Props {
 export default function InsuranceHero({ onOpenModal }: Props) {
   return (
     <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-white">
-      {/* Radial gradient — no inline style */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_72%_48%,_#fdf0f2,_transparent)]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#9B2335]/15 to-transparent" />
+      {/* Subtle background grid */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#9B2335 1px, transparent 1px), linear-gradient(to right, #9B2335 1px, transparent 1px)",
+          backgroundSize: "72px 72px",
+        }}
+      />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-24 lg:py-0">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
@@ -20,39 +26,40 @@ export default function InsuranceHero({ onOpenModal }: Props) {
           {/* Left */}
           <div className="space-y-10">
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-8"
+              transition={{ duration: 0.5 }}
+              className="space-y-6"
             >
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#9B2335]/20 bg-[#9B2335]/5 px-3.5 py-1.5">
+              {/* Label */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50 px-3.5 py-1.5">
                 <Shield className="h-3.5 w-3.5 text-[#9B2335]" />
                 <span className="text-xs font-semibold tracking-widest text-[#9B2335] uppercase font-mono">
                   Направление 02 · Страхование
                 </span>
               </div>
 
-              {/* Headline — PT Serif for premium editorial feel */}
-              <h1 className="font-['PTSerif'] text-5xl sm:text-6xl lg:text-[5.5rem] font-bold text-slate-900 leading-[1.0] tracking-[-0.02em]">
-                Страхование,
-                <br />
-                <span className="text-[#9B2335]">которое</span>
+              {/* Headline */}
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.05] tracking-tight">
+                Страхование,{" "}
+                <span className="relative">
+                  <span className="relative z-10 text-[#9B2335]">которое</span>
+                </span>
                 <br />
                 работает.
               </h1>
 
               {/* Subtext */}
-              <p className="text-xl text-slate-500 leading-relaxed max-w-md">
-                15 лет я видел, что происходит без нормальной страховки. Помогаю подобрать защиту, которая реально покроет нужный случай.
+              <p className="text-lg text-slate-500 leading-relaxed max-w-lg">
+                15 лет я видел, что происходит без нормальной страховки. Теперь помогаю подобрать защиту, которая реально покроет нужный случай — без скрытых исключений.
               </p>
             </motion.div>
 
             {/* CTA row */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, delay: 0.15 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
               <Button
@@ -65,19 +72,18 @@ export default function InsuranceHero({ onOpenModal }: Props) {
               </Button>
               <button
                 onClick={() => document.getElementById("types")?.scrollIntoView({ behavior: "smooth" })}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
+                className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors underline underline-offset-4"
               >
-                Виды страхования
-                <ArrowRight className="h-3.5 w-3.5" />
+                Смотреть виды страхования
               </button>
             </motion.div>
 
-            {/* Trust proof */}
+            {/* Trust row */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.42 }}
-              className="flex flex-wrap items-center gap-5 pt-2"
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex items-center gap-6 pt-2"
             >
               <div className="flex -space-x-2">
                 {[
@@ -95,60 +101,51 @@ export default function InsuranceHero({ onOpenModal }: Props) {
                 ))}
               </div>
               <div>
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-xs text-slate-500 mt-0.5 font-mono">Доверяют сотни клиентов</p>
-              </div>
-              <div className="h-4 w-px bg-slate-200 hidden sm:block" />
-              <div className="flex items-center gap-1.5">
-                <CheckCircle className="h-4 w-4 text-emerald-500 flex-shrink-0" />
-                <span className="text-xs text-slate-500 font-mono">Консультация бесплатно</span>
+                <p className="text-xs text-slate-500 mt-0.5">Доверяют сотни клиентов</p>
               </div>
             </motion.div>
           </div>
 
           {/* Right — photo + floating cards */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
             className="relative hidden lg:block"
           >
             {/* Soft glow */}
-            <div className="absolute -inset-8 rounded-full bg-[#9B2335]/6 blur-3xl" />
+            <div className="absolute -inset-8 rounded-full bg-[#9B2335]/8 blur-3xl" />
 
             {/* Floating card — top left */}
             <motion.div
-              initial={{ opacity: 0, y: -14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="absolute -left-8 top-12 z-20 bg-white rounded-2xl shadow-xl border border-slate-100 p-4 flex items-center gap-3"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="absolute -left-8 top-16 z-20 bg-white rounded-2xl shadow-xl border border-slate-100 p-4 flex items-center gap-3"
             >
-              <div className="h-10 w-10 rounded-xl bg-[#9B2335]/10 flex items-center justify-center flex-shrink-0">
+              <div className="h-10 w-10 rounded-xl bg-[#9B2335]/10 flex items-center justify-center">
                 <Shield className="h-5 w-5 text-[#9B2335]" />
               </div>
               <div>
-                <p className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">Покрытие</p>
+                <p className="text-xs text-slate-400 font-mono">Покрытие</p>
                 <p className="text-sm font-bold text-slate-900">до $100 000</p>
               </div>
             </motion.div>
 
             {/* Floating card — bottom right */}
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.75 }}
-              className="absolute -right-6 bottom-24 z-20 bg-slate-950 rounded-2xl shadow-xl border border-slate-800 p-4 max-w-[200px]"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.65 }}
+              className="absolute -right-6 bottom-20 z-20 bg-slate-950 rounded-2xl shadow-xl border border-slate-800 p-4"
             >
-              <p className="text-[10px] text-[#9B2335] font-mono font-bold uppercase tracking-wider mb-1.5">
-                Шухрат на связи
-              </p>
-              <p className="text-xs text-white font-medium leading-relaxed">
-                «Расскажу, что реально работает в вашем случае»
-              </p>
+              <p className="text-[10px] text-[#9B2335] font-mono font-bold uppercase tracking-wider mb-1">Шухрат на связи</p>
+              <p className="text-xs text-white font-semibold">«Расскажу, что реально работает»</p>
             </motion.div>
 
             {/* Main photo */}
@@ -158,7 +155,7 @@ export default function InsuranceHero({ onOpenModal }: Props) {
                 alt="Шухрат Азизов — страховой агент MAGIC Group NTS"
                 className="h-full w-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
             </div>
           </motion.div>
 
