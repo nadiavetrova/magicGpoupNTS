@@ -1,0 +1,6 @@
+{
+  "name": "Personal Travel Agent Portfolio",
+  "description": "Premium modern landing page for a personal travel representative with active design system, interactive variables, and Figma Inspector mode.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

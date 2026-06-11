@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* Dynamic design system properties (Figma variables) */
+  --theme-primary-hex: #0d9488; /* Oceanic Teal default */
+  --theme-radius: 24px;         /* Rounded corners default */
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@theme {
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  
+  --color-teal-650: #0f766e;
+  --color-teal-450: #2dd4bf;
+  --color-rose-455: #f43f5e;
+}
+
+/* Custom travel specific scrollbar styling */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 99px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 148, 136, 0.5);
+}
+
+/* Bind theme primary hex variable live to tailwind helper classes */
+.bg-teal-600 {
+  background-color: var(--theme-primary-hex) !important;
+}
+.bg-teal-500\/10 {
+  background-color: rgba(from var(--theme-primary-hex) r g b / 0.1) !important;
+}
+.text-teal-600 {
+  color: var(--theme-primary-hex) !important;
+}
+.text-teal-650 {
+  color: var(--theme-primary-hex) !important;
+}
+.border-teal-500 {
+  border-color: var(--theme-primary-hex) !important;
+}
+.border-teal-500\/20 {
+  border-color: rgba(from var(--theme-primary-hex) r g b / 0.2) !important;
+}
+.border-teal-500\/10 {
+  border-color: rgba(from var(--theme-primary-hex) r g b / 0.1) !important;
+}
+.text-teal-700 {
+  color: var(--theme-primary-hex) !important;
+}
+.text-teal-850 {
+  color: var(--theme-primary-hex) !important;
+}
+.text-teal-900 {
+  color: var(--theme-primary-hex) !important;
+}
+.border-teal-500\/30 {
+  border-color: rgba(from var(--theme-primary-hex) r g b / 0.3) !important;
+}
+.border-teal-500\/35 {
+  border-color: rgba(from var(--theme-primary-hex) r g b / 0.35) !important;
+}
+.from-teal-650 {
+  --tw-gradient-from: var(--theme-primary-hex) !important;
+}
+.from-teal-500 {
+  --tw-gradient-from: var(--theme-primary-hex) !important;
+}
+.to-teal-950\/80 {
+  --tw-gradient-to: rgba(from var(--theme-primary-hex) r g b / 0.8) !important;
+}
+.text-teal-950 {
+  color: var(--theme-primary-hex) !important;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
