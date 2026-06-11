@@ -11,6 +11,7 @@ import InsuranceHook from "./components/InsuranceHook";
 import InsuranceTypes from "./components/InsuranceTypes";
 import InsuranceComparison from "./components/InsuranceComparison";
 import InsuranceHowItWorks from "./components/InsuranceHowItWorks";
+import InsuranceTrust from "./components/InsuranceTrust";
 import InsuranceCTA from "./components/InsuranceCTA";
 import InsuranceFAQ from "./components/InsuranceFAQ";
 import InsuranceFooter from "./components/InsuranceFooter";
@@ -76,6 +77,7 @@ export default function InsurancePage() {
       <InsuranceTypes onOpenModal={openModal} />
       <InsuranceComparison />
       <InsuranceHowItWorks />
+      <InsuranceTrust />
       <InsuranceCTA onOpenModal={() => openModal()} />
       <InsuranceFAQ />
       <InsuranceFooter />
