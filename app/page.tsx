@@ -13,9 +13,7 @@ const panels = [
   {
     id: "tourism" as PanelId,
     title: "Туризм",
-    bg: "/images/turAgent.jpg",
-    bgSize: "cover",
-    bgPos: "center top",
+    bg: "linear-gradient(155deg, #05111f 0%, #0a1e35 45%, #071525 100%)",
     accent: "#e8c97a",
     label: "Направление 01",
     heading: "Туризм\nбез глянца",
@@ -48,9 +46,7 @@ const panels = [
     id: "insurance" as PanelId,
     badge: "◈",
     title: "Страхование",
-    bg: "/images/insuranceAgent.jpg",
-    bgSize: "cover",
-    bgPos: "center top",
+    bg: "linear-gradient(155deg, #0f0508 0%, #200a10 45%, #120507 100%)",
     accent: "#9B2335",
     label: "Направление 02",
     heading: "Страхование,\nкоторое работает",
@@ -78,9 +74,7 @@ const panels = [
     id: "realty" as PanelId,
     badge: "⌂",
     title: "Недвижимость",
-    bg: "/images/realEstateAgent.jpg",
-    bgSize: "cover",
-    bgPos: "center top",
+    bg: "linear-gradient(155deg, #0a0c06 0%, #181a08 45%, #0e0f05 100%)",
     accent: "#e8c97a",
     label: "Направление 03",
     heading: "От отпуска —\nк инвестициям",
@@ -212,7 +206,7 @@ export default function Home() {
               onClick={(e) => { if (!isActive) handleOpen(panel.id, e); }}
             >
               <div className={`panel-bg${isActive ? " panel-bg--expand" : ""}`}
-                style={{ backgroundImage: `url(${panel.bg})`, backgroundSize: panel.bgSize || "cover", backgroundPosition: panel.bgPos || "center top" }} />
+                style={{ background: panel.bg }} />
               {!isActive && <div className="panel-overlay" />}
               {!isActive && (
                 <div className="panel-content">
@@ -245,9 +239,7 @@ export default function Home() {
               <div
                 className="fullscreen-photo"
                 style={{
-                  backgroundImage: `url(${p.bg})`,
-                  backgroundSize: p.bgSize || "cover",
-                  backgroundPosition: p.bgPos || "center top",
+                  background: p.bg,
                   transform: overlayExpanded ? "scale(1)" : "scale(1.08)",
                   transition: overlayExpanded ? "transform 1.8s cubic-bezier(0.4, 0, 0.2, 1)" : "none",
                 }}
