@@ -719,17 +719,12 @@ body {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
+  color: #ad7c00d9;
   z-index: 3;
   transform-origin: center center;
-  -webkit-text-stroke: 0.4px rgba(0,0,0,0.6);
   text-shadow:
-    0 0 8px rgba(0,0,0,1),
-    0 1px 3px rgba(0,0,0,1),
-    -1px 0 6px rgba(0,0,0,0.9),
-    1px 0 6px rgba(0,0,0,0.9),
-    0 -1px 6px rgba(0,0,0,0.9),
-    0 1px 6px rgba(0,0,0,0.9);
+    0 0 10px rgba(0,0,0,0.9),
+    0 1px 4px rgba(0,0,0,0.95);
 }
 
 /* Scroll hint */

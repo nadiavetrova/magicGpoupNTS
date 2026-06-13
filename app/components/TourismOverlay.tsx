@@ -91,59 +91,81 @@ function CompassRose({ className }: { className?: string }) {
 }
 
 // Карта мира — упрощённые контуры материков
+// Карта мира — детальные контуры (equirectangular 1000×500)
+// x=(lon+180)/360*1000  y=(90−lat)/180*500
 function WorldMap({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* Сетка: меридианы */}
+
+      {/* Сетка */}
       {[-150,-120,-90,-60,-30,0,30,60,90,120,150].map(lon => {
-        const x = (lon + 180) / 360 * 1000;
-        return <line key={lon} x1={x} y1={0} x2={x} y2={500} stroke="#e8c97a" strokeWidth="0.4" opacity="0.35"/>;
+        const x=(lon+180)/360*1000;
+        return <line key={lon} x1={x} y1={0} x2={x} y2={500} stroke="#e8c97a" strokeWidth="0.35" opacity="0.28"/>;
       })}
-      {/* Сетка: параллели */}
       {[-60,-30,0,30,60].map(lat => {
-        const y = (90 - lat) / 180 * 500;
-        return <line key={lat} x1={0} y1={y} x2={1000} y2={y} stroke="#e8c97a" strokeWidth="0.4" opacity="0.35"/>;
+        const y=(90-lat)/180*500;
+        return <line key={lat} x1={0} y1={y} x2={1000} y2={y} stroke="#e8c97a" strokeWidth="0.35" opacity="0.28"/>;
       })}
-      {/* Экватор */}
-      <line x1={0} y1={250} x2={1000} y2={250} stroke="#e8c97a" strokeWidth="0.8" opacity="0.5"/>
+      <line x1={0} y1={250} x2={1000} y2={250} stroke="#e8c97a" strokeWidth="0.7" opacity="0.4"/>
+
       {/* Северная Америка */}
-      <path d="M80,80 L130,68 L175,72 L210,90 L240,105 L252,130 L248,160 L235,185 L220,210 L200,230 L185,235 L182,220 L192,200 L198,178 L190,158 L175,148 L165,130 L150,108 L130,88 Z"
-        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      <path d="M105,85 L120,72 L138,65 L158,62 L180,65 L200,72 L218,80 L235,90 L248,105 L255,120 L258,138 L252,155 L245,168 L248,178 L240,188 L228,192 L215,185 L205,172 L198,162 L192,148 L185,162 L188,178 L182,188 L172,195 L160,188 L150,175 L140,158 L128,142 L118,125 L108,108 Z"
+        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
+      <path d="M228,192 L232,205 L228,215 L222,212 L220,200 Z"
+        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
+      <path d="M215,185 L228,192 L222,200 L218,215 L208,225 L198,225 L192,215 L195,202 L205,192 Z"
+        stroke="#e8c97a" strokeWidth="0.8" fill="rgba(232,201,122,0.1)"/>
+      <path d="M255,42 L272,38 L290,42 L298,55 L292,70 L275,78 L258,72 L248,58 Z"
+        stroke="#e8c97a" strokeWidth="0.8" fill="rgba(232,201,122,0.1)"/>
+
       {/* Южная Америка */}
-      <path d="M210,258 L242,248 L268,260 L278,285 L278,315 L270,345 L258,378 L240,400 L222,402 L210,388 L205,360 L207,328 L205,298 L202,272 Z"
-        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      <path d="M205,248 L220,240 L238,238 L256,242 L272,250 L285,265 L290,285 L290,308 L284,332 L272,355 L258,375 L242,392 L226,405 L212,412 L202,402 L196,382 L192,358 L192,332 L196,308 L194,282 L198,262 Z"
+        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
+
       {/* Европа */}
-      <path d="M468,78 L490,68 L520,72 L535,82 L530,100 L515,112 L498,118 L478,112 L462,98 L460,84 Z"
-        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      <path d="M452,168 L455,158 L450,142 L450,125 L452,112 L448,98 L452,85 L460,75 L472,68 L488,65 L505,65 L520,70 L532,78 L535,90 L530,102 L522,112 L512,118 L520,128 L528,140 L525,150 L518,155 L508,160 L495,162 L482,162 L470,165 L460,170 Z"
+        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
+      <path d="M488,65 L495,55 L505,50 L518,52 L526,62 L530,72 L520,70 L505,65 Z"
+        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
+      <path d="M500,132 L505,145 L510,158 L508,172 L502,175 L496,162 L494,148 Z"
+        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
+      <path d="M448,98 L445,88 L450,78 L458,78 L462,88 L458,98 Z"
+        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
+
       {/* Африка */}
-      <path d="M472,148 L508,138 L538,148 L555,172 L558,205 L552,240 L540,275 L520,308 L498,330 L476,328 L458,308 L448,278 L445,245 L448,212 L455,180 L462,162 Z"
-        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
-      {/* Азия */}
-      <path d="M535,72 L580,58 L638,52 L695,58 L742,72 L775,88 L788,108 L778,135 L755,152 L728,165 L695,170 L658,165 L625,170 L598,162 L568,150 L548,135 L535,112 L530,88 Z"
-        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      <path d="M458,170 L470,165 L485,158 L505,152 L525,150 L545,150 L568,150 L582,152 L598,150 L612,160 L616,175 L612,195 L625,208 L638,218 L645,232 L640,250 L628,265 L612,275 L600,288 L588,308 L572,328 L556,345 L545,352 L535,342 L522,325 L515,305 L518,282 L520,262 L515,245 L508,235 L495,230 L480,228 L465,222 L452,212 L448,195 L450,178 Z"
+        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
+      <path d="M618,288 L625,278 L632,285 L635,305 L628,320 L618,318 L614,305 Z"
+        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
+
+      {/* Азия — основной массив */}
+      <path d="M525,150 L538,140 L552,132 L568,125 L585,118 L602,108 L622,98 L648,88 L678,78 L712,70 L748,65 L780,62 L812,65 L842,72 L865,82 L882,95 L892,110 L888,125 L872,135 L852,138 L832,138 L815,142 L805,150 L795,162 L785,172 L775,185 L762,198 L752,212 L748,225 L752,238 L742,242 L728,240 L718,232 L708,222 L698,212 L690,202 L680,195 L665,192 L652,195 L645,208 L638,218 L625,208 L612,195 L612,175 L612,160 L598,150 L582,150 L568,150 L545,150 Z"
+        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
+      <path d="M612,160 L625,162 L640,170 L652,180 L660,195 L662,212 L655,225 L642,232 L630,225 L620,215 L618,202 L614,192 L612,175 Z"
+        stroke="#e8c97a" strokeWidth="0.9" fill="rgba(232,201,122,0.12)"/>
+      <path d="M698,178 L712,180 L724,192 L730,208 L730,228 L722,242 L710,244 L700,238 L692,225 L688,210 L690,195 L695,185 Z"
+        stroke="#e8c97a" strokeWidth="0.9" fill="rgba(232,201,122,0.12)"/>
+      <path d="M758,185 L765,190 L770,205 L764,218 L755,222 L748,215 L750,200 Z"
+        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
+      <path d="M802,130 L810,125 L815,135 L810,145 L800,145 L796,138 Z"
+        stroke="#e8c97a" strokeWidth="0.6" fill="rgba(232,201,122,0.1)"/>
+      <path d="M818,115 L830,110 L840,118 L836,130 L824,134 L814,128 Z"
+        stroke="#e8c97a" strokeWidth="0.6" fill="rgba(232,201,122,0.1)"/>
+
       {/* Австралия */}
-      <path d="M748,298 L785,285 L822,292 L842,315 L838,348 L815,368 L780,372 L752,358 L736,335 L733,312 Z"
-        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
-      {/* Точки-назначения с пульсирующим пингом (Турция, ОАЭ, Индия) */}
-      {[
-        {lon:35,lat:39,label:"TR",delay:0},
-        {lon:55,lat:25,label:"AE",delay:0.8},
-        {lon:78,lat:22,label:"IN",delay:1.6},
-      ].map(({lon,lat,label,delay})=>{
-        const x=(lon+180)/360*1000, y=(90-lat)/180*500;
-        return <g key={label}>
-          {/* Пульсирующие кольца (3 кольца с задержкой) */}
-          {[0,0.8,1.6].map((d,i)=>(
-            <circle key={i} cx={x} cy={y} r={6}
-              stroke="#e8c97a" strokeWidth="1.2" fill="none"
-              className="tr-map-ping"
-              style={{animationDelay:`${delay+d}s`}}/>
-          ))}
-          {/* Центральная точка */}
-          <circle cx={x} cy={y} r={3.5} fill="#e8c97a" fillOpacity="0.9"/>
-          <circle cx={x} cy={y} r={6} stroke="#e8c97a" strokeWidth="0.6" fill="none" opacity="0.5"/>
-        </g>;
-      })}
+      <path d="M735,300 L752,285 L772,280 L795,282 L818,288 L838,298 L848,318 L848,340 L840,358 L825,372 L805,378 L782,378 L760,372 L742,360 L730,345 L726,325 L728,310 Z"
+        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
+
+      {/* Одна точка — Средиземноморье/Европа (над кнопками в секции)
+          lon=15°E lat=45°N → x=542 y=125 */}
+      {[0, 0.85, 1.7].map((d, i) => (
+        <circle key={i} cx={542} cy={125} r={6}
+          stroke="#e8c97a" strokeWidth="1.4" fill="none"
+          className="tr-map-ping"
+          style={{ animationDelay: `${d}s` }}/>
+      ))}
+      <circle cx={542} cy={125} r={3.5} fill="#e8c97a" fillOpacity="0.95"/>
+      <circle cx={542} cy={125} r={8} stroke="#e8c97a" strokeWidth="0.5" fill="none" opacity="0.35"/>
     </svg>
   );
 }
