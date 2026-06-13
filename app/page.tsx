@@ -176,7 +176,7 @@ export default function Home() {
         </div>
 
         <div className="header-right">
-          <a className="header-phone" href="tel:+79000000000">+7 (900) 000-00-00</a>
+          <a className="header-phone" href="tel:+79178739655">+7 (917) 873-96-55</a>
           {active && (
             <button
               className="header-back-btn"

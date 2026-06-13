@@ -24,24 +24,13 @@ function CompassRose({ className }: { className?: string }) {
     const deg = i * 10;
     const rad = (deg - 90) * Math.PI / 180;
     const isCard = deg % 90 === 0;
-    const len = isCard ? 12 : 7;
     const r2 = 148;
     const x1 = C + r2 * Math.cos(rad), y1 = C + r2 * Math.sin(rad);
-    const x2 = C + (r2 - len) * Math.cos(rad), y2 = C + (r2 - len) * Math.sin(rad);
+    const x2 = C + (r2 - (isCard ? 12 : 7)) * Math.cos(rad), y2 = C + (r2 - (isCard ? 12 : 7)) * Math.sin(rad);
     return { x1, y1, x2, y2, w: isCard ? 0.7 : 0.3 };
   });
 
   const DIRS = ['n','e','s','w'] as const;
-
-  // Промежуточные алмазы (NE/SE/SW/NW)
-  const intercardinals = [45,135,225,315].map(deg => {
-    const rad = (deg - 90) * Math.PI / 180;
-    const tip = C + 138 * Math.cos(rad), tipy = C + 138 * Math.sin(rad);
-    const lx  = C + 122 * Math.cos(rad - 0.2), ly  = C + 122 * Math.sin(rad - 0.2);
-    const rx  = C + 122 * Math.cos(rad + 0.2), ry  = C + 122 * Math.sin(rad + 0.2);
-    const bx  = C + 108 * Math.cos(rad), by  = C + 108 * Math.sin(rad);
-    return { tip, tipy, lx, ly, rx, ry, bx, by };
-  });
 
   return (
     <svg className={className} viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -49,13 +38,9 @@ function CompassRose({ className }: { className?: string }) {
       <circle cx={C} cy={C} r={R}   stroke="#e8c97a" strokeWidth="0.9"/>
       <circle cx={C} cy={C} r={172} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
       <circle cx={C} cy={C} r={155} stroke="#e8c97a" strokeWidth="0.4"/>
-      <circle cx={C} cy={C} r={138} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
       <circle cx={C} cy={C} r={120} stroke="#e8c97a" strokeWidth="0.35"/>
-      <circle cx={C} cy={C} r={100} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
       <circle cx={C} cy={C} r={82}  stroke="#e8c97a" strokeWidth="0.4"/>
-      <circle cx={C} cy={C} r={64}  stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
       <circle cx={C} cy={C} r={48}  stroke="#e8c97a" strokeWidth="0.35"/>
-      <circle cx={C} cy={C} r={32}  stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
       <circle cx={C} cy={C} r={18}  stroke="#e8c97a" strokeWidth="0.5"/>
       <circle cx={C} cy={C} r={8}   stroke="#e8c97a" strokeWidth="0.5"/>
       <circle cx={C} cy={C} r={3.5} fill="#e8c97a"   fillOpacity="0.8"/>
@@ -72,15 +57,7 @@ function CompassRose({ className }: { className?: string }) {
         return <line key={deg}
           x1={C+R*Math.cos(r1)} y1={C+R*Math.sin(r1)}
           x2={C+R*Math.cos(r2)} y2={C+R*Math.sin(r2)}
-          stroke="#e8c97a" strokeWidth="0.22"/>;
-      })}
-      {/* 11.25° линии (дополнительные, до r=155) */}
-      {[11.25,33.75,56.25,78.75,101.25,123.75,146.25,168.75].map((deg) => {
-        const r1 = (deg-90)*Math.PI/180, r2 = r1+Math.PI;
-        return <line key={deg}
-          x1={C+155*Math.cos(r1)} y1={C+155*Math.sin(r1)}
-          x2={C+155*Math.cos(r2)} y2={C+155*Math.sin(r2)}
-          stroke="#e8c97a" strokeWidth="0.15" opacity="0.4"/>;
+          stroke="#e8c97a" strokeWidth="0.2"/>;
       })}
 
       {/* Внешние риски */}
@@ -92,55 +69,22 @@ function CompassRose({ className }: { className?: string }) {
         <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#e8c97a" strokeWidth={t.w} opacity="0.55"/>
       ))}
 
-      {/* 8 линий из центра (к r=105) */}
-      {Array.from({length:8},(_,i) => {
-        const rad = (i*45-90)*Math.PI/180;
-        return <line key={i} x1={C} y1={C}
-          x2={C+105*Math.cos(rad)} y2={C+105*Math.sin(rad)}
-          stroke="#e8c97a" strokeWidth="0.3"/>;
-      })}
-
-      {/* Промежуточные алмазы NE/SE/SW/NW */}
-      {intercardinals.map((d,i) => (
-        <polygon key={i}
-          points={`${d.tip},${d.tipy} ${d.lx},${d.ly} ${d.bx},${d.by} ${d.rx},${d.ry}`}
-          fill="#e8c97a" fillOpacity="0.35"/>
-      ))}
-
-      {/* Главные кардинальные стрелки N/E/S/W — анимируются по очереди */}
+      {/* 4 стрелки N/E/S/W — классический шеврон со срезанным основанием */}
       {[0,90,180,270].map((deg,i) => {
         const rad = (deg-90)*Math.PI/180;
-        const tip = C+172*Math.cos(rad), tipy = C+172*Math.sin(rad);
-        const lx  = C+150*Math.cos(rad-0.17), ly  = C+150*Math.sin(rad-0.17);
-        const rx  = C+150*Math.cos(rad+0.17), ry  = C+150*Math.sin(rad+0.17);
-        const bx  = C+130*Math.cos(rad), by  = C+130*Math.sin(rad);
+        // Острый кончик
+        const tx = C + 178*Math.cos(rad),  ty = C + 178*Math.sin(rad);
+        // Плечи (широкая часть)
+        const lx = C + 152*Math.cos(rad-0.19), ly = C + 152*Math.sin(rad-0.19);
+        const rx = C + 152*Math.cos(rad+0.19), ry = C + 152*Math.sin(rad+0.19);
+        // Основание со срезом (вогнутое)
+        const bl = C + 140*Math.cos(rad-0.07), bly = C + 140*Math.sin(rad-0.07);
+        const br = C + 140*Math.cos(rad+0.07), bry = C + 140*Math.sin(rad+0.07);
+        const notch = C + 132*Math.cos(rad),   notchy = C + 132*Math.sin(rad);
+        // Итоговая форма: tip → leftShoulder → leftBase → notch → rightBase → rightShoulder
         return <polygon key={deg}
           className={`tr-compass-arrow tr-compass-arrow--${DIRS[i]}`}
-          points={`${tip},${tipy} ${lx},${ly} ${bx},${by} ${rx},${ry}`}/>;
-      })}
-
-      {/* Алмазные метки на r=82 (8 штук) */}
-      {[0,45,90,135,180,225,270,315].map((deg) => {
-        const rad = (deg-90)*Math.PI/180;
-        const x = C+82*Math.cos(rad), y = C+82*Math.sin(rad);
-        return <rect key={deg} x={x-3} y={y-3} width="6" height="6"
-          transform={`rotate(45 ${x} ${y})`} fill="#e8c97a" fillOpacity="0.55"/>;
-      })}
-
-      {/* Метки на r=48 (4 кардинальных) */}
-      {[0,90,180,270].map((deg) => {
-        const rad = (deg-90)*Math.PI/180;
-        const x = C+48*Math.cos(rad), y = C+48*Math.sin(rad);
-        return <rect key={deg} x={x-2} y={y-2} width="4" height="4"
-          transform={`rotate(45 ${x} ${y})`} fill="#e8c97a" fillOpacity="0.45"/>;
-      })}
-
-      {/* Метки каждые 30° на r=120 */}
-      {Array.from({length:12},(_,i) => {
-        const rad = (i*30-90)*Math.PI/180;
-        const x1 = C+120*Math.cos(rad), y1 = C+120*Math.sin(rad);
-        const x2 = C+115*Math.cos(rad), y2 = C+115*Math.sin(rad);
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#e8c97a" strokeWidth="0.5"/>;
+          points={`${tx},${ty} ${lx},${ly} ${bl},${bly} ${notch},${notchy} ${br},${bry} ${rx},${ry}`}/>;
       })}
     </svg>
   );
