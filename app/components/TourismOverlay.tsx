@@ -80,6 +80,99 @@ function CompassRose({ className }: { className?: string }) {
   );
 }
 
+// Карта мира — упрощённые контуры материков
+function WorldMap({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      {/* Сетка: меридианы */}
+      {[-150,-120,-90,-60,-30,0,30,60,90,120,150].map(lon => {
+        const x = (lon + 180) / 360 * 1000;
+        return <line key={lon} x1={x} y1={0} x2={x} y2={500} stroke="#e8c97a" strokeWidth="0.4" opacity="0.35"/>;
+      })}
+      {/* Сетка: параллели */}
+      {[-60,-30,0,30,60].map(lat => {
+        const y = (90 - lat) / 180 * 500;
+        return <line key={lat} x1={0} y1={y} x2={1000} y2={y} stroke="#e8c97a" strokeWidth="0.4" opacity="0.35"/>;
+      })}
+      {/* Экватор */}
+      <line x1={0} y1={250} x2={1000} y2={250} stroke="#e8c97a" strokeWidth="0.8" opacity="0.5"/>
+      {/* Северная Америка */}
+      <path d="M80,80 L130,68 L175,72 L210,90 L240,105 L252,130 L248,160 L235,185 L220,210 L200,230 L185,235 L182,220 L192,200 L198,178 L190,158 L175,148 L165,130 L150,108 L130,88 Z"
+        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      {/* Южная Америка */}
+      <path d="M210,258 L242,248 L268,260 L278,285 L278,315 L270,345 L258,378 L240,400 L222,402 L210,388 L205,360 L207,328 L205,298 L202,272 Z"
+        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      {/* Европа */}
+      <path d="M468,78 L490,68 L520,72 L535,82 L530,100 L515,112 L498,118 L478,112 L462,98 L460,84 Z"
+        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      {/* Африка */}
+      <path d="M472,148 L508,138 L538,148 L555,172 L558,205 L552,240 L540,275 L520,308 L498,330 L476,328 L458,308 L448,278 L445,245 L448,212 L455,180 L462,162 Z"
+        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      {/* Азия */}
+      <path d="M535,72 L580,58 L638,52 L695,58 L742,72 L775,88 L788,108 L778,135 L755,152 L728,165 L695,170 L658,165 L625,170 L598,162 L568,150 L548,135 L535,112 L530,88 Z"
+        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      {/* Австралия */}
+      <path d="M748,298 L785,285 L822,292 L842,315 L838,348 L815,368 L780,372 L752,358 L736,335 L733,312 Z"
+        stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
+      {/* Точки на пересечениях маршрутов (Турция, Индия, ОАЭ) */}
+      {[
+        {lon:35,lat:39,label:"TR"},
+        {lon:78,lat:22,label:"IN"},
+        {lon:55,lat:24,label:"AE"},
+      ].map(({lon,lat,label})=>{
+        const x=(lon+180)/360*1000, y=(90-lat)/180*500;
+        return <g key={label}>
+          <circle cx={x} cy={y} r={4} fill="#e8c97a" fillOpacity="0.6"/>
+          <circle cx={x} cy={y} r={8} stroke="#e8c97a" strokeWidth="0.6" fill="none" opacity="0.4"/>
+        </g>;
+      })}
+    </svg>
+  );
+}
+
+// Сетка координат — глобус-проекция
+function CoordGrid({ className }: { className?: string }) {
+  const C = 210, R = 190;
+  // Параллели (горизонтальные эллипсы)
+  const parallels = [-60,-30,0,30,60].map(lat => {
+    const ry = R * Math.sin((Math.abs(lat) / 90) * Math.PI / 2);
+    const y  = C - R * Math.sin((lat / 90) * Math.PI / 2);
+    const rx = R * Math.cos((lat / 90) * Math.PI / 2);
+    return { y, rx, ry: rx * 0.22, isEquator: lat === 0 };
+  });
+  // Меридианы (вертикальные эллипсы)
+  const meridians = [0,30,60,90,120,150].map(lon => ({
+    rx: R * Math.sin((lon / 90) * Math.PI / 2),
+  }));
+
+  return (
+    <svg className={className} viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx={C} cy={C} r={R} stroke="#e8c97a" strokeWidth="0.7"/>
+      {/* Меридианы */}
+      {meridians.map((m, i) => (
+        <ellipse key={i} cx={C} cy={C} rx={m.rx} ry={R} stroke="#e8c97a" strokeWidth={m.rx < 5 ? 0.7 : 0.35}/>
+      ))}
+      {/* Параллели */}
+      {parallels.map((p, i) => (
+        <ellipse key={i} cx={C} cy={p.y} rx={p.rx} ry={p.ry}
+          stroke="#e8c97a" strokeWidth={p.isEquator ? 0.7 : 0.35}/>
+      ))}
+      {/* Полюса */}
+      <circle cx={C} cy={C - R} r={3} fill="#e8c97a" fillOpacity="0.5"/>
+      <circle cx={C} cy={C + R} r={3} fill="#e8c97a" fillOpacity="0.5"/>
+      {/* Метки направлений */}
+      {[{a:0,t:"N"},{a:90,t:"E"},{a:180,t:"S"},{a:270,t:"W"}].map(({a,t})=>{
+        const rad=(a-90)*Math.PI/180;
+        return <text key={t}
+          x={C+(R+18)*Math.cos(rad)} y={C+(R+18)*Math.sin(rad)}
+          fill="#e8c97a" fillOpacity="0.35" fontSize="10"
+          textAnchor="middle" dominantBaseline="middle"
+          fontFamily="DM Sans, sans-serif" letterSpacing="0.1em">{t}</text>;
+      })}
+    </svg>
+  );
+}
+
 interface Props {
   p: {
     label: string;
@@ -295,6 +388,9 @@ export default function TourismOverlay({ p, textVisible, onOpenModal }: Props) {
 
       {/* ══ SERVICES ══════════════════════════════════════ */}
       <section className="tr-services" data-tr>
+        <div className="tr-compass-wrap tr-compass-wrap--left tr-compass-wrap--map">
+          <WorldMap className="tr-worldmap" />
+        </div>
         <div className="tr-section-hint">
           <span className="tr-section-hint-line" />
           <span className="tr-section-hint-text">Листайте</span>
@@ -336,9 +432,9 @@ export default function TourismOverlay({ p, textVisible, onOpenModal }: Props) {
 
       {/* ══ CONTACTS ══════════════════════════════════════ */}
       <section className="tr-contacts" id="tr-contacts" data-tr>
-        {/* Compass on the LEFT for contacts */}
+        {/* CoordGrid on the LEFT for contacts */}
         <div className="tr-compass-wrap tr-compass-wrap--left">
-          <CompassRose className="tr-compass" />
+          <CoordGrid className="tr-compass" />
         </div>
         <div className="tr-contacts-inner">
 

@@ -215,12 +215,11 @@
 .tr-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(7, 7, 12, 0.94) 0%,
-    rgba(7, 7, 12, 0.5) 40%,
-    rgba(7, 7, 12, 0.2) 100%
-  );
+  background:
+    /* снизу — жёсткое слияние со следующей секцией */
+    linear-gradient(to top, #07070c 0%, #07070c 4%, rgba(7,7,12,0.85) 18%, transparent 42%),
+    /* сверху — лёгкое затемнение для шапки */
+    linear-gradient(to bottom, rgba(7,7,12,0.45) 0%, transparent 30%);
 }
 
 .tr-hero-body {
@@ -347,6 +346,23 @@
   animation: trCompassSpin 120s linear infinite;
 }
 
+.tr-compass-wrap.tr-compass-wrap--map {
+  right: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 92%;
+  max-width: 860px;
+  height: 430px;
+  opacity: 0.1;
+}
+
+.tr-worldmap {
+  width: 100%;
+  height: 100%;
+  animation: none !important;
+}
+
 .tr-compass-wrap--left .tr-compass {
   animation-direction: reverse;
 }
@@ -360,7 +376,7 @@
 
 .tr-about {
   background: var(--tr-bg);
-  border-top: 1px solid var(--tr-border);
+  border-top: none;
   padding: 5rem 0 6rem;
   position: relative;
   overflow: hidden;
@@ -442,6 +458,8 @@
   background: var(--tr-bg);
   border-top: 1px solid var(--tr-border);
   padding: 5rem 0 7rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .tr-services-inner {
