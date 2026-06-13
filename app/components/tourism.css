@@ -326,18 +326,19 @@
 
 .tr-compass-wrap {
   position: absolute;
-  right: -80px;
-  top: calc(50% - 240px);
-  width: 480px;
-  height: 480px;
+  right: -100px;
+  top: calc(50% - 290px);
+  width: 580px;
+  height: 580px;
   pointer-events: none;
-  opacity: 0.12;
+  opacity: 0.14;
+  z-index: 0;
 }
 
 .tr-compass-wrap--left {
   right: auto;
-  left: -80px;
-  top: calc(50% - 240px);
+  left: -100px;
+  top: calc(50% - 290px);
 }
 
 .tr-compass {
@@ -351,9 +352,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 92%;
-  max-width: 860px;
-  height: 430px;
+  width: 94%;
+  max-width: 900px;
+  height: 450px;
   opacity: 0.1;
 }
 
@@ -367,9 +368,36 @@
   animation-direction: reverse;
 }
 
+/* ── Compass arrow glow (sequential N→E→S→W) ── */
 @keyframes trCompassSpin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
+}
+
+@keyframes compassArrowGlow {
+  0%, 15%, 85%, 100% { fill-opacity: 0.3; }
+  50% { fill-opacity: 1; filter: drop-shadow(0 0 8px #e8c97a) drop-shadow(0 0 3px #fff); }
+}
+
+.tr-compass-arrow {
+  fill: #e8c97a;
+  fill-opacity: 0.3;
+  animation: compassArrowGlow 4.8s ease-in-out infinite;
+}
+.tr-compass-arrow--n { animation-delay: 0s; }
+.tr-compass-arrow--e { animation-delay: 1.2s; }
+.tr-compass-arrow--s { animation-delay: 2.4s; }
+.tr-compass-arrow--w { animation-delay: 3.6s; }
+
+/* ── Map ping animation ── */
+@keyframes mapPing {
+  0%   { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(5); opacity: 0; }
+}
+.tr-map-ping {
+  animation: mapPing 2.4s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 /* ── ABOUT ──────────────────────────────────── */
@@ -379,7 +407,8 @@
   border-top: none;
   padding: 5rem 0 6rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* компас выходит за границы — не обрезаем */
+  isolation: isolate; /* z-index контекст */
 }
 
 .tr-about-inner {
@@ -459,7 +488,8 @@
   border-top: 1px solid var(--tr-border);
   padding: 5rem 0 7rem;
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* CoordGrid пусть немного выходит за край */
+  isolation: isolate;
 }
 
 .tr-services-inner {
@@ -867,8 +897,8 @@
   .tr-about           { padding: 4rem 0 5rem; }
   .tr-about-inner     { grid-template-columns: 1fr; gap: 2rem; padding: 0 2.5rem; }
   .tr-about-right     { padding-top: 0; }
-  .tr-compass-wrap    { right: -120px; width: 380px; height: 380px; top: calc(50% - 190px); }
-  .tr-compass-wrap--left { left: -120px; }
+  .tr-compass-wrap    { right: -140px; width: 480px; height: 480px; top: calc(50% - 240px); }
+  .tr-compass-wrap--left { left: -140px; }
 
   /* Services */
   .tr-services        { padding: 4rem 0 5rem; }
@@ -903,8 +933,8 @@
   .tr-about           { padding: 3rem 0 4rem; }
   .tr-about-inner     { padding: 0 1.5rem; gap: 1.8rem; }
   .tr-quote           { font-size: clamp(1.1rem, 4vw, 1.4rem); }
-  .tr-compass-wrap    { right: -150px; width: 300px; height: 300px; top: calc(50% - 150px); opacity: 0.08; }
-  .tr-compass-wrap--left { left: -150px; }
+  .tr-compass-wrap    { right: -120px; width: 420px; height: 420px; top: calc(50% - 210px); opacity: 0.12; }
+  .tr-compass-wrap--left { left: -120px; }
   .tr-about-tags      { gap: 0.35rem; }
   .tr-tag             { font-size: 10px; padding: 0.3rem 0.7rem; }
 

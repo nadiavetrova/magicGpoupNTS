@@ -5,76 +5,142 @@ import "./tourism.css";
 
 function CompassRose({ className }: { className?: string }) {
   const C = 210, R = 190;
-  // Generate tick marks around the outer circle
+
+  // Внешние риски (72 деления × 5°)
   const ticks = Array.from({ length: 72 }, (_, i) => {
     const deg = i * 5;
     const rad = (deg - 90) * Math.PI / 180;
     const isCardinal = deg % 90 === 0;
-    const isMajor   = deg % 45 === 0;
-    const isMid     = deg % 10 === 0;
-    const len = isCardinal ? 22 : isMajor ? 16 : isMid ? 10 : 5;
+    const isMajor    = deg % 45 === 0;
+    const isMid      = deg % 10 === 0;
+    const len = isCardinal ? 26 : isMajor ? 18 : isMid ? 12 : 6;
     const x1 = C + R * Math.cos(rad), y1 = C + R * Math.sin(rad);
     const x2 = C + (R - len) * Math.cos(rad), y2 = C + (R - len) * Math.sin(rad);
-    return { x1, y1, x2, y2, w: isCardinal ? 1.2 : isMajor ? 0.8 : 0.4 };
+    return { x1, y1, x2, y2, w: isCardinal ? 1.6 : isMajor ? 1.0 : isMid ? 0.55 : 0.3 };
   });
-  // 8 compass needle lines (every 45°)
-  const needles = Array.from({ length: 8 }, (_, i) => {
-    const deg = i * 45;
+
+  // Внутренние риски на r=148 (каждые 10°)
+  const innerTicks = Array.from({ length: 36 }, (_, i) => {
+    const deg = i * 10;
     const rad = (deg - 90) * Math.PI / 180;
-    return { x: C + 140 * Math.cos(rad), y: C + 140 * Math.sin(rad) };
+    const isCard = deg % 90 === 0;
+    const len = isCard ? 12 : 7;
+    const r2 = 148;
+    const x1 = C + r2 * Math.cos(rad), y1 = C + r2 * Math.sin(rad);
+    const x2 = C + (r2 - len) * Math.cos(rad), y2 = C + (r2 - len) * Math.sin(rad);
+    return { x1, y1, x2, y2, w: isCard ? 0.7 : 0.3 };
+  });
+
+  const DIRS = ['n','e','s','w'] as const;
+
+  // Промежуточные алмазы (NE/SE/SW/NW)
+  const intercardinals = [45,135,225,315].map(deg => {
+    const rad = (deg - 90) * Math.PI / 180;
+    const tip = C + 138 * Math.cos(rad), tipy = C + 138 * Math.sin(rad);
+    const lx  = C + 122 * Math.cos(rad - 0.2), ly  = C + 122 * Math.sin(rad - 0.2);
+    const rx  = C + 122 * Math.cos(rad + 0.2), ry  = C + 122 * Math.sin(rad + 0.2);
+    const bx  = C + 108 * Math.cos(rad), by  = C + 108 * Math.sin(rad);
+    return { tip, tipy, lx, ly, rx, ry, bx, by };
   });
 
   return (
     <svg className={className} viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* Concentric circles */}
-      <circle cx={C} cy={C} r={R}   stroke="#e8c97a" strokeWidth="0.7"/>
-      <circle cx={C} cy={C} r={150} stroke="#e8c97a" strokeWidth="0.35"/>
-      <circle cx={C} cy={C} r={110} stroke="#e8c97a" strokeWidth="0.35"/>
-      <circle cx={C} cy={C} r={70}  stroke="#e8c97a" strokeWidth="0.5"/>
-      <circle cx={C} cy={C} r={35}  stroke="#e8c97a" strokeWidth="0.4"/>
-      <circle cx={C} cy={C} r={10}  stroke="#e8c97a" strokeWidth="0.6"/>
-      <circle cx={C} cy={C} r={3}   fill="#e8c97a"   fillOpacity="0.6"/>
+      {/* Концентрические окружности */}
+      <circle cx={C} cy={C} r={R}   stroke="#e8c97a" strokeWidth="0.9"/>
+      <circle cx={C} cy={C} r={172} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
+      <circle cx={C} cy={C} r={155} stroke="#e8c97a" strokeWidth="0.4"/>
+      <circle cx={C} cy={C} r={138} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
+      <circle cx={C} cy={C} r={120} stroke="#e8c97a" strokeWidth="0.35"/>
+      <circle cx={C} cy={C} r={100} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
+      <circle cx={C} cy={C} r={82}  stroke="#e8c97a" strokeWidth="0.4"/>
+      <circle cx={C} cy={C} r={64}  stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
+      <circle cx={C} cy={C} r={48}  stroke="#e8c97a" strokeWidth="0.35"/>
+      <circle cx={C} cy={C} r={32}  stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
+      <circle cx={C} cy={C} r={18}  stroke="#e8c97a" strokeWidth="0.5"/>
+      <circle cx={C} cy={C} r={8}   stroke="#e8c97a" strokeWidth="0.5"/>
+      <circle cx={C} cy={C} r={3.5} fill="#e8c97a"   fillOpacity="0.8"/>
 
-      {/* Cross lines — cardinal */}
+      {/* Крестовые линии — кардинальные */}
       <line x1={C} y1={C-R} x2={C} y2={C+R} stroke="#e8c97a" strokeWidth="0.5"/>
       <line x1={C-R} y1={C} x2={C+R} y2={C} stroke="#e8c97a" strokeWidth="0.5"/>
-      {/* Diagonal lines — intercardinal */}
+      {/* Диагонали — промежуточные */}
       <line x1={C-134} y1={C-134} x2={C+134} y2={C+134} stroke="#e8c97a" strokeWidth="0.3"/>
       <line x1={C+134} y1={C-134} x2={C-134} y2={C+134} stroke="#e8c97a" strokeWidth="0.3"/>
-      {/* 22.5° lines */}
-      {[22.5, 67.5, 112.5, 157.5].map((deg) => {
-        const r1 = (deg - 90) * Math.PI / 180, r2 = r1 + Math.PI;
+      {/* 22.5° линии */}
+      {[22.5,67.5,112.5,157.5].map((deg) => {
+        const r1 = (deg-90)*Math.PI/180, r2 = r1+Math.PI;
         return <line key={deg}
-          x1={C + R * Math.cos(r1)} y1={C + R * Math.sin(r1)}
-          x2={C + R * Math.cos(r2)} y2={C + R * Math.sin(r2)}
-          stroke="#e8c97a" strokeWidth="0.2"/>;
+          x1={C+R*Math.cos(r1)} y1={C+R*Math.sin(r1)}
+          x2={C+R*Math.cos(r2)} y2={C+R*Math.sin(r2)}
+          stroke="#e8c97a" strokeWidth="0.22"/>;
+      })}
+      {/* 11.25° линии (дополнительные, до r=155) */}
+      {[11.25,33.75,56.25,78.75,101.25,123.75,146.25,168.75].map((deg) => {
+        const r1 = (deg-90)*Math.PI/180, r2 = r1+Math.PI;
+        return <line key={deg}
+          x1={C+155*Math.cos(r1)} y1={C+155*Math.sin(r1)}
+          x2={C+155*Math.cos(r2)} y2={C+155*Math.sin(r2)}
+          stroke="#e8c97a" strokeWidth="0.15" opacity="0.4"/>;
       })}
 
-      {/* Tick marks */}
+      {/* Внешние риски */}
       {ticks.map((t, i) => (
         <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#e8c97a" strokeWidth={t.w}/>
       ))}
-
-      {/* Cardinal arrowheads (N/S/E/W) */}
-      {[0, 90, 180, 270].map((deg) => {
-        const rad = (deg - 90) * Math.PI / 180;
-        const px = C + 155 * Math.cos(rad), py = C + 155 * Math.sin(rad);
-        const lx = C + 140 * Math.cos(rad - 0.12), ly = C + 140 * Math.sin(rad - 0.12);
-        const rx = C + 140 * Math.cos(rad + 0.12), ry = C + 140 * Math.sin(rad + 0.12);
-        return <polygon key={deg} points={`${px},${py} ${lx},${ly} ${rx},${ry}`} fill="#e8c97a" fillOpacity="0.7"/>;
-      })}
-
-      {/* Inner 8-point star diamonds */}
-      {needles.map((n, i) => (
-        <line key={i} x1={C} y1={C} x2={n.x} y2={n.y} stroke="#e8c97a" strokeWidth="0.25"/>
+      {/* Внутренние риски */}
+      {innerTicks.map((t, i) => (
+        <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#e8c97a" strokeWidth={t.w} opacity="0.55"/>
       ))}
 
-      {/* Inner diamond ring at r=70 */}
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => {
-        const rad = (deg - 90) * Math.PI / 180;
-        const x = C + 70 * Math.cos(rad), y = C + 70 * Math.sin(rad);
-        return <rect key={deg} x={x-2.5} y={y-2.5} width="5" height="5"
-          transform={`rotate(45 ${x} ${y})`} fill="#e8c97a" fillOpacity="0.5"/>;
+      {/* 8 линий из центра (к r=105) */}
+      {Array.from({length:8},(_,i) => {
+        const rad = (i*45-90)*Math.PI/180;
+        return <line key={i} x1={C} y1={C}
+          x2={C+105*Math.cos(rad)} y2={C+105*Math.sin(rad)}
+          stroke="#e8c97a" strokeWidth="0.3"/>;
+      })}
+
+      {/* Промежуточные алмазы NE/SE/SW/NW */}
+      {intercardinals.map((d,i) => (
+        <polygon key={i}
+          points={`${d.tip},${d.tipy} ${d.lx},${d.ly} ${d.bx},${d.by} ${d.rx},${d.ry}`}
+          fill="#e8c97a" fillOpacity="0.35"/>
+      ))}
+
+      {/* Главные кардинальные стрелки N/E/S/W — анимируются по очереди */}
+      {[0,90,180,270].map((deg,i) => {
+        const rad = (deg-90)*Math.PI/180;
+        const tip = C+172*Math.cos(rad), tipy = C+172*Math.sin(rad);
+        const lx  = C+150*Math.cos(rad-0.17), ly  = C+150*Math.sin(rad-0.17);
+        const rx  = C+150*Math.cos(rad+0.17), ry  = C+150*Math.sin(rad+0.17);
+        const bx  = C+130*Math.cos(rad), by  = C+130*Math.sin(rad);
+        return <polygon key={deg}
+          className={`tr-compass-arrow tr-compass-arrow--${DIRS[i]}`}
+          points={`${tip},${tipy} ${lx},${ly} ${bx},${by} ${rx},${ry}`}/>;
+      })}
+
+      {/* Алмазные метки на r=82 (8 штук) */}
+      {[0,45,90,135,180,225,270,315].map((deg) => {
+        const rad = (deg-90)*Math.PI/180;
+        const x = C+82*Math.cos(rad), y = C+82*Math.sin(rad);
+        return <rect key={deg} x={x-3} y={y-3} width="6" height="6"
+          transform={`rotate(45 ${x} ${y})`} fill="#e8c97a" fillOpacity="0.55"/>;
+      })}
+
+      {/* Метки на r=48 (4 кардинальных) */}
+      {[0,90,180,270].map((deg) => {
+        const rad = (deg-90)*Math.PI/180;
+        const x = C+48*Math.cos(rad), y = C+48*Math.sin(rad);
+        return <rect key={deg} x={x-2} y={y-2} width="4" height="4"
+          transform={`rotate(45 ${x} ${y})`} fill="#e8c97a" fillOpacity="0.45"/>;
+      })}
+
+      {/* Метки каждые 30° на r=120 */}
+      {Array.from({length:12},(_,i) => {
+        const rad = (i*30-90)*Math.PI/180;
+        const x1 = C+120*Math.cos(rad), y1 = C+120*Math.sin(rad);
+        const x2 = C+115*Math.cos(rad), y2 = C+115*Math.sin(rad);
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#e8c97a" strokeWidth="0.5"/>;
       })}
     </svg>
   );
@@ -114,16 +180,24 @@ function WorldMap({ className }: { className?: string }) {
       {/* Австралия */}
       <path d="M748,298 L785,285 L822,292 L842,315 L838,348 L815,368 L780,372 L752,358 L736,335 L733,312 Z"
         stroke="#e8c97a" strokeWidth="1" fill="rgba(232,201,122,0.05)"/>
-      {/* Точки на пересечениях маршрутов (Турция, Индия, ОАЭ) */}
+      {/* Точки-назначения с пульсирующим пингом (Турция, ОАЭ, Индия) */}
       {[
-        {lon:35,lat:39,label:"TR"},
-        {lon:78,lat:22,label:"IN"},
-        {lon:55,lat:24,label:"AE"},
-      ].map(({lon,lat,label})=>{
+        {lon:35,lat:39,label:"TR",delay:0},
+        {lon:55,lat:25,label:"AE",delay:0.8},
+        {lon:78,lat:22,label:"IN",delay:1.6},
+      ].map(({lon,lat,label,delay})=>{
         const x=(lon+180)/360*1000, y=(90-lat)/180*500;
         return <g key={label}>
-          <circle cx={x} cy={y} r={4} fill="#e8c97a" fillOpacity="0.6"/>
-          <circle cx={x} cy={y} r={8} stroke="#e8c97a" strokeWidth="0.6" fill="none" opacity="0.4"/>
+          {/* Пульсирующие кольца (3 кольца с задержкой) */}
+          {[0,0.8,1.6].map((d,i)=>(
+            <circle key={i} cx={x} cy={y} r={6}
+              stroke="#e8c97a" strokeWidth="1.2" fill="none"
+              className="tr-map-ping"
+              style={{animationDelay:`${delay+d}s`}}/>
+          ))}
+          {/* Центральная точка */}
+          <circle cx={x} cy={y} r={3.5} fill="#e8c97a" fillOpacity="0.9"/>
+          <circle cx={x} cy={y} r={6} stroke="#e8c97a" strokeWidth="0.6" fill="none" opacity="0.5"/>
         </g>;
       })}
     </svg>
@@ -388,8 +462,8 @@ export default function TourismOverlay({ p, textVisible, onOpenModal }: Props) {
 
       {/* ══ SERVICES ══════════════════════════════════════ */}
       <section className="tr-services" data-tr>
-        <div className="tr-compass-wrap tr-compass-wrap--left tr-compass-wrap--map">
-          <WorldMap className="tr-worldmap" />
+        <div className="tr-compass-wrap tr-compass-wrap--left">
+          <CoordGrid className="tr-compass" />
         </div>
         <div className="tr-section-hint">
           <span className="tr-section-hint-line" />
@@ -432,9 +506,9 @@ export default function TourismOverlay({ p, textVisible, onOpenModal }: Props) {
 
       {/* ══ CONTACTS ══════════════════════════════════════ */}
       <section className="tr-contacts" id="tr-contacts" data-tr>
-        {/* CoordGrid on the LEFT for contacts */}
-        <div className="tr-compass-wrap tr-compass-wrap--left">
-          <CoordGrid className="tr-compass" />
+        {/* WorldMap centered behind contacts */}
+        <div className="tr-compass-wrap tr-compass-wrap--left tr-compass-wrap--map">
+          <WorldMap className="tr-worldmap" />
         </div>
         <div className="tr-contacts-inner">
 
