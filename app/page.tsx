@@ -65,8 +65,8 @@ const panels = [
         { icon: "03", name: "Инвестиции", hint: "Доходная недвижимость, апарт-отели" },
         { icon: "04", name: "Под ключ", hint: "Поиск, сделка, юридическое сопровождение" },
       ],
-      cta: "Смотреть варианты →",
-      ctaHref: "#",
+      cta: "Написать в Telegram →",
+      ctaHref: "https://t.me/AN_MAGIC_NTS",
     },
     socials: [
       { label: "TG", href: "https://t.me/AN_MAGIC_NTS" },
@@ -314,6 +314,8 @@ export default function Home() {
                       href={p.services.ctaHref}
                       className="services-cta"
                       style={{ background: p.accent, color: "#0a0a0a" }}
+                      target={p.services.ctaHref.startsWith("http") ? "_blank" : undefined}
+                      rel={p.services.ctaHref.startsWith("http") ? "noreferrer" : undefined}
                     >
                       {p.services.cta}
                     </a>
