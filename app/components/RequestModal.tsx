@@ -13,31 +13,11 @@ interface Props {
   services: { name: string; hint: string }[];
 }
 
-/* ── Phone mask ─────────────────────────────────────────────── */
-function applyPhoneMask(raw: string): string {
-  let digits = raw.replace(/\D/g, "");
-
-  // Strip country code (7 or 8) only if user typed 11+ digits
-  if (digits.length > 10 && (digits.startsWith("7") || digits.startsWith("8"))) {
-    digits = digits.slice(1);
-  }
-  // Always work with local 10 digits (after country code)
-  digits = digits.slice(0, 10);
-
-  if (digits.length === 0) return "";
-
-  // Build +7 (XXX) XXX-XX-XX
-  let out = "+7";
-  if (digits.length > 0) out += " (" + digits.slice(0, 3);
-  if (digits.length >= 3) out += ") " + digits.slice(3, 6);
-  if (digits.length >= 6) out += "-" + digits.slice(6, 8);
-  if (digits.length >= 8) out += "-" + digits.slice(8, 10);
-  return out;
-}
-
-function isPhoneComplete(phone: string): boolean {
-  // "+7 (XXX) XXX-XX-XX" → 11 digits total
-  return phone.replace(/\D/g, "").length === 11;
+/* ── Phone validation ───────────────────────────────────────── */
+// International: min 7 digits (shortest valid numbers), max 15 (E.164)
+function isPhoneValid(phone: string): boolean {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
 }
 
 /* ── Component ──────────────────────────────────────────────── */
@@ -72,7 +52,9 @@ export default function RequestModal({
   };
 
   const handlePhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(applyPhoneMask(e.target.value));
+    // Allow digits, +, spaces, dashes, parentheses — strip everything else
+    const val = e.target.value.replace(/[^\d+\s\-()]/g, "");
+    setPhone(val);
   }, []);
 
   const handleClose = () => {
@@ -94,8 +76,8 @@ export default function RequestModal({
   const nameError = nameTouched && name.trim().length < 2
     ? name.trim().length === 0 ? "Введите ваше имя" : "Слишком короткое имя"
     : "";
-  const phoneError = phoneTouched && !isPhoneComplete(phone)
-    ? phone.length === 0 ? "Введите номер телефона" : "Введите номер полностью"
+  const phoneError = phoneTouched && !isPhoneValid(phone)
+    ? phone.length === 0 ? "Введите номер телефона" : "Слишком короткий номер"
     : "";
   const servicesError = servicesTouched && selected.length === 0
     ? "Выберите хотя бы одну услугу"
@@ -103,7 +85,7 @@ export default function RequestModal({
 
   const canSubmit =
     name.trim().length >= 2 &&
-    isPhoneComplete(phone) &&
+    isPhoneValid(phone) &&
     selected.length > 0 &&
     consent &&
     status !== "loading";
@@ -238,12 +220,11 @@ export default function RequestModal({
           <div className="modal-field-wrap">
             <input
               className={`modal-input${phoneTouched && phoneError ? " modal-input--error" : ""}`}
-              placeholder="+7 (___) ___-__-__"
+              placeholder="+7 917 … / +971 … / +90 …"
               value={phone}
               onChange={handlePhoneChange}
               onBlur={() => setPhoneTouched(true)}
               type="tel"
-              inputMode="numeric"
               autoComplete="tel"
             />
             <p className="modal-field-error modal-field-error--slot">
