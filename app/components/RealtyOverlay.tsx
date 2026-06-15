@@ -27,16 +27,16 @@ const CHAPTERS = [
     title: "Поиск",
     lead:  "Я слушаю вас, а не базу объектов",
     story: "Прежде чем открыть первую ссылку, я провожу час разговора. Узнаю, как вы живёте, что для вас важно в пространстве, какой горизонт инвестиции. Только после этого начинается поиск — точечный, без лишнего шума.",
-    photo: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1800&auto=format&fit=crop",
-    photoAlt: "Luxury villa exterior, Phuket",
+    photo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1800&auto=format&fit=crop",
+    photoAlt: "Modern white villa exterior",
   },
   {
     num:   "02",
     title: "Проверка",
     lead:  "Юридическая чистота без компромиссов",
     story: "Каждый объект проходит независимую юридическую экспертизу. Я работаю с локальными юристами в каждой стране и никогда не тороплю клиента. Плохая сделка, закрытая быстро — худшее, что может случиться.",
-    photo: "https://images.unsplash.com/photo-1600210491892-03d54c0aaf87?q=80&w=1400&auto=format&fit=crop",
-    photoAlt: "Luxury apartment interior Dubai",
+    photo: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1400&auto=format&fit=crop",
+    photoAlt: "Bright luxury interior, soft light",
   },
   {
     num:   "03",
@@ -48,8 +48,10 @@ const CHAPTERS = [
   },
 ];
 
-const HERO_PHOTO   = "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1200&auto=format&fit=crop";
-const PORTRAIT     = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=900&auto=format&fit=crop";
+// Hero — роскошная вилла с бассейном в золотой час (не фото человека)
+const HERO_PHOTO = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1600&auto=format&fit=crop";
+// Advisor portrait — editorial b&w женский портрет
+const PORTRAIT   = "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=900&auto=format&fit=crop";
 
 const MARKET_PHOTOS: Record<string, string> = {
   "Стамбул": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=600&auto=format&fit=crop",
