@@ -1,24 +1,45 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Вставь сюда токены и chat_id своих ботов
 const BOTS: Record<string, { token: string; chatId: string }> = {
-  tourism: {
-    token: process.env.TG_TOKEN_TOURISM || "",
-    chatId: process.env.TG_CHAT_TOURISM || "",
-  },
-  insurance: {
-    token: process.env.TG_TOKEN_INSURANCE || "",
-    chatId: process.env.TG_CHAT_INSURANCE || "",
-  },
-  realty: {
-    token: process.env.TG_TOKEN_REALTY || "",
-    chatId: process.env.TG_CHAT_REALTY || "",
-  },
+  tourism:   { token: process.env.TG_TOKEN_TOURISM   || "", chatId: process.env.TG_CHAT_TOURISM   || "" },
+  insurance: { token: process.env.TG_TOKEN_INSURANCE || "", chatId: process.env.TG_CHAT_INSURANCE || "" },
+  realty:    { token: process.env.TG_TOKEN_REALTY    || "", chatId: process.env.TG_CHAT_REALTY    || "" },
 };
 
+/* ── 1. HTML escape — prevents injection into Telegram HTML mode ── */
+function esc(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/* ── 2. Rate limiting — in-memory, per IP ── */
+// Vercel serverless instances are short-lived, but this blocks burst spam
+// within the same warm instance (typically handles many requests).
+const rateMap = new Map<string, { count: number; reset: number }>();
+const RATE_LIMIT  = 5;          // max 5 submissions
+const RATE_WINDOW = 60_000;     // per 60 seconds per IP
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+  if (!entry || now > entry.reset) {
+    rateMap.set(ip, { count: 1, reset: now + RATE_WINDOW });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT) return true;
+  entry.count++;
+  return false;
+}
+
+/* ── 3. Validation ── */
 const VALID_SECTIONS = ["tourism", "insurance", "realty"];
 
-function validateRequest(section: unknown, name: unknown, phone: unknown, services: unknown) {
+function validateRequest(
+  section: unknown, name: unknown, phone: unknown,
+  services: unknown, message: unknown,
+) {
   if (!VALID_SECTIONS.includes(section as string))
     return "Неверный раздел";
 
@@ -33,39 +54,49 @@ function validateRequest(section: unknown, name: unknown, phone: unknown, servic
   if (services.some((s) => typeof s !== "string" || s.length > 200))
     return "Некорректные услуги";
 
+  if (message !== undefined && (typeof message !== "string" || message.length > 1000))
+    return "Сообщение слишком длинное";
+
   return null;
 }
 
+/* ── Handler ── */
 export async function POST(req: NextRequest) {
   try {
+    // Rate limit by IP
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ error: "Слишком много запросов" }, { status: 429 });
+    }
+
     const { section, name, phone, services, message } = await req.json();
 
-    const validationError = validateRequest(section, name, phone, services);
+    const validationError = validateRequest(section, name, phone, services, message);
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
     const bot = BOTS[section as string];
     if (!bot?.token || !bot?.chatId) {
-      // Tokens not yet configured — acknowledge receipt without sending
-      console.log("[RequestModal] Telegram not configured for section:", section, { name, phone, services });
+      console.log("[Telegram] Bot not configured for section:", section, { name, phone, services });
       return NextResponse.json({ ok: true });
     }
 
     const sectionLabels: Record<string, string> = {
-      tourism: "✈️ Туризм",
+      tourism:   "✈️ Туризм",
       insurance: "🛡 Страхование",
-      realty: "🏠 Недвижимость",
+      realty:    "🏠 Недвижимость",
     };
 
+    // All user input is HTML-escaped before insertion
     const text = [
       `🔔 <b>Новая заявка — ${sectionLabels[section]}</b>`,
       ``,
-      `👤 <b>Имя:</b> ${name}`,
-      `📞 <b>Телефон:</b> ${phone}`,
+      `👤 <b>Имя:</b> ${esc(name)}`,
+      `📞 <b>Телефон:</b> ${esc(phone)}`,
       `📋 <b>Интересует:</b>`,
-      ...(services as string[]).map((s: string) => `  • ${s}`),
-      ...(message ? [``, `💬 <b>Сообщение:</b> ${message}`] : []),
+      ...(services as string[]).map((s: string) => `  • ${esc(s)}`),
+      ...(message ? [``, `💬 <b>Сообщение:</b> ${esc(message)}`] : []),
     ].join("\n");
 
     const res = await fetch(
@@ -73,21 +104,20 @@ export async function POST(req: NextRequest) {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: bot.chatId,
-          text,
-          parse_mode: "HTML",
-        }),
+        body: JSON.stringify({ chat_id: bot.chatId, text, parse_mode: "HTML" }),
       }
     );
 
     if (!res.ok) {
-      const err = await res.json();
-      return NextResponse.json({ error: err }, { status: 500 });
+      // 3. Log full error server-side, return generic to client
+      const err = await res.json().catch(() => ({}));
+      console.error("[Telegram] API error:", err);
+      return NextResponse.json({ error: "Ошибка отправки" }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true });
   } catch (e) {
-    return NextResponse.json({ error: String(e) }, { status: 500 });
+    console.error("[Telegram] Unexpected error:", e);
+    return NextResponse.json({ error: "Внутренняя ошибка сервера" }, { status: 500 });
   }
 }
