@@ -3,20 +3,23 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Loft Palette ────────────────────────────────────── */
-  --re-bg:       #0B0A08;          /* основной фон — почти чёрный */
-  --re-bg2:      #121009;          /* чуть светлее */
-  --re-bg3:      #1A1714;          /* карточки, панели */
-  --re-bg4:      #222018;          /* hover state */
-  --re-amber:    #C98845;          /* Edison-лампа, главный акцент */
-  --re-amber-dk: #A56F2C;          /* hover */
-  --re-amber-lt: #E8C87A;          /* мелкий текст на тёмном */
-  --re-cream:    #EDE5D8;          /* основной текст на тёмном */
-  --re-cream2:   #C0B6A8;          /* вторичный текст */
-  --re-steel:    #6B6560;          /* приглушённый — металл */
-  --re-rust:     #8B3A1F;          /* кирпичный для деталей */
-  --re-border:   rgba(201,136,69,0.15);   /* амберные линии */
-  --re-border2:  rgba(237,229,216,0.07);  /* белесые линии */
+  /* ── Logo Palette — Dark Green + Key Gold ────────────── */
+  --re-bg:       #0C1F17;          /* очень тёмный зелёный — основной фон */
+  --re-bg2:      #102318;          /* чуть светлее */
+  --re-bg3:      #162C1E;          /* карточки, панели */
+  --re-bg4:      #1A3524;          /* hover */
+  --re-green:    #1B5C45;          /* средний зелёный из логотипа */
+  --re-green-dk: #134033;          /* тёмный зелёный */
+  --re-green-lt: #2A7A5C;          /* светлый зелёный для деталей */
+  --re-gold:     #C9922A;          /* золото ключа — главный акцент */
+  --re-gold-dk:  #A87520;          /* hover */
+  --re-gold-lt:  #E8C87A;          /* светлый — мелкий текст */
+  --re-cream:    #F0EDE8;          /* основной текст на тёмном */
+  --re-cream2:   #B8B4AE;          /* вторичный текст */
+  --re-steel:    #5A7060;          /* приглушённый зелёно-серый */
+  --re-border:   rgba(201,146,42,0.18);   /* золотые линии */
+  --re-border2:  rgba(240,237,232,0.07);  /* белесые линии */
+  --re-border3:  rgba(27,92,69,0.35);     /* зелёные линии */
 
   /* ── Fonts ───────────────────────────────────────────── */
   --ff-display: var(--font-oswald, "Oswald"), "Impact", sans-serif;
@@ -73,7 +76,7 @@
   position: absolute;
   left: 0; top: 15%; bottom: 15%;
   width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--re-amber), transparent);
+  background: linear-gradient(to bottom, transparent, var(--re-gold), transparent);
   opacity: 0.6;
 }
 
@@ -87,14 +90,14 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-amber);
+  color: var(--re-gold);
   margin-bottom: 2rem;
 }
 .re-hero-eyebrow-line {
   display: block;
   width: 32px;
   height: 1px;
-  background: var(--re-amber);
+  background: var(--re-gold);
   flex-shrink: 0;
 }
 
@@ -118,7 +121,7 @@
   padding-bottom: 0.04em;
 }
 .re-hero-title-word--italic {
-  color: var(--re-amber);
+  color: var(--re-gold);
 }
 
 /* Role */
@@ -162,7 +165,7 @@
   font-family: var(--ff-display);
   font-size: 2.6rem;
   font-weight: 600;
-  color: var(--re-amber);
+  color: var(--re-gold);
   line-height: 1;
   letter-spacing: 0.02em;
 }
@@ -204,9 +207,9 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(11,10,8,0.15) 0%,
+    rgba(12,31,23,0.15) 0%,
     transparent 40%,
-    rgba(11,10,8,0.7) 100%
+    rgba(12,31,23,0.75) 100%
   );
   pointer-events: none;
 }
@@ -216,8 +219,8 @@
   position: absolute;
   top: 1.5rem; left: 1.5rem;
   width: 28px; height: 28px;
-  border-top: 2px solid var(--re-amber);
-  border-left: 2px solid var(--re-amber);
+  border-top: 2px solid var(--re-gold);
+  border-left: 2px solid var(--re-gold);
   z-index: 2;
   opacity: 0.7;
 }
@@ -226,8 +229,8 @@
   position: absolute;
   bottom: 1.5rem; right: 1.5rem;
   width: 28px; height: 28px;
-  border-bottom: 2px solid var(--re-amber);
-  border-right: 2px solid var(--re-amber);
+  border-bottom: 2px solid var(--re-gold);
+  border-right: 2px solid var(--re-gold);
   z-index: 2;
   opacity: 0.7;
 }
@@ -262,7 +265,7 @@
   align-items: center;
   gap: 10px;
   padding: 0.85rem 2.2rem;
-  background: var(--re-amber);
+  background: var(--re-gold);
   color: var(--re-bg);
   border: none;
   border-radius: 0;                /* sharp corners — industrial */
@@ -278,7 +281,7 @@
   white-space: nowrap;
 }
 .re-btn-primary:hover {
-  background: var(--re-amber-lt);
+  background: var(--re-gold-lt);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(201,136,69,0.45);
 }
@@ -305,7 +308,7 @@
   position: absolute;
   bottom: -2px; left: 0;
   width: 0; height: 1px;
-  background: var(--re-amber);
+  background: var(--re-gold);
   transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
 }
 .re-btn-ghost:hover { color: var(--re-cream); }
@@ -316,8 +319,8 @@
   align-items: center;
   padding: 0.75rem 1.8rem;
   background: transparent;
-  border: 1px solid var(--re-amber);
-  color: var(--re-amber);
+  border: 1px solid var(--re-gold);
+  color: var(--re-gold);
   border-radius: 0;
   font-family: var(--ff-display);
   font-size: 0.76rem;
@@ -328,7 +331,7 @@
   transition: background 0.2s, color 0.2s;
 }
 .re-btn-secondary:hover {
-  background: var(--re-amber);
+  background: var(--re-gold);
   color: var(--re-bg);
 }
 
@@ -338,10 +341,10 @@
    ════════════════════════════════════════════════════════ */
 .re-quote-strip {
   padding: 5rem 4rem;
-  background: #070605;
+  background: var(--re-green);   /* зелёный из логотипа */
   position: relative;
-  border-top: 1px solid var(--re-border);
-  border-bottom: 1px solid var(--re-border);
+  border-top: 1px solid rgba(201,146,42,0.2);
+  border-bottom: 1px solid rgba(201,146,42,0.2);
 }
 /* Крест / перекрестие в центре как индустриальная деталь */
 .re-quote-strip::before {
@@ -350,8 +353,8 @@
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-size: 4rem;
-  color: var(--re-amber);
-  opacity: 0.04;
+  color: var(--re-gold);
+  opacity: 0.12;
   pointer-events: none;
 }
 .re-quote-inner { max-width: 860px; margin: 0 auto; position: relative; }
@@ -368,7 +371,7 @@
   margin: 0;
 }
 .re-quote-mark {
-  color: var(--re-amber);
+  color: var(--re-gold);
   font-weight: 700;
   margin: 0 0.12em;
 }
@@ -378,9 +381,10 @@
    ADVISOR
    ════════════════════════════════════════════════════════ */
 .re-advisor {
-  background: var(--re-bg2);
+  background: var(--re-bg3);
   padding: 8rem 4.5rem;
-  border-bottom: 1px solid var(--re-border);
+  border-top: 1px solid var(--re-border3);
+  border-bottom: 1px solid var(--re-border3);
 }
 .re-advisor-inner {
   max-width: 1100px;
@@ -404,16 +408,16 @@
   position: absolute;
   top: 0; left: 0;
   width: 24px; height: 24px;
-  border-top: 2px solid var(--re-amber);
-  border-left: 2px solid var(--re-amber);
+  border-top: 2px solid var(--re-gold);
+  border-left: 2px solid var(--re-gold);
 }
 .re-advisor-frame::after {
   content: '';
   position: absolute;
   bottom: 0; right: 0;
   width: 24px; height: 24px;
-  border-bottom: 2px solid var(--re-amber);
-  border-right: 2px solid var(--re-amber);
+  border-bottom: 2px solid var(--re-gold);
+  border-right: 2px solid var(--re-gold);
 }
 
 .re-advisor-photo-wrap {
@@ -443,7 +447,7 @@
 }
 .re-advisor-photo-label em {
   font-style: normal;
-  color: var(--re-amber);
+  color: var(--re-gold);
   font-weight: 600;
 }
 
@@ -455,7 +459,7 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-amber);
+  color: var(--re-gold);
   margin: 0;
 }
 .re-advisor-name {
@@ -470,7 +474,7 @@
 }
 .re-advisor-surname {
   display: block;
-  color: var(--re-amber);
+  color: var(--re-gold);
 }
 .re-advisor-bio {
   font-family: var(--ff-body);
@@ -492,7 +496,7 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.re-market-dot { margin: 0 0.5rem; color: var(--re-amber); opacity: 0.5; }
+.re-market-dot { margin: 0 0.5rem; color: var(--re-gold); opacity: 0.5; }
 
 
 /* ════════════════════════════════════════════════════════
@@ -524,8 +528,8 @@
   position: absolute;
   top: 0; left: 0;
   width: 22px; height: 22px;
-  border-top: 2px solid var(--re-amber);
-  border-left: 2px solid var(--re-amber);
+  border-top: 2px solid var(--re-gold);
+  border-left: 2px solid var(--re-gold);
   z-index: 2;
   opacity: 0.65;
 }
@@ -534,8 +538,8 @@
   position: absolute;
   bottom: 0; right: 0;
   width: 22px; height: 22px;
-  border-bottom: 2px solid var(--re-amber);
-  border-right: 2px solid var(--re-amber);
+  border-bottom: 2px solid var(--re-gold);
+  border-right: 2px solid var(--re-gold);
   z-index: 2;
   opacity: 0.65;
 }
@@ -576,7 +580,7 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-amber);
+  color: var(--re-gold);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -603,7 +607,7 @@
   font-family: var(--ff-body);
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--re-amber-lt);
+  color: var(--re-gold-lt);
   margin: 0.4rem 0 0;
 }
 .re-chapter-story {
@@ -688,7 +692,7 @@
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 2px;
-  background: var(--re-amber);
+  background: var(--re-gold);
   transform: scaleX(0);
   transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
 }
@@ -706,26 +710,26 @@
   transition: color 0.2s;
   border-top: 1px solid var(--re-border2);
 }
-.re-market-card:hover .re-market-name { color: var(--re-amber); }
+.re-market-card:hover .re-market-name { color: var(--re-gold); }
 
 
 /* ════════════════════════════════════════════════════════
    CONTACT  —  самый тёмный раздел
    ════════════════════════════════════════════════════════ */
 .re-contact {
-  background: #070605;
+  background: var(--re-green-dk);  /* тёмный зелёный из логотипа */
   padding: 8rem 4.5rem;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--re-border);
+  border-top: 2px solid var(--re-gold);  /* золотая линия как ключ */
 }
-/* Амберное свечение в углу */
+/* Золотое свечение в углу */
 .re-contact::before {
   content: '';
   position: absolute;
   bottom: -100px; right: -100px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(201,136,69,0.08) 0%, transparent 70%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(201,146,42,0.1) 0%, transparent 70%);
   pointer-events: none;
 }
 .re-contact-inner {
@@ -745,7 +749,7 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-amber);
+  color: var(--re-gold);
   margin: 0;
 }
 .re-contact-title {
@@ -760,7 +764,7 @@
 }
 .re-contact-title em {
   font-style: normal;
-  color: var(--re-amber);
+  color: var(--re-gold);
 }
 .re-contact-sub {
   font-family: var(--ff-body);
@@ -792,7 +796,7 @@
 .re-messenger:hover {
   background: rgba(201,136,69,0.08);
   border-color: rgba(201,136,69,0.3);
-  color: var(--re-amber-lt);
+  color: var(--re-gold-lt);
 }
 .re-messenger-arr {
   margin-left: auto;
@@ -804,7 +808,7 @@
 .re-contact-cta {
   width: 100%;
   padding: 1.15rem;
-  background: var(--re-amber);
+  background: var(--re-gold);
   border: none;
   border-radius: 0;
   color: var(--re-bg);
@@ -823,7 +827,7 @@
   margin-top: 0.8rem;
 }
 .re-contact-cta:hover {
-  background: var(--re-amber-lt);
+  background: var(--re-gold-lt);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(201,136,69,0.45);
 }
