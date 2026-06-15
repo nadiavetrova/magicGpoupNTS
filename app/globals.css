@@ -179,6 +179,16 @@ body {
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.18) 65%);
 }
 
+/* Заблокированные панели — недоступны, приглушены */
+.panel--locked {
+  opacity: 0.45;
+  filter: grayscale(40%);
+  pointer-events: none;
+}
+.panel--locked .panel-title {
+  opacity: 0.6;
+}
+
 .panel::after {
   content: "";
   position: absolute;

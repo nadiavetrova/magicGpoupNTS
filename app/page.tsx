@@ -192,12 +192,16 @@ export default function Home() {
         {panels.map((panel) => {
           const isActive = active === panel.id;
           const isInactive = active !== null && !isActive;
+          const isLocked = !active && panel.id !== "tourism"; // недоступны на главном экране
           return (
             <div
               key={panel.id}
-              className={`panel${isActive ? " panel--active" : ""}`}
-              style={{ flex: isActive ? "8" : isInactive ? "0.15" : "1", cursor: isInactive ? "pointer" : "default" }}
-              onClick={(e) => { if (!isActive) handleOpen(panel.id, e); }}
+              className={`panel${isActive ? " panel--active" : ""}${isLocked ? " panel--locked" : ""}`}
+              style={{
+                flex: isActive ? "8" : isInactive ? "0.15" : "1",
+                cursor: isLocked ? "default" : isInactive ? "pointer" : "default",
+              }}
+              onClick={(e) => { if (!isActive && !isLocked) handleOpen(panel.id, e); }}
             >
               <div className={`panel-bg${isActive ? " panel-bg--expand" : ""}`}
                 style={{ background: panel.bg }} />
@@ -210,6 +214,16 @@ export default function Home() {
                     ) : panel.badge}
                   </div>
                   <div className="panel-title">{panel.title}</div>
+                  {isLocked && (
+                    <div style={{
+                      fontSize: "0.55rem",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "rgba(255,255,255,0.25)",
+                      marginTop: "0.5rem",
+                      fontFamily: "var(--font-jost, sans-serif)",
+                    }}>Скоро</div>
+                  )}
                 </div>
               )}
               {isInactive && <div className="panel-side-label">{panel.title}</div>}
