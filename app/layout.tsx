@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, Inter, Playfair_Display, Cormorant_Garamond, Jost } from "next/font/google";
+import { Syne, DM_Sans, Inter, Playfair_Display, Cormorant_Garamond, Jost, Manrope } from "next/font/google";
 import "./globals.css";
 
 // next/font/google скачивает шрифты при сборке и раздаёт с собственного домена —
@@ -50,6 +50,14 @@ const jost = Jost({
   display: "swap",
 });
 
+// Manrope — современная геометрическая гротеска для заголовков недвижимости
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "MAGIC Group NTS — Шухрат Азизов",
   description: "Международный туризм, страхование и недвижимость. Ваш надёжный партнёр.",
@@ -61,7 +69,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${playfair.variable} ${cormorant.variable} ${jost.variable}`}>
+    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${playfair.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable}`}>
       <body>{children}</body>
     </html>
   );

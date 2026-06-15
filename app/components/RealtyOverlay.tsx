@@ -157,16 +157,20 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             <span>Направление 02 · Недвижимость</span>
           </motion.div>
 
-          <div className="re-hero-title-wrap" aria-label="Недвижимость, которую выбирают">
-            {["Недвижи-", "мость,", "которую", "выбирают"].map((word, i) => (
+          <div className="re-hero-title-wrap" aria-label="Ваш дом в любой точке мира">
+            {[
+              { text: "Ваш дом",    italic: false },
+              { text: "в любой",    italic: true  },
+              { text: "точке мира", italic: false },
+            ].map((line, i) => (
               <div key={i} className="re-hero-title-row" aria-hidden="true">
                 <motion.span
-                  className={`re-hero-title-word${i % 2 === 1 ? " re-hero-title-word--outline" : ""}`}
-                  variants={stagger(0.12 + i * 0.08)}
+                  className={`re-hero-title-word${line.italic ? " re-hero-title-word--italic" : ""}`}
+                  variants={stagger(0.12 + i * 0.1)}
                   initial="hidden"
                   animate={textVisible ? "show" : "hidden"}
                 >
-                  {word}
+                  {line.text}
                 </motion.span>
               </div>
             ))}
@@ -240,7 +244,6 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
           QUOTE STRIP
       ══════════════════════════════════════════════════ */}
       <section className="re-quote-strip">
-        <div className="re-quote-rule" aria-hidden="true"/>
         <InView className="re-quote-inner">
           <blockquote className="re-quote">
             <span className="re-quote-mark">&ldquo;</span>
@@ -248,7 +251,6 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             <span className="re-quote-mark">&rdquo;</span>
           </blockquote>
         </InView>
-        <div className="re-quote-rule" aria-hidden="true"/>
       </section>
 
       {/* ══════════════════════════════════════════════════
