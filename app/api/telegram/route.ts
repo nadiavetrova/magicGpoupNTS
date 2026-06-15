@@ -16,11 +16,39 @@ const BOTS: Record<string, { token: string; chatId: string }> = {
   },
 };
 
+const VALID_SECTIONS = ["tourism", "insurance", "realty"];
+
+function validateRequest(section: unknown, name: unknown, phone: unknown, services: unknown) {
+  if (!VALID_SECTIONS.includes(section as string))
+    return "Неверный раздел";
+
+  if (typeof name !== "string" || name.trim().length < 2 || name.trim().length > 100)
+    return "Некорректное имя";
+
+  // strip non-digits, expect 11 digits starting with 7
+  if (typeof phone !== "string") return "Некорректный телефон";
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length !== 11 || !digits.startsWith("7"))
+    return "Некорректный номер телефона";
+
+  if (!Array.isArray(services) || services.length === 0 || services.length > 10)
+    return "Не выбраны услуги";
+  if (services.some((s) => typeof s !== "string" || s.length > 200))
+    return "Некорректные услуги";
+
+  return null;
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { section, name, phone, services } = await req.json();
+    const { section, name, phone, services, message } = await req.json();
 
-    const bot = BOTS[section];
+    const validationError = validateRequest(section, name, phone, services);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
+    }
+
+    const bot = BOTS[section as string];
     if (!bot?.token || !bot?.chatId) {
       // Tokens not yet configured — acknowledge receipt without sending
       console.log("[RequestModal] Telegram not configured for section:", section, { name, phone, services });
@@ -33,14 +61,15 @@ export async function POST(req: NextRequest) {
       realty: "🏠 Недвижимость",
     };
 
-    const text = `
-🔔 <b>Новая заявка — ${sectionLabels[section]}</b>
-
-👤 <b>Имя:</b> ${name}
-📞 <b>Телефон:</b> ${phone}
-📋 <b>Интересует:</b>
-${(services as string[]).map((s) => `  • ${s}`).join("\n")}
-    `.trim();
+    const text = [
+      `🔔 <b>Новая заявка — ${sectionLabels[section]}</b>`,
+      ``,
+      `👤 <b>Имя:</b> ${name}`,
+      `📞 <b>Телефон:</b> ${phone}`,
+      `📋 <b>Интересует:</b>`,
+      ...(services as string[]).map((s: string) => `  • ${s}`),
+      ...(message ? [``, `💬 <b>Сообщение:</b> ${message}`] : []),
+    ].join("\n");
 
     const res = await fetch(
       `https://api.telegram.org/bot${bot.token}/sendMessage`,

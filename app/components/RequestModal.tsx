@@ -46,6 +46,7 @@ export default function RequestModal({
   const [selected, setSelected] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -71,6 +72,7 @@ export default function RequestModal({
     setSelected([]);
     setName("");
     setPhone("");
+    setMessage("");
     setConsent(false);
     setStatus("idle");
     setErrorMsg("");
@@ -118,6 +120,7 @@ export default function RequestModal({
           name: name.trim(),
           phone,
           services: selected,
+          message: message.trim() || undefined,
         }),
       });
 
@@ -203,9 +206,10 @@ export default function RequestModal({
             </div>
           ))}
         </div>
-        {servicesError && (
-          <p className="modal-field-error">{servicesError}</p>
-        )}
+        {/* Services error slot — fixed height, no layout jump */}
+        <p className="modal-field-error modal-field-error--slot">
+          {servicesError}
+        </p>
 
         {/* Fields */}
         <div className="modal-fields">
@@ -218,9 +222,9 @@ export default function RequestModal({
               onBlur={() => setNameTouched(true)}
               autoComplete="name"
             />
-            {nameTouched && nameError && (
-              <p className="modal-field-error">{nameError}</p>
-            )}
+            <p className="modal-field-error modal-field-error--slot">
+              {nameTouched ? nameError : ""}
+            </p>
           </div>
 
           <div className="modal-field-wrap">
@@ -234,9 +238,20 @@ export default function RequestModal({
               inputMode="numeric"
               autoComplete="tel"
             />
-            {phoneTouched && phoneError && (
-              <p className="modal-field-error">{phoneError}</p>
-            )}
+            <p className="modal-field-error modal-field-error--slot">
+              {phoneTouched ? phoneError : ""}
+            </p>
+          </div>
+
+          <div className="modal-field-wrap">
+            <textarea
+              className="modal-input modal-textarea"
+              placeholder="Сообщение (необязательно) — куда хотите поехать, даты, пожелания…"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={3}
+              maxLength={1000}
+            />
           </div>
         </div>
 

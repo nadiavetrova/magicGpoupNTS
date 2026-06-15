@@ -1235,6 +1235,12 @@ body {
 .modal-input::placeholder { color: rgba(255, 255, 255, 0.22); }
 .modal-input:focus { border-color: rgba(232, 201, 122, 0.45); }
 
+.modal-textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+}
+
 .modal-consent {
   display: flex;
   align-items: flex-start;
@@ -1284,21 +1290,27 @@ body {
 .modal-submit--loading { opacity: 0.7 !important; cursor: wait !important; }
 
 /* field wrapper for error positioning */
-.modal-field-wrap { display: flex; flex-direction: column; gap: 4px; }
+.modal-field-wrap { display: flex; flex-direction: column; }
 
-/* error text under field */
+/* error text under field — always rendered, fixed slot height prevents layout jump */
 .modal-field-error {
   font-family: "DM Sans", Inter, sans-serif;
   font-size: 0.7rem;
   font-weight: 400;
   color: #e87a7a;
-  margin: 0 0 0.3rem 0;
+  margin: 0;
   line-height: 1.4;
+}
+.modal-field-error--slot {
+  min-height: 1.3rem;
+  padding: 0.15rem 0 0.1rem;
 }
 .modal-field-error--api {
   margin-bottom: 0.8rem;
   font-size: 0.78rem;
   text-align: center;
+  min-height: auto;
+  padding: 0;
 }
 
 /* input error state */
