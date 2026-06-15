@@ -50,8 +50,8 @@ const CHAPTERS = [
 
 // Hero — современная архитектурная вилла, минимализм, тёплый свет
 const HERO_PHOTO = "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1800&auto=format&fit=crop";
-// Advisor portrait — editorial b&w женский портрет
-const PORTRAIT   = "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=900&auto=format&fit=crop";
+// Advisor portrait — editorial профессиональный портрет
+const PORTRAIT   = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=900&auto=format&fit=crop";
 
 const MARKET_PHOTOS: Record<string, string> = {
   "Стамбул": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=600&auto=format&fit=crop",
