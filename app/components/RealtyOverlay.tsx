@@ -48,8 +48,8 @@ const CHAPTERS = [
   },
 ];
 
-// Hero — роскошная вилла с бассейном в золотой час (не фото человека)
-const HERO_PHOTO = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1600&auto=format&fit=crop";
+// Hero — современная архитектурная вилла, минимализм, тёплый свет
+const HERO_PHOTO = "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1800&auto=format&fit=crop";
 // Advisor portrait — editorial b&w женский портрет
 const PORTRAIT   = "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=900&auto=format&fit=crop";
 
@@ -147,6 +147,17 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
 
         {/* Left — typography */}
         <div className="re-hero-left">
+
+          {/* Logo */}
+          <motion.div
+            className="re-hero-logo"
+            variants={stagger(0)}
+            initial="hidden"
+            animate={textVisible ? "show" : "hidden"}
+          >
+            <img src="/icons/logo-home.png" alt="MAGIC Group NTS" className="re-hero-logo-img" />
+          </motion.div>
+
           <motion.div
             className="re-hero-eyebrow"
             variants={stagger(0.1)}
