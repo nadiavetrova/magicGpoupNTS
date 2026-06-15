@@ -1,24 +1,24 @@
 /* ═══════════════════════════════════════════════════════
-   REALTY OVERLAY  v4  —  Blush Warm · Нежный стиль
-   Cormorant Garamond · Jost · Rose-cream palette
+   REALTY OVERLAY  v5  —  Deep Rose · Нежный + Смелый
+   Cormorant Garamond · Jost · Rose accent palette
    ═══════════════════════════════════════════════════════ */
 
 :root {
   /* ── Palette ─────────────────────────────────────────── */
-  --re-cream:    #FAF6F2;           /* основной фон */
-  --re-linen:    #F3EBE3;           /* вторичный фон */
-  --re-blush:    #EDD8C8;           /* розовая акцентная панель */
-  --re-blush2:   #E4C9B5;           /* чуть темнее */
-  --re-ink:      #27201B;           /* тёплый тёмно-коричневый */
-  --re-ink2:     #3A2F28;
-  --re-stone:    #8B7D73;           /* мягкий тауп */
-  --re-stone2:   #B0A49B;
-  --re-rosegold: #C09A78;           /* розовое золото */
-  --re-rosegold2:#A07E5E;           /* тёмное розовое золото */
-  --re-dark:     #1C1510;           /* тёмная секция */
-  --re-dark2:    #271D17;
-  --re-border:   rgba(39,32,27,0.08);
-  --re-border2:  rgba(39,32,27,0.05);
+  --re-cream:    #FAF8F6;           /* фон — почти белый, чистый */
+  --re-linen:    #F5EFED;           /* вторичный — чуть теплее */
+  --re-blush:    #F0E2E5;           /* акцентная панель — нежный розовый */
+  --re-ink:      #1D1318;           /* почти чёрный с плюмовым оттенком */
+  --re-ink2:     #2E1D24;
+  --re-stone:    #8A737A;           /* приглушённый розово-серый */
+  --re-stone2:   #B5A0A7;
+  --re-rose:     #C24E6B;           /* главный акцент — глубокая роза */
+  --re-rose-dk:  #A33959;           /* hover акцент */
+  --re-rose-lt:  #E8A0B2;           /* светлый для тёмного фона */
+  --re-dark:     #180F13;           /* тёмный раздел — почти чёрный с пурпуром */
+  --re-dark2:    #231520;
+  --re-border:   rgba(29,19,24,0.08);
+  --re-border2:  rgba(29,19,24,0.05);
 
   /* ── Fonts ───────────────────────────────────────────── */
   --ff-serif:   var(--font-cormorant, "Cormorant Garamond"), "Georgia", serif;
@@ -66,14 +66,14 @@
   font-weight: 500;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--re-rosegold);
+  color: var(--re-rose);
   margin-bottom: 2.5rem;
 }
 .re-hero-eyebrow-line {
   display: block;
   width: 24px;
   height: 1px;
-  background: var(--re-rosegold);
+  background: var(--re-rose);
   flex-shrink: 0;
 }
 
@@ -215,8 +215,8 @@
   align-items: center;
   gap: 10px;
   padding: 0.85rem 2rem;
-  background: var(--re-ink);
-  color: var(--re-cream);
+  background: var(--re-rose);
+  color: #fff;
   border: none;
   border-radius: 999px;
   font-family: var(--ff-sans);
@@ -226,14 +226,14 @@
   text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 4px 16px rgba(39,32,27,0.18);
+  box-shadow: 0 4px 20px rgba(194,78,107,0.35);
   transition: background 0.22s, transform 0.2s, box-shadow 0.22s;
   white-space: nowrap;
 }
 .re-btn-primary:hover {
-  background: var(--re-ink2);
+  background: var(--re-rose-dk);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(39,32,27,0.24);
+  box-shadow: 0 8px 28px rgba(194,78,107,0.45);
 }
 
 .re-btn-ghost {
@@ -260,7 +260,7 @@
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--re-rosegold);
+  background: var(--re-rose);
   transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
 }
 .re-btn-ghost:hover { color: var(--re-ink); }
@@ -271,7 +271,7 @@
   align-items: center;
   padding: 0.75rem 1.7rem;
   background: transparent;
-  border: 1px solid var(--re-rosegold2);
+  border: 1px solid var(--re-rose-dk);
   color: var(--re-ink);
   border-radius: 999px;
   font-family: var(--ff-sans);
@@ -315,7 +315,7 @@
   margin: 0;
 }
 .re-quote-mark {
-  color: var(--re-rosegold);
+  color: var(--re-rose);
   font-size: 1.3em;
   line-height: 0;
   vertical-align: -0.22em;
@@ -371,7 +371,7 @@
 .re-advisor-photo-label em {
   font-style: italic;
   text-transform: none;
-  color: var(--re-rosegold);
+  color: var(--re-rose);
 }
 
 /* Info column */
@@ -382,7 +382,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--re-rosegold);
+  color: var(--re-rose);
   margin: 0;
 }
 .re-advisor-name {
@@ -417,7 +417,7 @@
   font-weight: 400;
   color: var(--re-stone);
 }
-.re-market-dot { margin: 0 0.55rem; color: var(--re-blush2); }
+.re-market-dot { margin: 0 0.55rem; color: var(--re-rose-lt); }
 
 
 /* ════════════════════════════════════════════════════════
@@ -474,7 +474,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--re-rosegold);
+  color: var(--re-rose);
 }
 .re-chapter-title {
   font-family: var(--ff-serif);
@@ -603,7 +603,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--re-rosegold);
+  color: var(--re-rose);
   margin: 0;
 }
 .re-contact-title {
@@ -617,7 +617,7 @@
 }
 .re-contact-title em {
   font-style: italic;
-  color: var(--re-rosegold);
+  color: var(--re-rose);
 }
 .re-contact-sub {
   font-family: var(--ff-sans);
@@ -662,7 +662,7 @@
 .re-contact-cta {
   width: 100%;
   padding: 1.1rem;
-  background: var(--re-rosegold);
+  background: var(--re-rose);
   border: none;
   border-radius: 999px;
   color: #fff;
@@ -681,7 +681,7 @@
   margin-top: 0.6rem;
 }
 .re-contact-cta:hover {
-  background: var(--re-rosegold2);
+  background: var(--re-rose-dk);
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(192,154,120,0.4);
 }
