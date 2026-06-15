@@ -1,58 +1,80 @@
 /* ═══════════════════════════════════════════════════════
-   REALTY OVERLAY  v6  —  Manrope · Bold · Modern Rose
+   REALTY  v7  —  LOFT  ·  Industrial · Amber · Oswald
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Palette ─────────────────────────────────────────── */
-  --re-cream:    #F9F8F7;
-  --re-linen:    #F3F1EF;
-  --re-blush:    #FDEEF2;           /* едва розовый */
-  --re-ink:      #111010;           /* настоящий чёрный */
-  --re-ink2:     #1E1A1A;
-  --re-stone:    #7A7070;
-  --re-stone2:   #B0A8A8;
-  --re-rose:     #C7334F;           /* акцент — насыщенная роза */
-  --re-rose-dk:  #A5213C;           /* hover */
-  --re-rose-lt:  #F2A8BB;           /* на тёмном */
-  --re-dark:     #0E0C0C;           /* почти чёрный */
-  --re-dark2:    #1A1616;
-  --re-border:   rgba(17,16,16,0.09);
-  --re-border2:  rgba(17,16,16,0.05);
+  /* ── Loft Palette ────────────────────────────────────── */
+  --re-bg:       #0B0A08;          /* основной фон — почти чёрный */
+  --re-bg2:      #121009;          /* чуть светлее */
+  --re-bg3:      #1A1714;          /* карточки, панели */
+  --re-bg4:      #222018;          /* hover state */
+  --re-amber:    #C98845;          /* Edison-лампа, главный акцент */
+  --re-amber-dk: #A56F2C;          /* hover */
+  --re-amber-lt: #E8C87A;          /* мелкий текст на тёмном */
+  --re-cream:    #EDE5D8;          /* основной текст на тёмном */
+  --re-cream2:   #C0B6A8;          /* вторичный текст */
+  --re-steel:    #6B6560;          /* приглушённый — металл */
+  --re-rust:     #8B3A1F;          /* кирпичный для деталей */
+  --re-border:   rgba(201,136,69,0.15);   /* амберные линии */
+  --re-border2:  rgba(237,229,216,0.07);  /* белесые линии */
 
   /* ── Fonts ───────────────────────────────────────────── */
-  --ff-display: var(--font-manrope, "Manrope"), "Inter", sans-serif;
+  --ff-display: var(--font-oswald, "Oswald"), "Impact", sans-serif;
   --ff-body:    var(--font-jost, "DM Sans"), "Inter", sans-serif;
 }
 
 /* ── Base ─────────────────────────────────────────────── */
 .re-overlay {
-  background: var(--re-cream);
+  background: var(--re-bg);
   opacity: 0;
   transition: opacity 0.65s ease;
 }
 .re-overlay--in { opacity: 1; }
 
+/* Grain texture на всю секцию */
+.re-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.032;
+  pointer-events: none;
+  z-index: 999;
+  mix-blend-mode: overlay;
+}
+
 
 /* ════════════════════════════════════════════════════════
-   HERO
+   HERO  —  тёмный лофт, разделённая сетка
    ════════════════════════════════════════════════════════ */
 .re-hero {
   display: grid;
-  grid-template-columns: 52% 48%;
+  grid-template-columns: 50% 50%;
   min-height: 100vh;
   position: relative;
   overflow: hidden;
 }
 
-/* Left column */
+/* Left column — полностью тёмный */
 .re-hero-left {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 5rem 3.5rem 5.5rem 4rem;
+  padding: 5rem 3.5rem 5.5rem 4.5rem;
   position: relative;
   z-index: 2;
-  background: var(--re-cream);
+  background: var(--re-bg);
+  border-right: 1px solid var(--re-border);
+}
+
+/* Тонкая вертикальная амберная черта слева */
+.re-hero-left::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 15%; bottom: 15%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--re-amber), transparent);
+  opacity: 0.6;
 }
 
 /* Eyebrow */
@@ -61,52 +83,54 @@
   align-items: center;
   gap: 12px;
   font-family: var(--ff-body);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-rose);
-  margin-bottom: 2.5rem;
+  color: var(--re-amber);
+  margin-bottom: 2rem;
 }
 .re-hero-eyebrow-line {
   display: block;
-  width: 28px;
-  height: 1.5px;
-  background: var(--re-rose);
+  width: 32px;
+  height: 1px;
+  background: var(--re-amber);
   flex-shrink: 0;
 }
 
-/* Title */
+/* Title — Oswald condensed uppercase */
 .re-hero-title-wrap {
   display: flex;
   flex-direction: column;
   gap: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 2.2rem;
 }
 .re-hero-title-row { overflow: hidden; line-height: 1; }
 .re-hero-title-word {
   display: block;
   font-family: var(--ff-display);
-  font-size: clamp(3.4rem, 6.5vw, 7rem);
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-  color: var(--re-ink);
-  padding-bottom: 0.06em;
+  font-size: clamp(4rem, 7vw, 9rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.92;
+  color: var(--re-cream);
+  padding-bottom: 0.04em;
 }
-/* Accent line — rose colour, no italic, no outline */
 .re-hero-title-word--italic {
-  color: var(--re-rose);
+  color: var(--re-amber);
 }
 
 /* Role */
 .re-hero-role {
   font-family: var(--ff-body);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 400;
-  color: var(--re-stone);
-  letter-spacing: 0.04em;
-  margin-bottom: 2.2rem;
+  color: var(--re-steel);
+  letter-spacing: 0.06em;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--re-border2);
 }
 
 /* CTA row */
@@ -136,19 +160,19 @@
 .re-stat:last-child { padding-right: 0; margin-right: 0; }
 .re-stat-num {
   font-family: var(--ff-display);
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: var(--re-ink);
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--re-amber);
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.02em;
 }
 .re-stat-label {
   font-family: var(--ff-body);
   font-size: 0.58rem;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--re-stone2);
+  color: var(--re-steel);
   margin-top: 0.3rem;
 }
 .re-stat-sep {
@@ -157,11 +181,11 @@
   top: 50%;
   transform: translateY(-50%);
   width: 1px;
-  height: 2rem;
+  height: 2.4rem;
   background: var(--re-border);
 }
 
-/* Right column — photo */
+/* Right column — фото с оверлеями */
 .re-hero-photo-wrap {
   position: relative;
   overflow: hidden;
@@ -172,81 +196,105 @@
   object-fit: cover;
   object-position: center center;
   display: block;
-  filter: sepia(12%) saturate(0.88) brightness(0.96) contrast(1.06);
+  filter: sepia(18%) saturate(0.8) brightness(0.85) contrast(1.1);
 }
+/* Амберный градиент снизу */
 .re-hero-photo-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    transparent 50%,
-    rgba(14,12,12,0.55) 100%
+    rgba(11,10,8,0.15) 0%,
+    transparent 40%,
+    rgba(11,10,8,0.7) 100%
   );
   pointer-events: none;
+}
+/* Тонкие угловые скобки на фото — industrial деталь */
+.re-hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  top: 1.5rem; left: 1.5rem;
+  width: 28px; height: 28px;
+  border-top: 2px solid var(--re-amber);
+  border-left: 2px solid var(--re-amber);
+  z-index: 2;
+  opacity: 0.7;
+}
+.re-hero-photo-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 1.5rem; right: 1.5rem;
+  width: 28px; height: 28px;
+  border-bottom: 2px solid var(--re-amber);
+  border-right: 2px solid var(--re-amber);
+  z-index: 2;
+  opacity: 0.7;
 }
 .re-hero-photo-caption {
   position: absolute;
   bottom: 2rem;
-  left: 1.8rem;
-  right: 1.8rem;
+  left: 2rem;
+  right: 2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
   font-family: var(--ff-body);
   font-size: 0.58rem;
   font-weight: 500;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  color: rgba(232,200,122,0.55);
+  z-index: 3;
 }
 .re-hero-photo-caption-rule {
   flex: 1;
   height: 1px;
-  background: rgba(255,255,255,0.18);
+  background: rgba(201,136,69,0.25);
 }
 
 
 /* ════════════════════════════════════════════════════════
-   SHARED BUTTONS
+   КНОПКИ  —  industrial style
    ════════════════════════════════════════════════════════ */
 .re-btn-primary {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 0.9rem 2.2rem;
-  background: var(--re-rose);
-  color: #fff;
+  padding: 0.85rem 2.2rem;
+  background: var(--re-amber);
+  color: var(--re-bg);
   border: none;
-  border-radius: 999px;
-  font-family: var(--ff-body);
-  font-size: 0.68rem;
+  border-radius: 0;                /* sharp corners — industrial */
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 4px 22px rgba(199,51,79,0.32);
-  transition: background 0.22s, transform 0.2s, box-shadow 0.22s;
+  box-shadow: 0 4px 24px rgba(201,136,69,0.3);
+  transition: background 0.2s, transform 0.18s, box-shadow 0.2s;
   white-space: nowrap;
 }
 .re-btn-primary:hover {
-  background: var(--re-rose-dk);
+  background: var(--re-amber-lt);
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(199,51,79,0.44);
+  box-shadow: 0 8px 32px rgba(201,136,69,0.45);
 }
 
 .re-btn-ghost {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 0;
   background: none;
   border: none;
-  color: var(--re-stone);
+  color: var(--re-steel);
   font-family: var(--ff-body);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   cursor: pointer;
   text-decoration: none;
   position: relative;
@@ -255,14 +303,12 @@
 .re-btn-ghost::after {
   content: '';
   position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1.5px;
-  background: var(--re-rose);
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--re-amber);
   transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
 }
-.re-btn-ghost:hover { color: var(--re-ink); }
+.re-btn-ghost:hover { color: var(--re-cream); }
 .re-btn-ghost:hover::after { width: 100%; }
 
 .re-btn-secondary {
@@ -270,58 +316,61 @@
   align-items: center;
   padding: 0.75rem 1.8rem;
   background: transparent;
-  border: 1.5px solid var(--re-ink);
-  color: var(--re-ink);
-  border-radius: 999px;
-  font-family: var(--ff-body);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  border: 1px solid var(--re-amber);
+  color: var(--re-amber);
+  border-radius: 0;
+  font-family: var(--ff-display);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.22s, color 0.22s, border-color 0.22s, box-shadow 0.22s;
+  transition: background 0.2s, color 0.2s;
 }
 .re-btn-secondary:hover {
-  background: var(--re-rose);
-  color: #fff;
-  border-color: var(--re-rose);
-  box-shadow: 0 4px 18px rgba(199,51,79,0.28);
+  background: var(--re-amber);
+  color: var(--re-bg);
 }
 
 
 /* ════════════════════════════════════════════════════════
-   QUOTE STRIP  — тёмная, дерзкая
+   QUOTE STRIP  —  тёмный, почти чёрный
    ════════════════════════════════════════════════════════ */
 .re-quote-strip {
-  padding: 5.5rem 4rem;
-  background: var(--re-ink);
+  padding: 5rem 4rem;
+  background: #070605;
   position: relative;
+  border-top: 1px solid var(--re-border);
+  border-bottom: 1px solid var(--re-border);
 }
-.re-quote-rule {
-  height: 1px;
-  background: rgba(255,255,255,0.07);
-  margin-bottom: 3.5rem;
+/* Крест / перекрестие в центре как индустриальная деталь */
+.re-quote-strip::before {
+  content: '✦';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  color: var(--re-amber);
+  opacity: 0.04;
+  pointer-events: none;
 }
-.re-quote-rule:last-child { margin-bottom: 0; margin-top: 3.5rem; }
-.re-quote-inner { max-width: 880px; margin: 0 auto; }
+.re-quote-inner { max-width: 860px; margin: 0 auto; position: relative; }
 .re-quote {
   font-family: var(--ff-display);
-  font-size: clamp(1.6rem, 3vw, 2.8rem);
-  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 500;
   font-style: normal;
-  color: #fff;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--re-cream);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
   text-align: center;
   margin: 0;
 }
 .re-quote-mark {
-  color: var(--re-rose);
-  font-size: 1.1em;
-  line-height: 0;
-  vertical-align: -0.18em;
-  margin: 0 0.08em;
-  font-weight: 800;
+  color: var(--re-amber);
+  font-weight: 700;
+  margin: 0 0.12em;
 }
 
 
@@ -329,25 +378,47 @@
    ADVISOR
    ════════════════════════════════════════════════════════ */
 .re-advisor {
-  background: var(--re-cream);
-  padding: 8rem 4rem;
-  border-top: 1px solid var(--re-border2);
+  background: var(--re-bg2);
+  padding: 8rem 4.5rem;
+  border-bottom: 1px solid var(--re-border);
 }
 .re-advisor-inner {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 340px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: 7rem;
   align-items: start;
 }
 
-/* Photo column */
+/* Photo */
 .re-advisor-photo-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* Угловые скобки вокруг фото */
+.re-advisor-frame {
+  position: relative;
+  padding: 8px;
+}
+.re-advisor-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 24px; height: 24px;
+  border-top: 2px solid var(--re-amber);
+  border-left: 2px solid var(--re-amber);
+}
+.re-advisor-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 24px; height: 24px;
+  border-bottom: 2px solid var(--re-amber);
+  border-right: 2px solid var(--re-amber);
+}
+
 .re-advisor-photo-wrap {
   overflow: hidden;
   aspect-ratio: 3/4;
-  border-radius: 3px;
 }
 .re-advisor-photo {
   width: 100%;
@@ -355,119 +426,147 @@
   object-fit: cover;
   object-position: center top;
   display: block;
-  filter: sepia(12%) saturate(0.88) brightness(0.96) contrast(1.06);
+  filter: sepia(15%) saturate(0.82) brightness(0.92) contrast(1.08);
   transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
 }
 .re-advisor-photo:hover { transform: scale(1.03); }
 
 .re-advisor-photo-label {
   font-family: var(--ff-body);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  color: var(--re-stone);
+  letter-spacing: 0.1em;
+  color: var(--re-steel);
   line-height: 1.7;
   text-transform: uppercase;
+  padding-left: 8px;
 }
 .re-advisor-photo-label em {
   font-style: normal;
-  text-transform: none;
-  color: var(--re-rose);
+  color: var(--re-amber);
   font-weight: 600;
 }
 
-/* Info column */
-.re-advisor-info { display: flex; flex-direction: column; gap: 1.5rem; }
+/* Info */
+.re-advisor-info { display: flex; flex-direction: column; gap: 1.6rem; }
 .re-advisor-pretitle {
   font-family: var(--ff-body);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-rose);
+  color: var(--re-amber);
   margin: 0;
 }
 .re-advisor-name {
   font-family: var(--ff-display);
-  font-size: clamp(2.6rem, 4.5vw, 4.5rem);
-  font-weight: 800;
-  color: var(--re-ink);
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  font-size: clamp(2.8rem, 5vw, 5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--re-cream);
+  letter-spacing: 0.02em;
+  line-height: 0.92;
   margin: 0;
 }
 .re-advisor-surname {
   display: block;
-  color: var(--re-rose);   /* акцент цветом, не обводкой */
+  color: var(--re-amber);
 }
 .re-advisor-bio {
   font-family: var(--ff-body);
-  font-size: clamp(0.9rem, 1.4vw, 1rem);
+  font-size: 0.92rem;
   font-weight: 400;
-  color: var(--re-stone);
-  line-height: 1.85;
+  color: var(--re-cream2);
+  line-height: 1.9;
   max-width: 500px;
   margin: 0;
 }
 .re-advisor-markets {
   display: flex;
   flex-wrap: wrap;
-  gap: 0;
+  gap: 0.5rem 0;
   font-family: var(--ff-body);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  color: var(--re-stone);
-  letter-spacing: 0.02em;
+  color: var(--re-steel);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
-.re-market-dot { margin: 0 0.5rem; color: var(--re-rose); }
+.re-market-dot { margin: 0 0.5rem; color: var(--re-amber); opacity: 0.5; }
 
 
 /* ════════════════════════════════════════════════════════
    CHAPTERS
    ════════════════════════════════════════════════════════ */
 .re-chapters {
-  background: var(--re-linen);
+  background: var(--re-bg);
   padding: 4rem 0 6rem;
 }
 .re-chapter {
   display: grid;
   align-items: center;
-  padding: 5rem 4rem;
+  padding: 5rem 4.5rem;
   gap: 5rem;
-  border-top: 1px solid var(--re-border);
+  border-top: 1px solid var(--re-border2);
 }
 .re-chapter--left  { grid-template-columns: 55% 1fr; }
 .re-chapter--right { grid-template-columns: 1fr 55%; }
 .re-chapter--right .re-chapter-photo-wrap { order: 2; }
 .re-chapter--right .re-chapter-text        { order: 1; }
 
+/* Угловые скобки на фото глав */
+.re-chapter-frame {
+  position: relative;
+  padding: 8px;
+}
+.re-chapter-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 22px; height: 22px;
+  border-top: 2px solid var(--re-amber);
+  border-left: 2px solid var(--re-amber);
+  z-index: 2;
+  opacity: 0.65;
+}
+.re-chapter-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 22px; height: 22px;
+  border-bottom: 2px solid var(--re-amber);
+  border-right: 2px solid var(--re-amber);
+  z-index: 2;
+  opacity: 0.65;
+}
+
 .re-chapter-photo-wrap {
   position: relative;
   overflow: hidden;
   aspect-ratio: 4/3;
-  border-radius: 3px;
 }
 .re-chapter-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: sepia(12%) saturate(0.88) brightness(0.95) contrast(1.06);
+  filter: sepia(15%) saturate(0.8) brightness(0.88) contrast(1.1);
   transition: transform 0.9s cubic-bezier(0.16,1,0.3,1);
 }
-.re-chapter-photo-wrap:hover .re-chapter-photo { transform: scale(1.04); }
+.re-chapter-frame:hover .re-chapter-photo { transform: scale(1.04); }
 .re-chapter-num-overlay {
   position: absolute;
   bottom: -0.1em;
   right: -0.05em;
   font-family: var(--ff-display);
-  font-size: clamp(7rem, 14vw, 16rem);
-  font-weight: 800;
-  color: rgba(255,255,255,0.08);
+  font-size: clamp(7rem, 14vw, 18rem);
+  font-weight: 700;
+  color: rgba(201,136,69,0.07);
   line-height: 1;
   pointer-events: none;
   user-select: none;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
 .re-chapter-text { display: flex; flex-direction: column; gap: 1rem; }
@@ -475,32 +574,44 @@
   font-family: var(--ff-body);
   font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-rose);
+  color: var(--re-amber);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.re-chapter-index::after {
+  content: '';
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: var(--re-border);
+  max-width: 60px;
 }
 .re-chapter-title {
   font-family: var(--ff-display);
-  font-size: clamp(2rem, 3.5vw, 3.4rem);
-  font-weight: 800;
-  color: var(--re-ink);
-  letter-spacing: -0.04em;
-  line-height: 1.0;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--re-cream);
+  letter-spacing: 0.02em;
+  line-height: 0.95;
   margin: 0;
 }
 .re-chapter-lead {
   font-family: var(--ff-body);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  color: var(--re-ink);
+  color: var(--re-amber-lt);
   margin: 0.4rem 0 0;
 }
 .re-chapter-story {
   font-family: var(--ff-body);
   font-size: 0.85rem;
   font-weight: 400;
-  color: var(--re-stone);
-  line-height: 1.85;
+  color: var(--re-cream2);
+  line-height: 1.9;
   max-width: 420px;
   margin: 0;
 }
@@ -510,9 +621,9 @@
    MARKETS
    ════════════════════════════════════════════════════════ */
 .re-markets {
-  background: var(--re-cream);
-  padding: 7rem 4rem;
-  border-top: 1px solid var(--re-border2);
+  background: var(--re-bg2);
+  padding: 7rem 4.5rem;
+  border-top: 1px solid var(--re-border);
 }
 .re-markets-header {
   max-width: 1100px;
@@ -523,19 +634,20 @@
 }
 .re-markets-label {
   font-family: var(--ff-body);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--re-stone2);
+  color: var(--re-steel);
   margin: 0;
 }
 .re-markets-title {
   font-family: var(--ff-display);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  font-weight: 800;
-  color: var(--re-ink);
-  letter-spacing: -0.03em;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--re-cream);
+  letter-spacing: 0.04em;
   margin: 0;
 }
 .re-markets-strip {
@@ -543,54 +655,78 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1.2rem;
+  gap: 1px;                        /* industrial grid — без отступов */
+  background: var(--re-border);   /* border через gap */
 }
-.re-market-card { display: flex; flex-direction: column; gap: 0.7rem; }
+.re-market-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--re-bg2);
+  overflow: hidden;
+  position: relative;
+}
 .re-market-photo-wrap {
   overflow: hidden;
   aspect-ratio: 2/3;
-  border-radius: 3px;
 }
 .re-market-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: sepia(15%) saturate(0.82) brightness(0.93) contrast(1.08);
+  filter: sepia(20%) saturate(0.75) brightness(0.82) contrast(1.12);
   transition: transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.5s;
 }
 .re-market-card:hover .re-market-photo {
-  transform: scale(1.06);
-  filter: sepia(5%) saturate(1.0) brightness(1.0) contrast(1.02);
+  transform: scale(1.07);
+  filter: sepia(8%) saturate(0.9) brightness(0.9) contrast(1.06);
 }
+/* Амберная полоска снизу при hover */
+.re-market-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--re-amber);
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.re-market-card:hover::after { transform: scaleX(1); }
+
 .re-market-name {
-  font-family: var(--ff-body);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-family: var(--ff-display);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--re-stone);
+  color: var(--re-steel);
   margin: 0;
+  padding: 0.75rem 0.9rem;
   transition: color 0.2s;
+  border-top: 1px solid var(--re-border2);
 }
-.re-market-card:hover .re-market-name { color: var(--re-ink); }
+.re-market-card:hover .re-market-name { color: var(--re-amber); }
 
 
 /* ════════════════════════════════════════════════════════
-   CONTACT  (dark section)
+   CONTACT  —  самый тёмный раздел
    ════════════════════════════════════════════════════════ */
 .re-contact {
-  background: var(--re-dark);
-  padding: 8rem 4rem;
+  background: #070605;
+  padding: 8rem 4.5rem;
   position: relative;
   overflow: hidden;
+  border-top: 1px solid var(--re-border);
 }
+/* Амберное свечение в углу */
 .re-contact::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(199,51,79,0.4), transparent);
+  bottom: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201,136,69,0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 .re-contact-inner {
   max-width: 1100px;
@@ -599,64 +735,64 @@
   grid-template-columns: 1fr 1fr;
   gap: 7rem;
   align-items: start;
+  position: relative;
 }
 
-/* Left */
-.re-contact-left { display: flex; flex-direction: column; gap: 1.5rem; }
+.re-contact-left { display: flex; flex-direction: column; gap: 1.6rem; }
 .re-contact-pretitle {
   font-family: var(--ff-body);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--re-rose);
+  color: var(--re-amber);
   margin: 0;
 }
 .re-contact-title {
   font-family: var(--ff-display);
-  font-size: clamp(2.4rem, 4.5vw, 4.2rem);
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.04em;
-  line-height: 1.0;
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--re-cream);
+  letter-spacing: 0.02em;
+  line-height: 0.92;
   margin: 0;
 }
 .re-contact-title em {
   font-style: normal;
-  color: var(--re-rose);
+  color: var(--re-amber);
 }
 .re-contact-sub {
   font-family: var(--ff-body);
   font-size: 0.85rem;
   font-weight: 400;
-  color: rgba(255,255,255,0.35);
-  line-height: 1.75;
+  color: var(--re-steel);
+  line-height: 1.8;
   max-width: 380px;
   margin: 0;
 }
 
-/* Right */
-.re-contact-right { display: flex; flex-direction: column; gap: 0.6rem; }
-.re-contact-messengers { display: flex; flex-direction: column; gap: 4px; }
+.re-contact-right { display: flex; flex-direction: column; gap: 0.4rem; }
+.re-contact-messengers { display: flex; flex-direction: column; gap: 2px; }
 .re-messenger {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 1.05rem 1.3rem;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 4px;
-  color: rgba(255,255,255,0.6);
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--re-border2);
+  border-radius: 0;
+  color: var(--re-cream2);
   text-decoration: none;
   font-family: var(--ff-body);
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 400;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 .re-messenger:hover {
-  background: rgba(199,51,79,0.12);
-  border-color: rgba(199,51,79,0.3);
-  color: #fff;
+  background: rgba(201,136,69,0.08);
+  border-color: rgba(201,136,69,0.3);
+  color: var(--re-amber-lt);
 }
 .re-messenger-arr {
   margin-left: auto;
@@ -668,28 +804,28 @@
 .re-contact-cta {
   width: 100%;
   padding: 1.15rem;
-  background: var(--re-rose);
+  background: var(--re-amber);
   border: none;
-  border-radius: 999px;
-  color: #fff;
-  font-family: var(--ff-body);
-  font-size: 0.72rem;
+  border-radius: 0;
+  color: var(--re-bg);
+  font-family: var(--ff-display);
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 4px 22px rgba(199,51,79,0.35);
+  box-shadow: 0 4px 24px rgba(201,136,69,0.3);
   transition: background 0.2s, transform 0.18s, box-shadow 0.22s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 0.6rem;
+  gap: 10px;
+  margin-top: 0.8rem;
 }
 .re-contact-cta:hover {
-  background: var(--re-rose-dk);
+  background: var(--re-amber-lt);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(199,51,79,0.45);
+  box-shadow: 0 8px 32px rgba(201,136,69,0.45);
 }
 
 
@@ -697,9 +833,9 @@
    RESPONSIVE
    ════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .re-hero { grid-template-columns: 52% 48%; }
   .re-hero-left { padding: 4rem 2.5rem 4.5rem 3rem; }
-  .re-advisor-inner { grid-template-columns: 280px 1fr; gap: 4rem; }
+  .re-advisor-inner { grid-template-columns: 260px 1fr; gap: 4rem; }
+  .re-advisor { padding: 6rem 2.5rem; }
   .re-chapter { padding: 4rem 2.5rem; gap: 3.5rem; }
   .re-markets { padding: 6rem 2.5rem; }
   .re-contact { padding: 6rem 2.5rem; }
@@ -709,7 +845,8 @@
 
 @media (max-width: 860px) {
   .re-hero { grid-template-columns: 1fr; min-height: auto; }
-  .re-hero-left { padding: 6rem 1.8rem 4rem; order: 2; }
+  .re-hero-left { padding: 5rem 1.8rem 4rem; order: 2; border-right: none; border-top: 1px solid var(--re-border); }
+  .re-hero-left::before { display: none; }
   .re-hero-photo-wrap { min-height: 65vw; order: 1; }
 
   .re-advisor { padding: 5rem 1.8rem; }
@@ -724,7 +861,7 @@
 
   .re-markets { padding: 5rem 1.8rem; }
   .re-markets-header { flex-direction: column; gap: 0.5rem; }
-  .re-markets-strip { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .re-markets-strip { grid-template-columns: repeat(3, 1fr); }
 
   .re-contact { padding: 5rem 1.8rem; }
   .re-contact-inner { grid-template-columns: 1fr; gap: 3.5rem; }
@@ -732,11 +869,11 @@
 }
 
 @media (max-width: 580px) {
-  .re-hero-left { padding: 5rem 1.2rem 3.5rem; }
-  .re-hero-title-word { font-size: clamp(2.8rem, 12vw, 3.8rem); }
+  .re-hero-left { padding: 4rem 1.2rem 3.5rem; }
+  .re-hero-title-word { font-size: clamp(3.2rem, 14vw, 5rem); }
   .re-hero-actions { flex-direction: column; align-items: flex-start; gap: 1rem; }
   .re-btn-primary { width: 100%; justify-content: center; }
-  .re-hero-stats { flex-wrap: wrap; }
+  .re-hero-stats { flex-wrap: wrap; gap: 1.5rem 0; }
   .re-stat { padding-right: 1.8rem; margin-right: 1.8rem; }
 
   .re-advisor { padding: 4rem 1.2rem; }
@@ -748,5 +885,5 @@
 
   .re-contact { padding: 4rem 1.2rem; }
   .re-quote-strip { padding: 3rem 1.2rem; }
-  .re-quote { font-size: clamp(1.3rem, 6vw, 1.8rem); }
+  .re-quote { font-size: clamp(1.2rem, 6vw, 1.7rem); }
 }

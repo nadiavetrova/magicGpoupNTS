@@ -263,15 +263,17 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
           {/* Photo */}
           <div className="re-advisor-photo-col">
             <InView>
-              <motion.div
-                className="re-advisor-photo-wrap"
-                variants={clipReveal}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, margin: "-10% 0px" }}
-              >
-                <img src={PORTRAIT} alt={`${EXPERT.firstName} ${EXPERT.lastName}`} className="re-advisor-photo"/>
-              </motion.div>
+              <div className="re-advisor-frame">
+                <motion.div
+                  className="re-advisor-photo-wrap"
+                  variants={clipReveal}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true, margin: "-10% 0px" }}
+                >
+                  <img src={PORTRAIT} alt={`${EXPERT.firstName} ${EXPERT.lastName}`} className="re-advisor-photo"/>
+                </motion.div>
+              </div>
             </InView>
             <InView delay={0.15}>
               <p className="re-advisor-photo-label">
@@ -322,16 +324,18 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
           <article key={ch.num} className={`re-chapter re-chapter--${i % 2 === 0 ? "left" : "right"}`}>
 
             {/* Photo */}
-            <motion.div
-              className="re-chapter-photo-wrap"
-              variants={clipReveal}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: "-5% 0px" }}
-            >
-              <img src={ch.photo} alt={ch.photoAlt} className="re-chapter-photo"/>
-              <div className="re-chapter-num-overlay" aria-hidden="true">{ch.num}</div>
-            </motion.div>
+            <div className="re-chapter-frame">
+              <motion.div
+                className="re-chapter-photo-wrap"
+                variants={clipReveal}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-5% 0px" }}
+              >
+                <img src={ch.photo} alt={ch.photoAlt} className="re-chapter-photo"/>
+                <div className="re-chapter-num-overlay" aria-hidden="true">{ch.num}</div>
+              </motion.div>
+            </div>
 
             {/* Text */}
             <div className="re-chapter-text">

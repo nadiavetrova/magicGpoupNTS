@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, Inter, Playfair_Display, Cormorant_Garamond, Jost, Manrope } from "next/font/google";
+import { Syne, DM_Sans, Inter, Playfair_Display, Cormorant_Garamond, Jost, Manrope, Oswald } from "next/font/google";
 import "./globals.css";
 
 // next/font/google скачивает шрифты при сборке и раздаёт с собственного домена —
@@ -58,6 +58,14 @@ const manrope = Manrope({
   display: "swap",
 });
 
+// Oswald — condensed industrial для лофт-стиля секции недвижимости
+const oswald = Oswald({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-oswald",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "MAGIC Group NTS — Шухрат Азизов",
   description: "Международный туризм, страхование и недвижимость. Ваш надёжный партнёр.",
@@ -69,7 +77,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${playfair.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable}`}>
+    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${playfair.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable} ${oswald.variable}`}>
       <body>{children}</body>
     </html>
   );
