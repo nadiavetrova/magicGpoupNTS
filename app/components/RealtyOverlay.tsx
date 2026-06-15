@@ -155,7 +155,7 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             initial="hidden"
             animate={textVisible ? "show" : "hidden"}
           >
-            <img src="/icons/logo-home.png" alt="MAGIC Group NTS" className="re-hero-logo-img" />
+            <img src="/icons/logo_tur.png" alt="MAGIC Group NTS" className="re-hero-logo-img" />
           </motion.div>
 
           <motion.div
