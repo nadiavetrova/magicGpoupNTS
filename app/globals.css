@@ -1280,7 +1280,47 @@ body {
   margin-bottom: 1rem;
 }
 .modal-submit:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
-.modal-submit:disabled { opacity: 0.28; cursor: not-allowed; }
+.modal-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+.modal-submit--loading { opacity: 0.7 !important; cursor: wait !important; }
+
+/* field wrapper for error positioning */
+.modal-field-wrap { display: flex; flex-direction: column; gap: 4px; }
+
+/* error text under field */
+.modal-field-error {
+  font-family: "DM Sans", Inter, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #e87a7a;
+  margin: 0 0 0.3rem 0;
+  line-height: 1.4;
+}
+.modal-field-error--api {
+  margin-bottom: 0.8rem;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+/* input error state */
+.modal-input--error {
+  border-color: rgba(232, 122, 122, 0.5) !important;
+}
+.modal-input--error:focus { border-color: rgba(232, 122, 122, 0.8) !important; }
+
+/* success screen */
+.modal-box--success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3.5rem 2.5rem;
+}
+.modal-success-icon {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  line-height: 1;
+}
 
 .modal-note {
   font-family: "DM Sans", Inter, sans-serif;

@@ -338,6 +338,7 @@ export default function Home() {
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
           accent={p.accent}
+          section={p.id}
           sectionTitle={p.services.title}
           services={p.services.items}
         />
