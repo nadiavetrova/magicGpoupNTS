@@ -291,7 +291,7 @@ export default function Home() {
         {panels.map((panel) => {
           const isActive = active === panel.id;
           const isInactive = active !== null && !isActive;
-          const isLocked = panel.id === "insurance";
+          const isLocked = panel.id === "insurance" || panel.id === "realty";
           return (
             <div
               key={panel.id}
