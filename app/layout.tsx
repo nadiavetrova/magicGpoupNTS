@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, Inter } from "next/font/google";
+import { Syne, DM_Sans, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 // next/font/google скачивает шрифты при сборке и раздаёт с собственного домена —
@@ -25,6 +25,14 @@ const inter = Inter({
   display: "swap",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin", "cyrillic"], // Playfair — есть кириллица
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "MAGIC Group NTS — Шухрат Азизов",
   description: "Международный туризм, страхование и недвижимость. Ваш надёжный партнёр.",
@@ -36,7 +44,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable}`}>
+    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${playfair.variable}`}>
       <body>{children}</body>
     </html>
   );
