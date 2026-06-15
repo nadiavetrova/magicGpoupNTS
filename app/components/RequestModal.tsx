@@ -42,8 +42,43 @@ const COUNTRIES = [
 type Country = typeof COUNTRIES[number];
 
 /* ── Validation ─────────────────────────────────────────────── */
-function isLocalPhoneValid(local: string): boolean {
-  return local.replace(/\D/g, "").length >= 5;
+// Expected LOCAL digit count per country code (without country prefix)
+const PHONE_LENGTHS: Record<string, number | [number, number]> = {
+  "+7":    10,       // Россия, Казахстан
+  "+375":  9,        // Беларусь
+  "+998":  9,        // Узбекистан
+  "+994":  9,        // Азербайджан
+  "+992":  9,        // Таджикистан
+  "+993":  8,        // Туркменистан
+  "+380":  9,        // Украина
+  "+995":  9,        // Грузия
+  "+373":  8,        // Молдова
+  "+90":   10,       // Турция
+  "+971":  9,        // ОАЭ
+  "+966":  9,        // Саудовская Аравия
+  "+972":  [8, 9],   // Израиль (8 — стационарные, 9 — мобильные)
+  "+20":   10,       // Египет
+  "+91":   10,       // Индия
+  "+960":  7,        // Мальдивы
+  "+66":   9,        // Таиланд
+  "+84":   9,        // Вьетнам
+  "+62":   [8, 12],  // Индонезия (8–12 цифр)
+  "+86":   11,       // Китай
+};
+
+function isLocalPhoneValid(local: string, countryCode: string): boolean {
+  const digits = local.replace(/\D/g, "").length;
+  const rule = PHONE_LENGTHS[countryCode];
+  if (!rule) return digits >= 5 && digits <= 12; // fallback для «Другая страна»
+  if (Array.isArray(rule)) return digits >= rule[0] && digits <= rule[1];
+  return digits === rule;
+}
+
+function phoneHint(countryCode: string): string {
+  const rule = PHONE_LENGTHS[countryCode];
+  if (!rule) return "";
+  if (Array.isArray(rule)) return `${rule[0]}–${rule[1]} цифр`;
+  return `${rule} цифр`;
 }
 
 /* ── Component ──────────────────────────────────────────────── */
@@ -109,8 +144,10 @@ export default function RequestModal({
   const nameError  = nameTouched  && name.trim().length < 2
     ? name.trim().length === 0 ? "Введите ваше имя" : "Слишком короткое имя"
     : "";
-  const phoneError = phoneTouched && !isLocalPhoneValid(localPhone)
-    ? localPhone.length === 0 ? "Введите номер телефона" : "Слишком короткий номер"
+  const phoneError = phoneTouched && !isLocalPhoneValid(localPhone, country.code)
+    ? localPhone.length === 0
+      ? "Введите номер телефона"
+      : `Неверный номер${phoneHint(country.code) ? ` — нужно ${phoneHint(country.code)}` : ""}`
     : "";
   const servicesError = servicesTouched && selected.length === 0
     ? "Выберите хотя бы одну услугу"
@@ -120,7 +157,7 @@ export default function RequestModal({
 
   const canSubmit =
     name.trim().length >= 2 &&
-    isLocalPhoneValid(localPhone) &&
+    isLocalPhoneValid(localPhone, country.code) &&
     selected.length > 0 &&
     consent &&
     status !== "loading";
