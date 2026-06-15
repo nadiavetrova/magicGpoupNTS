@@ -15,20 +15,28 @@ interface Props {
 
 /* ── Phone mask ─────────────────────────────────────────────── */
 function applyPhoneMask(raw: string): string {
-  // strip everything except digits
-  const digits = raw.replace(/\D/g, "");
-  // normalise: if starts with 8 → replace with 7
-  const d = digits.startsWith("8") ? "7" + digits.slice(1) : digits;
-  // build mask +7 (XXX) XXX-XX-XX
+  let digits = raw.replace(/\D/g, "");
+
+  // Strip country code (7 or 8) only if user typed 11+ digits
+  if (digits.length > 10 && (digits.startsWith("7") || digits.startsWith("8"))) {
+    digits = digits.slice(1);
+  }
+  // Always work with local 10 digits (after country code)
+  digits = digits.slice(0, 10);
+
+  if (digits.length === 0) return "";
+
+  // Build +7 (XXX) XXX-XX-XX
   let out = "+7";
-  if (d.length > 1) out += " (" + d.slice(1, 4);
-  if (d.length >= 4) out += ") " + d.slice(4, 7);
-  if (d.length >= 7) out += "-" + d.slice(7, 9);
-  if (d.length >= 9) out += "-" + d.slice(9, 11);
+  if (digits.length > 0) out += " (" + digits.slice(0, 3);
+  if (digits.length >= 3) out += ") " + digits.slice(3, 6);
+  if (digits.length >= 6) out += "-" + digits.slice(6, 8);
+  if (digits.length >= 8) out += "-" + digits.slice(8, 10);
   return out;
 }
 
 function isPhoneComplete(phone: string): boolean {
+  // "+7 (XXX) XXX-XX-XX" → 11 digits total
   return phone.replace(/\D/g, "").length === 11;
 }
 
