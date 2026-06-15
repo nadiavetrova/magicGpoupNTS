@@ -22,7 +22,9 @@ export async function POST(req: NextRequest) {
 
     const bot = BOTS[section];
     if (!bot?.token || !bot?.chatId) {
-      return NextResponse.json({ error: "Bot not configured" }, { status: 500 });
+      // Tokens not yet configured — acknowledge receipt without sending
+      console.log("[RequestModal] Telegram not configured for section:", section, { name, phone, services });
+      return NextResponse.json({ ok: true });
     }
 
     const sectionLabels: Record<string, string> = {
