@@ -11,14 +11,17 @@ export default function SmoothScroll({ active }: Props) {
   useEffect(() => {
     if (!active) return;
 
-    // Wait for overlay to be in DOM
+    // Wait for the inner scroll container (.lenis) to appear in DOM.
+    // We target .lenis (the inner overlay div) — NOT .fullscreen-overlay (the outer
+    // clip-path wrapper). Lenis on the outer div intercepts wheel events and blocks
+    // native scroll on the inner content container.
     const timeout = setTimeout(() => {
-      const overlay = document.querySelector(".fullscreen-overlay") as HTMLElement;
-      if (!overlay) return;
+      const scroller = document.querySelector(".lenis") as HTMLElement;
+      if (!scroller) return;
 
       const lenis = new Lenis({
-        wrapper: overlay,
-        content: overlay,
+        wrapper: scroller,
+        content: scroller,
         duration: 1.6,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
@@ -31,7 +34,7 @@ export default function SmoothScroll({ active }: Props) {
       }
       const id = requestAnimationFrame(raf);
 
-      // Animate cards on scroll
+      // Animate legacy service-cards on scroll (tourism section)
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry, i) => {
@@ -44,10 +47,10 @@ export default function SmoothScroll({ active }: Props) {
             }
           });
         },
-        { threshold: 0.1, root: overlay }
+        { threshold: 0.1, root: scroller }
       );
 
-      overlay.querySelectorAll(".service-card, .services-title, .services-subtitle").forEach((el) => {
+      scroller.querySelectorAll(".service-card, .services-title, .services-subtitle").forEach((el) => {
         const elem = el as HTMLElement;
         elem.style.opacity = "0";
         elem.style.transform = "translateY(30px)";
