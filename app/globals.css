@@ -1241,6 +1241,103 @@ body {
   line-height: 1.55;
 }
 
+/* ── Phone row with country selector ── */
+.modal-phone-row {
+  display: flex;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  overflow: visible;
+  transition: border-color 0.2s;
+}
+.modal-phone-row:focus-within { border-color: rgba(232, 201, 122, 0.45); }
+.modal-phone-row--error { border-color: rgba(232, 122, 122, 0.5) !important; }
+
+.modal-country-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.modal-country-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  height: 100%;
+  min-height: 48px;
+  background: none;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.modal-country-btn:hover { background: rgba(255, 255, 255, 0.04); }
+
+.modal-country-code {
+  font-family: "DM Sans", Inter, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.02em;
+}
+.modal-country-arrow {
+  font-size: 0.55rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-left: 2px;
+}
+
+.modal-phone-input {
+  flex: 1;
+  border: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding-left: 12px !important;
+}
+.modal-phone-input:focus { border-color: transparent !important; }
+
+/* ── Country dropdown ── */
+.modal-country-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 200;
+  background: #131318;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  min-width: 240px;
+  max-height: 260px;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  animation: modalSlideUp 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.modal-country-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 14px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  font-family: "DM Sans", Inter, sans-serif;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+.modal-country-option:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+.modal-country-option.active { background: rgba(232, 201, 122, 0.08); }
+.modal-country-option-name { flex: 1; }
+.modal-country-option-code {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 500;
+}
+
 .modal-consent {
   display: flex;
   align-items: flex-start;

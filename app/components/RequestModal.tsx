@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 
 type PanelId = "tourism" | "insurance" | "realty";
 
@@ -13,11 +13,37 @@ interface Props {
   services: { name: string; hint: string }[];
 }
 
-/* ── Phone validation ───────────────────────────────────────── */
-// International: min 7 digits (shortest valid numbers), max 15 (E.164)
-function isPhoneValid(phone: string): boolean {
-  const digits = phone.replace(/\D/g, "");
-  return digits.length >= 7 && digits.length <= 15;
+/* ── Countries ──────────────────────────────────────────────── */
+const COUNTRIES = [
+  { flag: "🇷🇺", name: "Россия",              code: "+7"   },
+  { flag: "🇧🇾", name: "Беларусь",            code: "+375" },
+  { flag: "🇰🇿", name: "Казахстан",           code: "+7"   },
+  { flag: "🇺🇿", name: "Узбекистан",          code: "+998" },
+  { flag: "🇦🇿", name: "Азербайджан",         code: "+994" },
+  { flag: "🇹🇯", name: "Таджикистан",         code: "+992" },
+  { flag: "🇹🇲", name: "Туркменистан",        code: "+993" },
+  { flag: "🇺🇦", name: "Украина",             code: "+380" },
+  { flag: "🇬🇪", name: "Грузия",              code: "+995" },
+  { flag: "🇲🇩", name: "Молдова",             code: "+373" },
+  { flag: "🇹🇷", name: "Турция",              code: "+90"  },
+  { flag: "🇦🇪", name: "ОАЭ",                code: "+971" },
+  { flag: "🇸🇦", name: "Саудовская Аравия",  code: "+966" },
+  { flag: "🇮🇱", name: "Израиль",             code: "+972" },
+  { flag: "🇪🇬", name: "Египет",              code: "+20"  },
+  { flag: "🇮🇳", name: "Индия",               code: "+91"  },
+  { flag: "🇲🇻", name: "Мальдивы",            code: "+960" },
+  { flag: "🇹🇭", name: "Таиланд",             code: "+66"  },
+  { flag: "🇻🇳", name: "Вьетнам",             code: "+84"  },
+  { flag: "🇮🇩", name: "Индонезия",           code: "+62"  },
+  { flag: "🇨🇳", name: "Китай",               code: "+86"  },
+  { flag: "🌍",  name: "Другая страна",        code: "+"    },
+] as const;
+
+type Country = typeof COUNTRIES[number];
+
+/* ── Validation ─────────────────────────────────────────────── */
+function isLocalPhoneValid(local: string): boolean {
+  return local.replace(/\D/g, "").length >= 5;
 }
 
 /* ── Component ──────────────────────────────────────────────── */
@@ -31,18 +57,33 @@ export default function RequestModal({
   sectionTitle,
   services,
 }: Props) {
-  const [selected, setSelected] = useState<string[]>([]);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [status, setStatus] = useState<Status>("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [selected, setSelected]       = useState<string[]>([]);
+  const [name, setName]               = useState("");
+  const [country, setCountry]         = useState<Country>(COUNTRIES[0]);
+  const [localPhone, setLocalPhone]   = useState("");
+  const [countryOpen, setCountryOpen] = useState(false);
+  const [message, setMessage]         = useState("");
+  const [consent, setConsent]         = useState(false);
+  const [status, setStatus]           = useState<Status>("idle");
+  const [errorMsg, setErrorMsg]       = useState("");
 
-  /* touched state — show errors only after user has interacted */
-  const [nameTouched, setNameTouched] = useState(false);
-  const [phoneTouched, setPhoneTouched] = useState(false);
+  const [nameTouched,     setNameTouched]     = useState(false);
+  const [phoneTouched,    setPhoneTouched]    = useState(false);
   const [servicesTouched, setServicesTouched] = useState(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  /* close country dropdown on outside click */
+  useEffect(() => {
+    if (!countryOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setCountryOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [countryOpen]);
 
   const toggle = (s: string) => {
     setServicesTouched(true);
@@ -51,80 +92,63 @@ export default function RequestModal({
     );
   };
 
-  const handlePhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    // Allow digits, +, spaces, dashes, parentheses — strip everything else
-    const val = e.target.value.replace(/[^\d+\s\-()]/g, "");
-    setPhone(val);
+  const handleLocalPhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    // allow digits, spaces, dashes, parens only
+    setLocalPhone(e.target.value.replace(/[^\d\s\-()/]/g, ""));
   }, []);
 
   const handleClose = () => {
-    // reset on close
-    setSelected([]);
-    setName("");
-    setPhone("");
-    setMessage("");
-    setConsent(false);
-    setStatus("idle");
-    setErrorMsg("");
-    setNameTouched(false);
-    setPhoneTouched(false);
-    setServicesTouched(false);
+    setSelected([]); setName(""); setLocalPhone(""); setMessage("");
+    setConsent(false); setStatus("idle"); setErrorMsg("");
+    setNameTouched(false); setPhoneTouched(false); setServicesTouched(false);
+    setCountryOpen(false);
     onClose();
   };
 
   /* validation */
-  const nameError = nameTouched && name.trim().length < 2
+  const nameError  = nameTouched  && name.trim().length < 2
     ? name.trim().length === 0 ? "Введите ваше имя" : "Слишком короткое имя"
     : "";
-  const phoneError = phoneTouched && !isPhoneValid(phone)
-    ? phone.length === 0 ? "Введите номер телефона" : "Слишком короткий номер"
+  const phoneError = phoneTouched && !isLocalPhoneValid(localPhone)
+    ? localPhone.length === 0 ? "Введите номер телефона" : "Слишком короткий номер"
     : "";
   const servicesError = servicesTouched && selected.length === 0
     ? "Выберите хотя бы одну услугу"
     : "";
 
+  const fullPhone = `${country.code} ${localPhone}`.trim();
+
   const canSubmit =
     name.trim().length >= 2 &&
-    isPhoneValid(phone) &&
+    isLocalPhoneValid(localPhone) &&
     selected.length > 0 &&
     consent &&
     status !== "loading";
 
   const handleSubmit = async () => {
     if (!canSubmit) {
-      setNameTouched(true);
-      setPhoneTouched(true);
-      setServicesTouched(true);
+      setNameTouched(true); setPhoneTouched(true); setServicesTouched(true);
       return;
     }
-
-    setStatus("loading");
-    setErrorMsg("");
-
+    setStatus("loading"); setErrorMsg("");
     try {
       const res = await fetch("/api/telegram", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          section,
-          name: name.trim(),
-          phone,
+          section, name: name.trim(), phone: fullPhone,
           services: selected,
           message: message.trim() || undefined,
         }),
       });
-
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.error ? JSON.stringify(data.error) : "Ошибка сервера");
       }
-
       setStatus("success");
     } catch (e) {
       setStatus("error");
-      setErrorMsg(
-        e instanceof Error ? e.message : "Не удалось отправить заявку"
-      );
+      setErrorMsg(e instanceof Error ? e.message : "Не удалось отправить заявку");
     }
   };
 
@@ -141,11 +165,7 @@ export default function RequestModal({
           <p className="modal-sub">
             Свяжемся с вами в течение часа. Спасибо, {name.split(" ")[0]}!
           </p>
-          <button
-            className="modal-submit"
-            style={{ background: accent }}
-            onClick={handleClose}
-          >
+          <button className="modal-submit" style={{ background: accent }} onClick={handleClose}>
             Закрыть
           </button>
         </div>
@@ -158,13 +178,9 @@ export default function RequestModal({
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={handleClose}>✕</button>
 
-        <div className="modal-label" style={{ color: accent }}>
-          Оставить заявку
-        </div>
+        <div className="modal-label" style={{ color: accent }}>Оставить заявку</div>
         <h3 className="modal-title">{sectionTitle}</h3>
-        <p className="modal-sub">
-          Выберите что вас интересует — свяжемся в течение часа
-        </p>
+        <p className="modal-sub">Выберите что вас интересует — свяжемся в течение часа</p>
 
         {/* Services */}
         <div className="modal-services">
@@ -172,20 +188,12 @@ export default function RequestModal({
             <div
               key={s.name}
               className={`modal-service-item${selected.includes(s.name) ? " selected" : ""}`}
-              style={
-                selected.includes(s.name)
-                  ? { borderColor: accent, background: `${accent}18` }
-                  : {}
-              }
+              style={selected.includes(s.name) ? { borderColor: accent, background: `${accent}18` } : {}}
               onClick={() => toggle(s.name)}
             >
               <div
                 className="modal-service-check"
-                style={
-                  selected.includes(s.name)
-                    ? { background: accent, borderColor: accent }
-                    : {}
-                }
+                style={selected.includes(s.name) ? { background: accent, borderColor: accent } : {}}
               >
                 {selected.includes(s.name) && <span>✓</span>}
               </div>
@@ -196,13 +204,11 @@ export default function RequestModal({
             </div>
           ))}
         </div>
-        {/* Services error slot — fixed height, no layout jump */}
-        <p className="modal-field-error modal-field-error--slot">
-          {servicesError}
-        </p>
+        <p className="modal-field-error modal-field-error--slot">{servicesError}</p>
 
         {/* Fields */}
         <div className="modal-fields">
+          {/* Name */}
           <div className="modal-field-wrap">
             <input
               className={`modal-input${nameTouched && nameError ? " modal-input--error" : ""}`}
@@ -217,21 +223,57 @@ export default function RequestModal({
             </p>
           </div>
 
+          {/* Phone with country selector */}
           <div className="modal-field-wrap">
-            <input
-              className={`modal-input${phoneTouched && phoneError ? " modal-input--error" : ""}`}
-              placeholder="+7 917 … / +971 … / +90 …"
-              value={phone}
-              onChange={handlePhoneChange}
-              onBlur={() => setPhoneTouched(true)}
-              type="tel"
-              autoComplete="tel"
-            />
+            <div className={`modal-phone-row${phoneTouched && phoneError ? " modal-phone-row--error" : ""}`}>
+              {/* Country dropdown */}
+              <div className="modal-country-wrap" ref={dropdownRef}>
+                <button
+                  type="button"
+                  className="modal-country-btn"
+                  onClick={() => setCountryOpen((v) => !v)}
+                >
+                  <span>{country.flag}</span>
+                  <span className="modal-country-code">{country.code}</span>
+                  <span className="modal-country-arrow">{countryOpen ? "▴" : "▾"}</span>
+                </button>
+
+                {countryOpen && (
+                  <div className="modal-country-dropdown">
+                    {COUNTRIES.map((c) => (
+                      <button
+                        key={c.name}
+                        type="button"
+                        className={`modal-country-option${country.name === c.name ? " active" : ""}`}
+                        style={country.name === c.name ? { color: accent } : {}}
+                        onClick={() => { setCountry(c); setCountryOpen(false); }}
+                      >
+                        <span>{c.flag}</span>
+                        <span className="modal-country-option-name">{c.name}</span>
+                        <span className="modal-country-option-code">{c.code}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Local number input */}
+              <input
+                className="modal-input modal-phone-input"
+                placeholder="Ваш номер"
+                value={localPhone}
+                onChange={handleLocalPhoneChange}
+                onBlur={() => setPhoneTouched(true)}
+                type="tel"
+                autoComplete="tel-national"
+              />
+            </div>
             <p className="modal-field-error modal-field-error--slot">
               {phoneTouched ? phoneError : ""}
             </p>
           </div>
 
+          {/* Message */}
           <div className="modal-field-wrap">
             <textarea
               className="modal-input modal-textarea"
@@ -261,7 +303,6 @@ export default function RequestModal({
           </span>
         </label>
 
-        {/* API error */}
         {status === "error" && (
           <p className="modal-field-error modal-field-error--api">
             ⚠ {errorMsg || "Не удалось отправить заявку. Попробуйте ещё раз."}

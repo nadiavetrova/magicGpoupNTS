@@ -25,10 +25,7 @@ function validateRequest(section: unknown, name: unknown, phone: unknown, servic
   if (typeof name !== "string" || name.trim().length < 2 || name.trim().length > 100)
     return "Некорректное имя";
 
-  // strip non-digits, expect 11 digits starting with 7
-  if (typeof phone !== "string") return "Некорректный телефон";
-  const digits = phone.replace(/\D/g, "");
-  if (digits.length !== 11 || !digits.startsWith("7"))
+  if (typeof phone !== "string" || phone.replace(/\D/g, "").length < 5)
     return "Некорректный номер телефона";
 
   if (!Array.isArray(services) || services.length === 0 || services.length > 10)
