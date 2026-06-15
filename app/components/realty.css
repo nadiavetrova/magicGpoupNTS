@@ -55,29 +55,6 @@
   background: var(--re-cream);
 }
 
-/* Logo */
-.re-hero-logo {
-  position: absolute;
-  top: 1.8rem;
-  left: 4rem;
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  background: var(--re-ink);   /* тёмный фон-круг */
-  padding: 5px;
-  box-shadow: 0 4px 18px rgba(17,16,16,0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.re-hero-logo-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
 /* Eyebrow */
 .re-hero-eyebrow {
   display: flex;

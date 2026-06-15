@@ -148,16 +148,6 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
         {/* Left — typography */}
         <div className="re-hero-left">
 
-          {/* Logo */}
-          <motion.div
-            className="re-hero-logo"
-            variants={stagger(0)}
-            initial="hidden"
-            animate={textVisible ? "show" : "hidden"}
-          >
-            <img src="/icons/logo_home0.png" alt="MAGIC Group NTS — Недвижимость" className="re-hero-logo-img" />
-          </motion.div>
-
           <motion.div
             className="re-hero-eyebrow"
             variants={stagger(0.1)}
