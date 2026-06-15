@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import SmoothScroll from "./components/SmoothScroll";
 import RequestModal from "./components/RequestModal";
 import TourismOverlay from "./components/TourismOverlay";
+import RealtyOverlay from "./components/RealtyOverlay";
 
 type PanelId = "tourism" | "insurance" | "realty";
 type SocialLink = { label: string; href: string };
@@ -157,9 +158,12 @@ export default function Home() {
       <header className="header" style={{ background: "transparent", backdropFilter: "none", zIndex: 200 }}>
         <div className="header-logo" style={{ cursor: active ? "pointer" : "default", display: "flex", alignItems: "center", gap: "0.65rem" }} onClick={active ? handleClose : undefined}>
           {active === "tourism" && (
-            <img
-              src="/icons/logo_tur.png"
-              alt="Magic Tour NTS"
+            <img src="/icons/logo_tur.png" alt="Magic Tour NTS"
+              style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", flexShrink: 0, background: "#e8c97a" }}
+            />
+          )}
+          {active === "realty" && (
+            <img src="/logo_home.jpg" alt="Magic Home NTS"
               style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", flexShrink: 0, background: "#e8c97a" }}
             />
           )}
@@ -249,8 +253,15 @@ export default function Home() {
           )}
 
           {active === "tourism" ? (
-            /* ── TOURISM: кинематографичный дизайн Still Frame + Route ── */
+            /* ── TOURISM ── */
             <TourismOverlay
+              p={p}
+              textVisible={textVisible}
+              onOpenModal={() => setModalOpen(true)}
+            />
+          ) : active === "realty" ? (
+            /* ── REALTY ── */
+            <RealtyOverlay
               p={p}
               textVisible={textVisible}
               onOpenModal={() => setModalOpen(true)}

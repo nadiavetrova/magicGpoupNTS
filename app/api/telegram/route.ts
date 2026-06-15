@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Один бот для всех форм — TG_TOKEN + TG_CHAT
+// Или раздельные боты — TG_TOKEN_TOURISM, TG_TOKEN_REALTY, TG_TOKEN_INSURANCE
 const BOTS: Record<string, { token: string; chatId: string }> = {
-  tourism:   { token: process.env.TG_TOKEN_TOURISM   || "", chatId: process.env.TG_CHAT_TOURISM   || "" },
-  insurance: { token: process.env.TG_TOKEN_INSURANCE || "", chatId: process.env.TG_CHAT_INSURANCE || "" },
-  realty:    { token: process.env.TG_TOKEN_REALTY    || "", chatId: process.env.TG_CHAT_REALTY    || "" },
+  tourism:   { token: process.env.TG_TOKEN_TOURISM   || process.env.TG_TOKEN || "", chatId: process.env.TG_CHAT_TOURISM   || process.env.TG_CHAT || "" },
+  insurance: { token: process.env.TG_TOKEN_INSURANCE || process.env.TG_TOKEN || "", chatId: process.env.TG_CHAT_INSURANCE || process.env.TG_CHAT || "" },
+  realty:    { token: process.env.TG_TOKEN_REALTY    || process.env.TG_TOKEN || "", chatId: process.env.TG_CHAT_REALTY    || process.env.TG_CHAT || "" },
 };
 
 /* ── 1. HTML escape — prevents injection into Telegram HTML mode ── */
