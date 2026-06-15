@@ -28,10 +28,9 @@ const panels = [
     services: {
       title: "Подберём путёвку или экскурсию",
       items: [
-        { icon: "01", name: "Пляжный отдых", hint: "Турция, Египет, Мальдивы, ОАЭ" },
-        { icon: "02", name: "Экскурсионные туры", hint: "Европа, Азия, авторские маршруты" },
+        { icon: "01", name: "Пляжный отдых", hint: "Курорты на любой вкус" },
+        { icon: "02", name: "Авторские экскурсионные туры", hint: "Наши неповторимые маршруты" },
         { icon: "03", name: "Авиабилеты + отель", hint: "Лучшие цены, быстрое оформление" },
-        { icon: "04", name: "Экзотика", hint: "Индия, Таиланд, Вьетнам, Бали" },
       ],
       cta: "Подобрать путёвку →",
       ctaHref: "#",
@@ -192,14 +191,16 @@ export default function Home() {
         {panels.map((panel) => {
           const isActive = active === panel.id;
           const isInactive = active !== null && !isActive;
-          const isLocked = !active && panel.id !== "tourism"; // недоступны на главном экране
+          const isLocked = panel.id === "realty" || panel.id === "insurance";
           return (
             <div
               key={panel.id}
-              className={`panel${isActive ? " panel--active" : ""}${isLocked ? " panel--locked" : ""}`}
+              className={`panel${isActive ? " panel--active" : ""}`}
               style={{
                 flex: isActive ? "8" : isInactive ? "0.15" : "1",
                 cursor: isLocked ? "default" : isInactive ? "pointer" : "default",
+                opacity: isLocked && !isActive ? 0.45 : 1,
+                pointerEvents: isLocked ? "none" : "auto",
               }}
               onClick={(e) => { if (!isActive && !isLocked) handleOpen(panel.id, e); }}
             >
@@ -214,16 +215,6 @@ export default function Home() {
                     ) : panel.badge}
                   </div>
                   <div className="panel-title">{panel.title}</div>
-                  {isLocked && (
-                    <div style={{
-                      fontSize: "0.55rem",
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,255,255,0.25)",
-                      marginTop: "0.5rem",
-                      fontFamily: "var(--font-jost, sans-serif)",
-                    }}>Скоро</div>
-                  )}
                 </div>
               )}
               {isInactive && <div className="panel-side-label">{panel.title}</div>}

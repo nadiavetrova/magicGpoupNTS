@@ -179,16 +179,6 @@ body {
   background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.18) 65%);
 }
 
-/* Заблокированные панели — недоступны, приглушены */
-.panel--locked {
-  opacity: 0.45;
-  filter: grayscale(40%);
-  pointer-events: none;
-}
-.panel--locked .panel-title {
-  opacity: 0.6;
-}
-
 .panel::after {
   content: "";
   position: absolute;
@@ -1218,6 +1208,102 @@ body {
   font-size: 0.72rem;
   font-weight: 300;
   color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Tour sub-panel ─────────────────────────────────────────── */
+.modal-tour-panel {
+  background: rgba(232,201,122,0.03);
+  border: 1px solid rgba(232,201,122,0.12);
+  border-top: none;
+  border-left: 2px solid rgba(232,201,122,0.28);
+  padding: 0.9rem 1rem 1rem 1.1rem;
+  animation: modalFadeIn 0.2s ease;
+  margin-bottom: 2px;
+}
+.modal-tour-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin: 0 0 0.65rem;
+}
+.modal-tour-countries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+}
+.modal-tour-chip {
+  padding: 0.38rem 0.85rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 3px;
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+}
+.modal-tour-chip:hover {
+  border-color: rgba(232,201,122,0.3);
+  color: rgba(255,255,255,0.85);
+  background: rgba(232,201,122,0.06);
+}
+.modal-tour-chip.active { font-weight: 600; }
+
+.modal-tour-excursions {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 0.65rem;
+  margin-top: 0.1rem;
+}
+.modal-tour-soon {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.28);
+  margin: 0;
+  padding: 0.35rem 0;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+.modal-tour-excursion-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 3px;
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+  width: 100%;
+}
+.modal-tour-excursion-item:hover {
+  border-color: rgba(232,201,122,0.22);
+  background: rgba(232,201,122,0.05);
+  color: rgba(255,255,255,0.85);
+}
+.modal-tour-excursion-item.active {
+  border-color: rgba(232,201,122,0.35);
+  background: rgba(232,201,122,0.08);
+  color: #e8c97a;
+  font-weight: 600;
+}
+
+.modal-service-arrow {
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .modal-fields {

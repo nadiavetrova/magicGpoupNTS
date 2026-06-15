@@ -81,6 +81,14 @@ function phoneHint(countryCode: string): string {
   return `${rule} цифр`;
 }
 
+/* ── Tour catalog ───────────────────────────────────────────── */
+const TOUR_SERVICE = "Авторские экскурсионные туры";
+
+const TOUR_CATALOG: Record<string, string[]> = {
+  "🇦🇿 Баку":  ["Первая экскурсия", "Вторая экскурсия", "Третья экскурсия"],
+  "🇮🇳 Индия": ["Первая экскурсия", "Вторая экскурсия", "Третья экскурсия"],
+};
+
 /* ── Component ──────────────────────────────────────────────── */
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -93,6 +101,8 @@ export default function RequestModal({
   services,
 }: Props) {
   const [selected, setSelected]       = useState<string[]>([]);
+  const [tourDest, setTourDest]       = useState<string | null>(null);
+  const [tourExcursion, setTourExcursion] = useState<string | null>(null);
   const [name, setName]               = useState("");
   const [country, setCountry]         = useState<Country>(COUNTRIES[0]);
   const [localPhone, setLocalPhone]   = useState("");
@@ -122,9 +132,15 @@ export default function RequestModal({
 
   const toggle = (s: string) => {
     setServicesTouched(true);
-    setSelected((prev) =>
-      prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]
-    );
+    setSelected((prev) => {
+      const next = prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s];
+      // если сняли галочку с авторских туров — сбросить выбор страны/экскурсии
+      if (s === TOUR_SERVICE && prev.includes(s)) {
+        setTourDest(null);
+        setTourExcursion(null);
+      }
+      return next;
+    });
   };
 
   const handleLocalPhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +152,7 @@ export default function RequestModal({
     setSelected([]); setName(""); setLocalPhone(""); setMessage("");
     setConsent(false); setStatus("idle"); setErrorMsg("");
     setNameTouched(false); setPhoneTouched(false); setServicesTouched(false);
-    setCountryOpen(false);
+    setCountryOpen(false); setTourDest(null); setTourExcursion(null);
     onClose();
   };
 
@@ -175,6 +191,8 @@ export default function RequestModal({
         body: JSON.stringify({
           section, name: name.trim(), phone: fullPhone,
           services: selected,
+          tourDest: tourDest || undefined,
+          tourExcursion: tourExcursion || undefined,
           message: message.trim() || undefined,
         }),
       });
@@ -222,22 +240,79 @@ export default function RequestModal({
         {/* Services */}
         <div className="modal-services">
           {services.map((s) => (
-            <div
-              key={s.name}
-              className={`modal-service-item${selected.includes(s.name) ? " selected" : ""}`}
-              style={selected.includes(s.name) ? { borderColor: accent, background: `${accent}18` } : {}}
-              onClick={() => toggle(s.name)}
-            >
+            <div key={s.name}>
+              {/* Основной пункт */}
               <div
-                className="modal-service-check"
-                style={selected.includes(s.name) ? { background: accent, borderColor: accent } : {}}
+                className={`modal-service-item${selected.includes(s.name) ? " selected" : ""}`}
+                style={selected.includes(s.name) ? { borderColor: accent, background: `${accent}18` } : {}}
+                onClick={() => toggle(s.name)}
               >
-                {selected.includes(s.name) && <span>✓</span>}
+                <div
+                  className="modal-service-check"
+                  style={selected.includes(s.name) ? { background: accent, borderColor: accent } : {}}
+                >
+                  {selected.includes(s.name) && <span>✓</span>}
+                </div>
+                <div>
+                  <div className="modal-service-name">{s.name}</div>
+                  <div className="modal-service-hint">{s.hint}</div>
+                </div>
+                {s.name === TOUR_SERVICE && (
+                  <span className="modal-service-arrow" style={{ marginLeft: "auto", color: accent, opacity: 0.6 }}>
+                    {selected.includes(s.name) ? "▴" : "▾"}
+                  </span>
+                )}
               </div>
-              <div>
-                <div className="modal-service-name">{s.name}</div>
-                <div className="modal-service-hint">{s.hint}</div>
-              </div>
+
+              {/* Вложенный выбор — только для авторских туров */}
+              {s.name === TOUR_SERVICE && selected.includes(TOUR_SERVICE) && (
+                <div className="modal-tour-panel">
+                  {/* Шаг 1 — выбор страны */}
+                  <p className="modal-tour-label">Выберите направление:</p>
+                  <div className="modal-tour-countries">
+                    {Object.keys(TOUR_CATALOG).map((dest) => (
+                      <button
+                        key={dest}
+                        type="button"
+                        className={`modal-tour-chip${tourDest === dest ? " active" : ""}`}
+                        style={tourDest === dest ? { borderColor: accent, background: `${accent}22`, color: accent } : {}}
+                        onClick={() => { setTourDest(dest); setTourExcursion(null); }}
+                      >
+                        {dest}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Шаг 2 — выбор экскурсии */}
+                  {tourDest && (
+                    <div className="modal-tour-excursions">
+                      {TOUR_CATALOG[tourDest].length === 0 ? (
+                        <p className="modal-tour-soon">
+                          ✦ Экскурсии по {tourDest.split(" ").slice(1).join(" ")} — уточним при звонке
+                        </p>
+                      ) : (
+                        TOUR_CATALOG[tourDest].map((ex) => (
+                          <button
+                            key={ex}
+                            type="button"
+                            className={`modal-tour-excursion-item${tourExcursion === ex ? " active" : ""}`}
+                            style={tourExcursion === ex ? { borderColor: `${accent}55`, color: accent } : {}}
+                            onClick={() => setTourExcursion(ex)}
+                          >
+                            <span style={{
+                              width: 14, height: 14, border: `1.5px solid ${tourExcursion === ex ? accent : "rgba(255,255,255,0.18)"}`,
+                              borderRadius: 2, display: "inline-flex", alignItems: "center", justifyContent: "center",
+                              flexShrink: 0, fontSize: "0.6rem", color: tourExcursion === ex ? accent : "transparent",
+                              transition: "all 0.15s", marginRight: "0.55rem"
+                            }}>✓</span>
+                            {ex}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
