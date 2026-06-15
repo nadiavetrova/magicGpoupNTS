@@ -1,47 +1,46 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import "./realty.css";
 
-/* ── Fictional expert content ─────────────────────────── */
+/* ── Team content ─────────────────────────────────────── */
 const EXPERT = {
-  firstName: "Марина",
-  lastName:  "Соколова",
-  title:     "Советник по недвижимости",
-  subtitle:  "Представитель клиента · не агентство",
-  bio:       "Я не продаю объекты. Я нахожу место, в которое вы влюбитесь — и которое будет работать на вас финансово. За восемь лет я сопровождала сделки в пяти странах: от студий в Стамбуле до вилл на Пхукете. Каждый раз — детальный анализ, юридическая чистота и честный разговор о рисках.",
-  quote:     "Вы покупаете не квадратные метры. Вы выбираете образ жизни и инвестицию в будущее.",
+  teamName:  "MAGIC Group NTS",
+  title:     "Команда по недвижимости",
+  subtitle:  "Работаем с людьми, а не с объектами",
+  bio:       "Недвижимость — это не просто сделка. Мы внимательно выслушаем ваши планы и сомнения, чтобы вместе найти решение, которое будет по-настоящему вашим. Работаем с квартирами, домами, участками и коммерческими объектами в России и за рубежом.",
+  quote:     "В первую очередь мы работаем не с объектами, а с людьми и их мечтами.",
   stats:     [
-    { num: "8",    label: "лет опыта" },
-    { num: "200+", label: "сделок"    },
+    { num: "15",   label: "лет опыта" },
     { num: "5",    label: "стран"     },
+    { num: "∞",    label: "решений"   },
   ],
-  markets: ["Стамбул", "Дубай", "Пхукет", "Москва", "Бали"],
+  markets: ["Россия", "ОАЭ", "Турция", "Таиланд", "Вьетнам"],
 };
 
 const CHAPTERS = [
   {
     num:   "01",
     title: "Поиск",
-    lead:  "Я слушаю вас, а не базу объектов",
-    story: "Прежде чем открыть первую ссылку, я провожу час разговора. Узнаю, как вы живёте, что для вас важно в пространстве, какой горизонт инвестиции. Только после этого начинается поиск — точечный, без лишнего шума.",
+    lead:  "Найдём идеальный вариант по вашим запросам и бюджету",
+    story: "Прежде чем открыть первую ссылку — слушаем вас. Узнаём, как вы живёте, что важно в пространстве и какой горизонт инвестиции. Только после этого начинается точечный поиск: без лишнего шума и навязанных объектов.",
     photo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1800&auto=format&fit=crop",
     photoAlt: "Modern white villa exterior",
   },
   {
     num:   "02",
-    title: "Проверка",
-    lead:  "Юридическая чистота без компромиссов",
-    story: "Каждый объект проходит независимую юридическую экспертизу. Я работаю с локальными юристами в каждой стране и никогда не тороплю клиента. Плохая сделка, закрытая быстро — худшее, что может случиться.",
+    title: "Продажа",
+    lead:  "Продадим вашу квартиру по максимальной рыночной цене",
+    story: "Соберём и оформим все документы, чтобы не было проволочек. Организуем сделку так, чтобы вы получили лучший результат — без стресса и потери времени.",
     photo: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1400&auto=format&fit=crop",
     photoAlt: "Bright luxury interior, soft light",
   },
   {
     num:   "03",
     title: "Сопровождение",
-    lead:  "От первого показа до ключей — рядом",
-    story: "Перелёты, переговоры, нотариус, открытие счёта, регистрация — всё это я беру на себя. После сделки остаюсь на связи: помогаю с управлением, арендой и налогами в стране покупки.",
+    lead:  "От первого звонка до ключей — мы рядом",
+    story: "Переговоры, нотариус, документы, регистрация — берём на себя. Работаем с любыми объектами: квартиры, дома, участки, коммерция. Хотите купить или продать — обеспечим вам спокойствие и выгоду.",
     photo: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1400&auto=format&fit=crop",
     photoAlt: "Luxury interior living room",
   },
@@ -49,15 +48,13 @@ const CHAPTERS = [
 
 // Hero — современная архитектурная вилла, минимализм, тёплый свет
 const HERO_PHOTO = "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1800&auto=format&fit=crop";
-// Advisor portrait — editorial профессиональный портрет
-const PORTRAIT   = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=900&auto=format&fit=crop";
 
 const MARKET_PHOTOS: Record<string, string> = {
-  "Стамбул": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=600&auto=format&fit=crop",
-  "Дубай":   "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600&auto=format&fit=crop",
-  "Пхукет":  "https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?q=80&w=600&auto=format&fit=crop",
-  "Москва":  "https://images.unsplash.com/photo-1513326738677-b964603b136d?q=80&w=600&auto=format&fit=crop",
-  "Бали":    "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=600&auto=format&fit=crop",
+  "Россия":  "https://images.unsplash.com/photo-1513326738677-b964603b136d?q=80&w=600&auto=format&fit=crop",
+  "ОАЭ":     "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600&auto=format&fit=crop",
+  "Турция":  "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=600&auto=format&fit=crop",
+  "Таиланд": "https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?q=80&w=600&auto=format&fit=crop",
+  "Вьетнам": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=600&auto=format&fit=crop",
 };
 
 /* ── Shared animation variants ────────────────────────── */
@@ -136,6 +133,36 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
   const vk = p.socials.find(s => s.label === "VK");
   const mx = p.socials.find(s => s.label === "MX");
 
+  /* ── Header background on scroll ── */
+  useEffect(() => {
+    const container = document.querySelector(".lenis") as HTMLElement | null;
+    const header    = document.querySelector(".header")   as HTMLElement | null;
+    if (!container || !header) return;
+
+    const update = () => {
+      if (container.scrollTop > 60) {
+        header.style.background     = "rgba(12, 31, 23, 0.72)";
+        header.style.backdropFilter = "blur(14px)";
+        header.style.boxShadow      = "0 1px 0 rgba(201,146,42,0.12)";
+      } else {
+        header.style.background     = "transparent";
+        header.style.backdropFilter = "none";
+        header.style.boxShadow      = "none";
+      }
+    };
+
+    update();
+    container.addEventListener("scroll", update, { passive: true });
+    return () => {
+      container.removeEventListener("scroll", update);
+      if (header) {
+        header.style.background     = "transparent";
+        header.style.backdropFilter = "none";
+        header.style.boxShadow      = "none";
+      }
+    };
+  }, []);
+
   return (
     <div className={`fullscreen-overlay lenis re-overlay${textVisible ? " re-overlay--in" : ""}`}>
 
@@ -182,7 +209,7 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             initial="hidden"
             animate={textVisible ? "show" : "hidden"}
           >
-            {EXPERT.title} · {EXPERT.subtitle}
+            {EXPERT.teamName} · {EXPERT.subtitle}
           </motion.p>
 
           <motion.div
@@ -197,8 +224,12 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
                 <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
               </svg>
             </button>
-            <button className="re-btn-ghost" onClick={onOpenModal}>
-              Связаться
+            <button className="re-btn-ghost" onClick={() => {
+              const el = document.getElementById("re-contacts");
+              const container = document.querySelector(".lenis") as HTMLElement | null;
+              if (el && container) container.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+            }}>
+              Контакты
             </button>
           </motion.div>
 
@@ -228,14 +259,14 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
         >
           <img
             src={HERO_PHOTO}
-            alt="Марина Соколова — советник по недвижимости"
+            alt="Недвижимость — MAGIC Group NTS"
             className="re-hero-photo"
           />
           <div className="re-hero-photo-overlay" />
           <div className="re-hero-photo-caption">
-            <span>{EXPERT.firstName} {EXPERT.lastName}</span>
+            <span>MAGIC Group NTS</span>
             <span className="re-hero-photo-caption-rule" />
-            <span>Советник · 2016—</span>
+            <span>Недвижимость · РФ и за рубежом</span>
           </div>
         </motion.div>
       </section>
@@ -256,41 +287,35 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
       {/* ══════════════════════════════════════════════════
           ADVISOR — personal intro
       ══════════════════════════════════════════════════ */}
-      <section className="re-advisor">
+      <section className="re-advisor" id="re-about">
+        <span className="re-section-bg-num" aria-hidden="true">01</span>
         <div className="re-advisor-inner">
 
-          {/* Photo */}
+          {/* Services list */}
           <div className="re-advisor-photo-col">
             <InView>
-              <div className="re-advisor-frame">
-                <motion.div
-                  className="re-advisor-photo-wrap"
-                  variants={clipReveal}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true, margin: "-10% 0px" }}
-                >
-                  <img src={PORTRAIT} alt={`${EXPERT.firstName} ${EXPERT.lastName}`} className="re-advisor-photo"/>
-                </motion.div>
-              </div>
+              <p className="re-advisor-pretitle">— Чем мы занимаемся</p>
             </InView>
-            <InView delay={0.15}>
-              <p className="re-advisor-photo-label">
-                {EXPERT.firstName} {EXPERT.lastName}<br/>
-                <em>{EXPERT.title}</em>
-              </p>
+            <InView delay={0.1}>
+              <ul className="re-services-list">
+                <li>Найдём идеальную недвижимость по вашим запросам и бюджету</li>
+                <li>Поможем продать квартиру или дом по максимальной рыночной цене</li>
+                <li>Соберём и оформим все документы без проволочек</li>
+                <li>Организуем сделку так, чтобы вы получили лучший результат</li>
+                <li>Работаем с любыми объектами: квартиры, дома, участки, коммерция</li>
+              </ul>
             </InView>
           </div>
 
           {/* Bio */}
           <div className="re-advisor-info">
             <InView>
-              <p className="re-advisor-pretitle">— О себе</p>
+              <p className="re-advisor-pretitle">— О нас</p>
             </InView>
             <InView delay={0.1}>
               <h2 className="re-advisor-name">
-                {EXPERT.firstName}<br/>
-                <span className="re-advisor-surname">{EXPERT.lastName}</span>
+                MAGIC<br/>
+                <span className="re-advisor-surname">Group NTS</span>
               </h2>
             </InView>
             <InView delay={0.2}>
@@ -308,7 +333,7 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             </InView>
             <InView delay={0.4}>
               <button className="re-btn-secondary" onClick={onOpenModal}>
-                Написать Марине →
+                Написать нам →
               </button>
             </InView>
           </div>
@@ -318,9 +343,12 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
       {/* ══════════════════════════════════════════════════
           CHAPTERS — 3 editorial sections
       ══════════════════════════════════════════════════ */}
-      <section className="re-chapters">
+      <section className="re-chapters" id="re-services">
         {CHAPTERS.map((ch, i) => (
           <article key={ch.num} className={`re-chapter re-chapter--${i % 2 === 0 ? "left" : "right"}`}>
+
+            {/* Big background number */}
+            <span className="re-chapter-bg-num" aria-hidden="true">{ch.num}</span>
 
             {/* Photo */}
             <div className="re-chapter-frame">
@@ -358,10 +386,10 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
       {/* ══════════════════════════════════════════════════
           MARKETS — geography strip
       ══════════════════════════════════════════════════ */}
-      <section className="re-markets">
+      <section className="re-markets" id="re-markets">
         <InView className="re-markets-header">
           <p className="re-markets-label">Рынки присутствия</p>
-          <h2 className="re-markets-title">Где я работаю</h2>
+          <h2 className="re-markets-title">Где мы работаем</h2>
         </InView>
 
         <div className="re-markets-strip">
@@ -401,8 +429,7 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             </InView>
             <InView delay={0.2}>
               <p className="re-contact-sub">
-                Страну, бюджет, цели — всё обсудим в коротком разговоре.
-                Я отвечаю в течение часа.
+                Нужен совет при выборе или продаже жилья? Напишите нам — разберём ваш вариант в коротком разговоре.
               </p>
             </InView>
           </div>

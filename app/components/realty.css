@@ -385,10 +385,14 @@
   padding: 8rem 4.5rem;
   border-top: 1px solid var(--re-border3);
   border-bottom: 1px solid var(--re-border3);
+  position: relative;
+  overflow: hidden;
 }
 .re-advisor-inner {
   max-width: 1100px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 7rem;
@@ -397,6 +401,37 @@
 
 /* Photo */
 .re-advisor-photo-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* Services list — левая колонка вместо фото */
+.re-services-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.re-services-list li {
+  font-family: var(--ff-body);
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--re-cream2);
+  line-height: 1.55;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--re-border2);
+  padding-left: 1.1rem;
+  position: relative;
+}
+.re-services-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--re-gold);
+  font-size: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
 
 /* Угловые скобки вокруг фото */
 .re-advisor-frame {
@@ -512,11 +547,53 @@
   padding: 5rem 4.5rem;
   gap: 5rem;
   border-top: 1px solid var(--re-border2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Большая фоновая цифра за главой */
+.re-chapter-bg-num {
+  position: absolute;
+  font-family: var(--ff-display);
+  font-size: clamp(14rem, 28vw, 26rem);
+  font-weight: 700;
+  line-height: 0.8;
+  color: var(--re-green);
+  opacity: 0.06;
+  top: 50%;
+  right: -0.05em;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  letter-spacing: -0.05em;
+}
+/* Для --right главы (текст слева) цифра тоже слева */
+.re-chapter--right .re-chapter-bg-num {
+  right: auto;
+  left: -0.05em;
+}
+
+/* Большая фоновая цифра для других секций */
+.re-section-bg-num {
+  position: absolute;
+  font-family: var(--ff-display);
+  font-size: clamp(12rem, 22vw, 22rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--re-green);
+  opacity: 0.05;
+  top: 0.1em;
+  right: 2rem;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  letter-spacing: -0.05em;
 }
 .re-chapter--left  { grid-template-columns: 55% 1fr; }
 .re-chapter--right { grid-template-columns: 1fr 55%; }
-.re-chapter--right .re-chapter-photo-wrap { order: 2; }
-.re-chapter--right .re-chapter-text        { order: 1; }
+.re-chapter--right .re-chapter-frame { order: 2; }
+.re-chapter--right .re-chapter-text  { order: 1; }
 
 /* Угловые скобки на фото глав */
 .re-chapter-frame {
@@ -628,10 +705,14 @@
   background: var(--re-bg2);
   padding: 7rem 4.5rem;
   border-top: 1px solid var(--re-border);
+  position: relative;
+  overflow: hidden;
 }
 .re-markets-header {
   max-width: 1100px;
   margin: 0 auto 3.5rem;
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -657,6 +738,8 @@
 .re-markets-strip {
   max-width: 1100px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1px;                        /* industrial grid — без отступов */
@@ -859,7 +942,7 @@
 
   .re-chapters { padding: 2rem 0 4rem; }
   .re-chapter { grid-template-columns: 1fr !important; padding: 3rem 1.8rem; gap: 2.5rem; }
-  .re-chapter--right .re-chapter-photo-wrap,
+  .re-chapter--right .re-chapter-frame,
   .re-chapter--right .re-chapter-text { order: unset; }
   .re-chapter-story { max-width: 100%; }
 

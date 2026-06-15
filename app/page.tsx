@@ -32,7 +32,7 @@ const panels = [
         { icon: "02", name: "Авторские экскурсионные туры", hint: "Наши неповторимые маршруты" },
         { icon: "03", name: "Авиабилеты + отель", hint: "Лучшие цены, быстрое оформление" },
       ],
-      cta: "Подобрать путёвку →",
+      cta: "Подобрать путёвку самостоятельно →",
       ctaHref: "#",
     },
     socials: [
@@ -110,6 +110,7 @@ export default function Home() {
   const [overlayExpanded, setOverlayExpanded] = useState(false);
   const [initialClip, setInitialClip] = useState("inset(0 0 0 0)");
   const [modalOpen, setModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (active) {
@@ -125,27 +126,32 @@ export default function Home() {
     }
   }, [active]);
 
-  const handleOpen = (id: PanelId, e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    const t = Math.round(rect.top);
-    const r = Math.round(window.innerWidth - rect.right);
-    const b = Math.round(window.innerHeight - rect.bottom);
-    const l = Math.round(rect.left);
-    setInitialClip(`inset(${t}px ${r}px ${b}px ${l}px round 0px)`);
+  const handleOpen = (id: PanelId, e?: React.MouseEvent<Element>) => {
+    if (e) {
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      const t = Math.round(rect.top);
+      const r = Math.round(window.innerWidth - rect.right);
+      const b = Math.round(window.innerHeight - rect.bottom);
+      const l = Math.round(rect.left);
+      setInitialClip(`inset(${t}px ${r}px ${b}px ${l}px round 0px)`);
+    } else {
+      setInitialClip("inset(0 0 100% 0 round 0px)");
+    }
     setOverlayExpanded(false);
     setActive(id);
-    // two rAFs to ensure DOM is painted before transition starts
+    setMobileMenuOpen(false);
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setOverlayExpanded(true);
       });
     });
-    setTimeout(() => setTextVisible(true), 1100);
+    setTimeout(() => setTextVisible(true), e ? 1100 : 500);
   };
 
   const handleClose = () => {
     setTextVisible(false);
     setOverlayExpanded(false);
+    setMobileMenuOpen(false);
     setTimeout(() => setActive(null), 50);
   };
 
@@ -155,13 +161,52 @@ export default function Home() {
     <>
       {/* ── HEADER ── */}
       <header className="header" style={{ background: "transparent", backdropFilter: "none", zIndex: 200 }}>
-        <div className="header-logo" style={{ cursor: active ? "pointer" : "default", display: "flex", alignItems: "center", gap: "0.65rem" }} onClick={active ? handleClose : undefined}>
-          <div>
-            <div className="logo-main">MAGIC Group NTS</div>
-            <div className="logo-sub">Туризм · Страхование · Недвижимость</div>
+        {/* Logo */}
+        <div className="header-logo" style={{ cursor: active ? "pointer" : "default" }} onClick={active ? handleClose : undefined}>
+          <div className="logo-main">MAGIC Group NTS</div>
+          <div className="logo-sub">
+            {([ "tourism", "realty", "insurance" ] as PanelId[]).map((id, i) => {
+              const label = id === "tourism" ? "Туризм" : id === "insurance" ? "Страхование" : "Недвижимость";
+              return (
+                <span key={id}>
+                  {i > 0 && <span className="logo-sub-dot">·</span>}
+                  <button
+                    className={`logo-sub-link${active === id ? " logo-sub-link--active" : ""}`}
+                    onClick={e => { e.stopPropagation(); handleOpen(id); }}
+                  >
+                    {label}
+                  </button>
+                </span>
+              );
+            })}
           </div>
         </div>
 
+        {/* Desktop nav — якоря внутри активного раздела */}
+        {active === "realty" && (
+          <nav className="header-nav" aria-label="Навигация по разделу">
+            {[
+              { label: "О нас",    anchor: "re-about"    },
+              { label: "Услуги",   anchor: "re-services" },
+              { label: "Рынки",    anchor: "re-markets"  },
+              { label: "Контакты", anchor: "re-contacts" },
+            ].map(({ label, anchor }) => (
+              <button
+                key={anchor}
+                className="header-nav-item"
+                onClick={() => {
+                  const el = document.getElementById(anchor);
+                  const container = document.querySelector(".lenis") as HTMLElement | null;
+                  if (el && container) container.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+        )}
+
+        {/* Right: phone + burger */}
         <div className="header-right">
           <a className="header-phone" href="tel:+79178739655">+7 (917) 873-96-55</a>
           {active && (
@@ -183,7 +228,62 @@ export default function Home() {
               Главное меню
             </button>
           )}
+          {/* Home icon — mobile only */}
+          <button
+            className={`header-burger${mobileMenuOpen ? " header-burger--open" : ""}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Меню"
+          >
+            {mobileMenuOpen ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/>
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12L12 4l9 8"/>
+                <path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/>
+              </svg>
+            )}
+          </button>
         </div>
+
+        {/* Mobile menu overlay */}
+        {mobileMenuOpen && (
+          <div className="header-mobile-menu" onClick={() => setMobileMenuOpen(false)}>
+            <div className="header-mobile-inner" onClick={e => e.stopPropagation()}>
+
+              {/* Якоря внутри раздела недвижимость */}
+              {active === "realty" && (
+                <>
+                  <p className="header-mobile-label">Недвижимость</p>
+                  {[
+                    { label: "О нас",    anchor: "re-about"    },
+                    { label: "Услуги",   anchor: "re-services" },
+                    { label: "Рынки",    anchor: "re-markets"  },
+                    { label: "Контакты", anchor: "re-contacts" },
+                  ].map(({ label, anchor }) => (
+                    <button
+                      key={anchor}
+                      className="header-mobile-item header-mobile-item--anchor"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        const el = document.getElementById(anchor);
+                        const container = document.querySelector(".lenis") as HTMLElement | null;
+                        if (el && container) container.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+                      }}
+                    >
+                      <span className="header-mobile-num">→</span>
+                      {label}
+                    </button>
+                  ))}
+                </>
+              )}
+
+              <div className="header-mobile-divider"/>
+              <a className="header-mobile-phone" href="tel:+79178739655">+7 (917) 873-96-55</a>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* ── HERO PANELS ── */}
@@ -191,7 +291,7 @@ export default function Home() {
         {panels.map((panel) => {
           const isActive = active === panel.id;
           const isInactive = active !== null && !isActive;
-          const isLocked = panel.id === "realty" || panel.id === "insurance";
+          const isLocked = panel.id === "insurance";
           return (
             <div
               key={panel.id}
