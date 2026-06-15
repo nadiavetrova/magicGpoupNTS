@@ -1392,8 +1392,8 @@ body {
 .modal-field-error {
   font-family: "DM Sans", Inter, sans-serif;
   font-size: 0.7rem;
-  font-weight: 400;
-  color: #e87a7a;
+  font-weight: 700;
+  color: #8e0909;
   margin: 0;
   line-height: 1.4;
 }
