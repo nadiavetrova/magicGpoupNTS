@@ -157,16 +157,6 @@ export default function Home() {
       {/* ── HEADER ── */}
       <header className="header" style={{ background: "transparent", backdropFilter: "none", zIndex: 200 }}>
         <div className="header-logo" style={{ cursor: active ? "pointer" : "default", display: "flex", alignItems: "center", gap: "0.65rem" }} onClick={active ? handleClose : undefined}>
-          {active === "tourism" && (
-            <img src="/icons/logo_tur.png" alt="Magic Tour NTS"
-              style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", flexShrink: 0, background: "#e8c97a" }}
-            />
-          )}
-          {active === "realty" && (
-            <img src="/logo_home.jpg" alt="Magic Home NTS"
-              style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", flexShrink: 0, background: "#e8c97a" }}
-            />
-          )}
           <div>
             <div className="logo-main">MAGIC Group NTS</div>
             <div className="logo-sub">Туризм · Страхование · Недвижимость</div>
