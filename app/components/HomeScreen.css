@@ -81,13 +81,7 @@
 
 /* ── Slide dots ── */
 .hs-dots {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: calc(var(--hs-cards-h, 160px) + 1.5rem);
-  display: flex;
-  gap: 0.5rem;
-  z-index: 10;
+  display: none;
 }
 
 .hs-dot {
