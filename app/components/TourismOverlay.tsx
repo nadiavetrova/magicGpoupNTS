@@ -475,18 +475,6 @@ export default function TourismOverlay({ p, textVisible, onOpenModal, onOpenTour
             <button className="tr-btn tr-btn--primary" onClick={onOpenModal}>
               Оставить заявку <span className="tr-btn-arrow">↗</span>
             </button>
-            <button
-              className="tr-btn tr-btn--ghost"
-              onClick={() => {
-                const el = document.getElementById("tr-contacts");
-                const container = document.querySelector(".lenis") as HTMLElement | null;
-                if (el && container) container.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
-              }}
-            >
-              <span className="tr-btn-dot" />
-              <span className="tr-btn-line" />
-              <span>Контакты</span>
-            </button>
           </div>
         </div>
       </section>

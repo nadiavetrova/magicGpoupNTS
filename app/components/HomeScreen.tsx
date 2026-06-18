@@ -39,14 +39,14 @@ const CARDS = [
     num: "02",
     name: "Недвижимость",
     hint: "Россия и за рубежом",
-    locked: true,
+    locked: false,
   },
   {
     id: "insurance" as const,
     num: "03",
     name: "Страхование",
     hint: "Все виды страхования",
-    locked: true,
+    locked: false,
   },
 ];
 
