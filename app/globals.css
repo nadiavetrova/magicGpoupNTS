@@ -628,8 +628,12 @@ body {
   border-right: none;
 }
 
-.service-card:nth-child(3),
-.service-card:nth-child(4) {
+/* Убираем нижний бордер у последних двух карточек (любое кол-во) */
+.service-card:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+/* Если кол-во нечётное — последняя одна карточка тоже без бордера */
+.service-card:last-child {
   border-bottom: none;
 }
 

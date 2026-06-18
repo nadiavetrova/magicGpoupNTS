@@ -4,13 +4,140 @@ import { useRef, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import "./realty.css";
 
+/* ── Decorative house blueprint SVG ─────────────────────── */
+function HouseBlueprint({ className }: { className?: string }) {
+  const G = "#C9922A";
+  return (
+    <svg className={className} viewBox="0 0 640 540" fill="none"
+      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+      {/* Blueprint grid */}
+      {[80,160,240,320,400,480,560].map(x => (
+        <line key={"v"+x} x1={x} y1={0} x2={x} y2={540}
+          stroke={G} strokeWidth="0.35" opacity="0.45"/>
+      ))}
+      {[60,120,180,240,300,360,420,480].map(y => (
+        <line key={"h"+y} x1={0} y1={y} x2={640} y2={y}
+          stroke={G} strokeWidth="0.35" opacity="0.45"/>
+      ))}
+
+      {/* Ground */}
+      <line x1={60} y1={450} x2={580} y2={450} stroke={G} strokeWidth="1.6"/>
+      <line x1={60} y1={456} x2={580} y2={456} stroke={G} strokeWidth="0.5" opacity="0.4"/>
+      {/* Foundation */}
+      <rect x={108} y={450} width={424} height={18}
+        stroke={G} strokeWidth="0.9" fill="none" opacity="0.6"/>
+      {[120,145,170,195,220,245,270,295,320,345,370,395,420,445,470,495].map(x => (
+        <line key={x} x1={x} y1={450} x2={x-8} y2={468}
+          stroke={G} strokeWidth="0.5" opacity="0.35"/>
+      ))}
+
+      {/* Main walls */}
+      <rect x={110} y={250} width={420} height={200}
+        stroke={G} strokeWidth="1.8" fill="none"/>
+
+      {/* Roof — gabled */}
+      <polyline points="88,250 320,98 552,250"
+        stroke={G} strokeWidth="2" fill="none"/>
+      {/* Roof overhang detail */}
+      <line x1={88} y1={250} x2={110} y2={250} stroke={G} strokeWidth="1.0"/>
+      <line x1={530} y1={250} x2={552} y2={250} stroke={G} strokeWidth="1.0"/>
+      {/* Ridge */}
+      <line x1={320} y1={98} x2={320} y2={250}
+        stroke={G} strokeWidth="0.7" strokeDasharray="9,5"/>
+
+      {/* Roof rafters */}
+      {[150,190,230,270].map((x,i) => {
+        const frac = (320-x)/(320-88);
+        const ry = 250 - frac*(250-98);
+        return <line key={i} x1={x} y1={250} x2={x+(320-x)*0.3} y2={250-(250-ry)*0.3}
+          stroke={G} strokeWidth="0.5" opacity="0.5"/>;
+      })}
+      {[390,430,470,510].map((x,i) => {
+        const frac = (x-320)/(552-320);
+        const ry = 250 - frac*(250-98);
+        return <line key={i} x1={x} y1={250} x2={x-(x-320)*0.3} y2={250-(250-ry)*0.3}
+          stroke={G} strokeWidth="0.5" opacity="0.5"/>;
+      })}
+
+      {/* Chimney */}
+      <rect x={404} y={128} width={38} height={88}
+        stroke={G} strokeWidth="1.2" fill="none"/>
+      <line x1={398} y1={128} x2={448} y2={128} stroke={G} strokeWidth="1.4"/>
+      {/* Chimney smoke rings */}
+      <circle cx={423} cy={112} r={8} stroke={G} strokeWidth="0.7" fill="none" opacity="0.5"/>
+      <circle cx={428} cy={96}  r={6} stroke={G} strokeWidth="0.5" fill="none" opacity="0.35"/>
+      <circle cx={432} cy={83}  r={4} stroke={G} strokeWidth="0.4" fill="none" opacity="0.2"/>
+
+      {/* Left window — double */}
+      <rect x={148} y={288} width={100} height={74}
+        stroke={G} strokeWidth="1.4" fill="none"/>
+      <line x1={198} y1={288} x2={198} y2={362} stroke={G} strokeWidth="0.8"/>
+      <line x1={148} y1={325} x2={248} y2={325} stroke={G} strokeWidth="0.8"/>
+      {/* Window sill */}
+      <line x1={142} y1={362} x2={254} y2={362} stroke={G} strokeWidth="1.2"/>
+      <rect x={142} y={362} width={112} height={7} stroke={G} strokeWidth="0.6" fill="none" opacity="0.5"/>
+
+      {/* Right window — double */}
+      <rect x={392} y={288} width={100} height={74}
+        stroke={G} strokeWidth="1.4" fill="none"/>
+      <line x1={442} y1={288} x2={442} y2={362} stroke={G} strokeWidth="0.8"/>
+      <line x1={392} y1={325} x2={492} y2={325} stroke={G} strokeWidth="0.8"/>
+      {/* Window sill */}
+      <line x1={386} y1={362} x2={498} y2={362} stroke={G} strokeWidth="1.2"/>
+      <rect x={386} y={362} width={112} height={7} stroke={G} strokeWidth="0.6" fill="none" opacity="0.5"/>
+
+      {/* Door — arched */}
+      <path d="M280,450 L280,348 Q320,318 360,348 L360,450"
+        stroke={G} strokeWidth="1.4" fill="none"/>
+      <line x1={280} y1={390} x2={360} y2={390} stroke={G} strokeWidth="0.7"/>
+      {/* Door handle */}
+      <circle cx={352} cy={400} r={5} stroke={G} strokeWidth="1.0" fill="none"/>
+      <line  x1={352} y1={400} x2={352} y2={410} stroke={G} strokeWidth="1.0"/>
+
+      {/* Gable window */}
+      <rect x={284} y={166} width={72} height={52}
+        stroke={G} strokeWidth="1.1" fill="none"/>
+      <line x1={320} y1={166} x2={320} y2={218} stroke={G} strokeWidth="0.6"/>
+      <line x1={284} y1={192} x2={356} y2={192} stroke={G} strokeWidth="0.6"/>
+
+      {/* Dimension lines */}
+      <line x1={110} y1={476} x2={530} y2={476} stroke={G} strokeWidth="0.8"/>
+      <line x1={110} y1={470} x2={110} y2={482} stroke={G} strokeWidth="0.8"/>
+      <line x1={530} y1={470} x2={530} y2={482} stroke={G} strokeWidth="0.8"/>
+      {/* Dim arrows */}
+      <polyline points="118,476 110,474 110,478" stroke={G} strokeWidth="0.8" fill="none"/>
+      <polyline points="522,476 530,474 530,478" stroke={G} strokeWidth="0.8" fill="none"/>
+
+      <line x1={72} y1={250} x2={72} y2={450} stroke={G} strokeWidth="0.8"/>
+      <line x1={66} y1={250} x2={78} y2={250} stroke={G} strokeWidth="0.8"/>
+      <line x1={66} y1={450} x2={78} y2={450} stroke={G} strokeWidth="0.8"/>
+
+      {/* Reference node circles */}
+      <circle cx={320} cy={98}  r={12} stroke={G} strokeWidth="0.9" fill="none" opacity="0.7"/>
+      <circle cx={110} cy={250} r={7}  stroke={G} strokeWidth="0.8" fill="none" opacity="0.7"/>
+      <circle cx={530} cy={250} r={7}  stroke={G} strokeWidth="0.8" fill="none" opacity="0.7"/>
+      <circle cx={320} cy={250} r={5}  stroke={G} strokeWidth="0.7" fill="none" opacity="0.5"/>
+
+      {/* Center axis */}
+      <line x1={320} y1={40} x2={320} y2={500}
+        stroke={G} strokeWidth="0.5" strokeDasharray="14,7" opacity="0.55"/>
+
+      {/* Small label marks */}
+      <line x1={560} y1={250} x2={590} y2={250} stroke={G} strokeWidth="0.7" opacity="0.5"/>
+      <line x1={560} y1={450} x2={590} y2={450} stroke={G} strokeWidth="0.7" opacity="0.5"/>
+      <line x1={585} y1={250} x2={585} y2={450} stroke={G} strokeWidth="0.7" opacity="0.5"/>
+    </svg>
+  );
+}
+
 /* ── Team content ─────────────────────────────────────── */
 const EXPERT = {
   teamName:  "MAGIC Group NTS",
   title:     "Команда по недвижимости",
   subtitle:  "Работаем с людьми, а не с объектами",
   bio:       "Недвижимость — это не просто сделка. Мы внимательно выслушаем ваши планы и сомнения, чтобы вместе найти решение, которое будет по-настоящему вашим. Работаем с квартирами, домами, участками и коммерческими объектами в России и за рубежом.",
-  quote:     "В первую очередь мы работаем не с объектами, а с людьми и их мечтами.",
+  quote:     "В первую очередь мы работаем не с объектами, а с людьми и их мечтами.",
   stats:     [
     { num: "15",   label: "лет опыта" },
     { num: "5",    label: "стран"     },
@@ -53,8 +180,8 @@ const MARKET_PHOTOS: Record<string, string> = {
   "Россия":  "https://images.unsplash.com/photo-1513326738677-b964603b136d?q=80&w=600&auto=format&fit=crop",
   "ОАЭ":     "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600&auto=format&fit=crop",
   "Турция":  "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=600&auto=format&fit=crop",
-  "Таиланд": "https://images.unsplash.com/photo-1537953773345-d172ccf13cf1?q=80&w=600&auto=format&fit=crop",
-  "Вьетнам": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?q=80&w=600&auto=format&fit=crop",
+  "Таиланд": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?q=80&w=600&auto=format&fit=crop",
+  "Вьетнам": "/images/vetnam.jpg",
 };
 
 /* ── Shared animation variants ────────────────────────── */
@@ -219,17 +346,11 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             animate={textVisible ? "show" : "hidden"}
           >
             <button className="re-btn-primary" onClick={onOpenModal}>
-              Оставить заявку
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 12L12 4l9 8"/>
+                <path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/>
               </svg>
-            </button>
-            <button className="re-btn-ghost" onClick={() => {
-              const el = document.getElementById("re-contacts");
-              const container = document.querySelector(".lenis") as HTMLElement | null;
-              if (el && container) container.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
-            }}>
-              Контакты
+              Оставить заявку
             </button>
           </motion.div>
 
@@ -285,29 +406,33 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          ADVISOR — personal intro
+          SERVICES LIST — тёмная секция
+      ══════════════════════════════════════════════════ */}
+      <section className="re-services-dark">
+        <div className="re-services-dark-inner">
+          <InView>
+            <p className="re-advisor-pretitle">— Чем мы занимаемся</p>
+          </InView>
+          <InView delay={0.1}>
+            <ul className="re-services-list">
+              <li>Найдём идеальную недвижимость по вашим запросам и бюджету</li>
+              <li>Поможем продать квартиру или дом по максимальной рыночной цене</li>
+              <li>Соберём и оформим все документы без проволочек</li>
+              <li>Организуем сделку так, чтобы вы получили лучший результат</li>
+              <li>Работаем с любыми объектами: квартиры, дома, участки, коммерция</li>
+            </ul>
+          </InView>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
+          О НАС — светлая секция с домиком
       ══════════════════════════════════════════════════ */}
       <section className="re-advisor" id="re-about">
-        <span className="re-section-bg-num" aria-hidden="true">01</span>
-        <div className="re-advisor-inner">
-
-          {/* Services list */}
-          <div className="re-advisor-photo-col">
-            <InView>
-              <p className="re-advisor-pretitle">— Чем мы занимаемся</p>
-            </InView>
-            <InView delay={0.1}>
-              <ul className="re-services-list">
-                <li>Найдём идеальную недвижимость по вашим запросам и бюджету</li>
-                <li>Поможем продать квартиру или дом по максимальной рыночной цене</li>
-                <li>Соберём и оформим все документы без проволочек</li>
-                <li>Организуем сделку так, чтобы вы получили лучший результат</li>
-                <li>Работаем с любыми объектами: квартиры, дома, участки, коммерция</li>
-              </ul>
-            </InView>
-          </div>
-
-          {/* Bio */}
+        <div className="re-house-wrap" aria-hidden="true">
+          <HouseBlueprint className="re-house-svg" />
+        </div>
+        <div className="re-advisor-inner re-advisor-inner--bio">
           <div className="re-advisor-info">
             <InView>
               <p className="re-advisor-pretitle">— О нас</p>
@@ -333,6 +458,9 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             </InView>
             <InView delay={0.4}>
               <button className="re-btn-secondary" onClick={onOpenModal}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/>
+                </svg>
                 Написать нам →
               </button>
             </InView>
@@ -461,6 +589,9 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
 
             <InView delay={0.3}>
               <button className="re-contact-cta" onClick={onOpenModal}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 12L12 4l9 8"/><path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/>
+                </svg>
                 Оставить заявку →
               </button>
             </InView>
