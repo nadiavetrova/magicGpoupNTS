@@ -232,6 +232,7 @@ interface Props {
   };
   textVisible: boolean;
   onOpenModal: () => void;
+  onOpenTours: () => void;
 }
 
 const HERO_PHOTOS = [
@@ -243,12 +244,14 @@ const HERO_PHOTOS = [
 
 const SERVICE_PHOTOS: Record<string, string> = {
   "01": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
-  "02": "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80",
+  "02": "/images/authors_excursion_tours.png",
   "03": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
   "04": "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&q=80",
 };
 
-export default function TourismOverlay({ p, textVisible, onOpenModal }: Props) {
+const TOUR_SERVICE = "Авторские экскурсионные туры";
+
+export default function TourismOverlay({ p, textVisible, onOpenModal, onOpenTours }: Props) {
   const [line1, line2] = p.heading.split("\n");
   const [slideIdx, setSlideIdx] = useState(0);
 
@@ -442,19 +445,30 @@ export default function TourismOverlay({ p, textVisible, onOpenModal }: Props) {
           </div>
 
           <div className="tr-services-grid">
-            {p.services.items.map((item) => (
-              <div key={item.name} className="tr-card">
+            {p.services.items.map((item) => {
+              const isTour = item.name === TOUR_SERVICE;
+              return (
                 <div
-                  className="tr-card-photo"
-                  style={{ backgroundImage: `url(${SERVICE_PHOTOS[item.icon] || ""})` }}
-                />
-                <div className="tr-card-body">
-                  <span className="tr-card-num">{item.icon}</span>
-                  <h3 className="tr-card-name">{item.name}</h3>
-                  <p className="tr-card-hint">{item.hint}</p>
+                  key={item.name}
+                  className={`tr-card${isTour ? " tr-card--tours" : ""}`}
+                  onClick={isTour ? onOpenTours : undefined}
+                  style={isTour ? { cursor: "pointer" } : undefined}
+                >
+                  <div
+                    className="tr-card-photo"
+                    style={{ backgroundImage: `url(${SERVICE_PHOTOS[item.icon] || ""})` }}
+                  />
+                  <div className="tr-card-body">
+                    <span className="tr-card-num">{item.icon}</span>
+                    <h3 className="tr-card-name">{item.name}</h3>
+                    <p className="tr-card-hint">{item.hint}</p>
+                    {isTour && (
+                      <span className="tr-card-cta-hint">Смотреть туры →</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="tr-services-cta">

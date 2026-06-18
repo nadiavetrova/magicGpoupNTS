@@ -85,8 +85,9 @@ function phoneHint(countryCode: string): string {
 const TOUR_SERVICE = "Авторские экскурсионные туры";
 
 const TOUR_CATALOG: Record<string, string[]> = {
-  "🇦🇿 Баку":  ["Первая экскурсия", "Вторая экскурсия", "Третья экскурсия"],
-  "🇮🇳 Индия": ["Первая экскурсия", "Вторая экскурсия", "Третья экскурсия"],
+  "Азербайджан": ["Я покажу тебе Баку!", "Огни Востока", "Винный тур по Азербайджану"],
+  "Индия":       [],
+  "Турция":      [],
 };
 
 /* ── Component ──────────────────────────────────────────────── */
@@ -288,7 +289,7 @@ export default function RequestModal({
                     <div className="modal-tour-excursions">
                       {TOUR_CATALOG[tourDest].length === 0 ? (
                         <p className="modal-tour-soon">
-                          ✦ Экскурсии по {tourDest.split(" ").slice(1).join(" ")} — уточним при звонке
+                          ✦ Туры скоро появятся
                         </p>
                       ) : (
                         TOUR_CATALOG[tourDest].map((ex) => (

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, Inter, Playfair_Display, Cormorant_Garamond, Jost, Manrope, Oswald } from "next/font/google";
+import { Syne, DM_Sans, Inter, Cormorant_Garamond, Jost, Manrope, Oswald } from "next/font/google";
 import "./globals.css";
 
 // next/font/google скачивает шрифты при сборке и раздаёт с собственного домена —
@@ -22,14 +22,6 @@ const inter = Inter({
   subsets: ["latin", "cyrillic"], // Inter — полная кириллица
   weight: ["300", "400", "500", "600"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -69,6 +61,16 @@ const oswald = Oswald({
 export const metadata: Metadata = {
   title: "MAGIC Group NTS — Шухрат Азизов",
   description: "Международный туризм, страхование и недвижимость. Ваш надёжный партнёр.",
+  icons: {
+    icon: [
+      { url: "/favicon/favicon.ico", rel: "shortcut icon" },
+      { url: "/favicon/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: { url: "/favicon/apple-touch-icon.png", sizes: "180x180" },
+  },
+  manifest: "/favicon/site.webmanifest",
+  appleWebApp: { title: "MAGIC Group NTS" },
 };
 
 export default function RootLayout({
@@ -77,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${playfair.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable} ${oswald.variable}`}>
+    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable} ${oswald.variable}`}>
       <body>{children}</body>
     </html>
   );

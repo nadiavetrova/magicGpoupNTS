@@ -23,15 +23,22 @@
 
 /* ── SHARED ─────────────────────────────────── */
 
+@keyframes label-color-cycle {
+  0%   { color: #e8c97a; }   /* золотой */
+  33%  { color: #a8d8a8; }   /* мягкий зелёный */
+  66%  { color: #7ab8e8; }   /* голубой */
+  100% { color: #e8c97a; }   /* снова золотой */
+}
+
 .tr-label {
   display: block;
   font-family: "DM Sans", Inter, sans-serif;
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--tr-gold-dim);
   margin-bottom: 1.2rem;
+  animation: label-color-cycle 6s ease-in-out infinite;
 }
 
 .tr-btn {
@@ -592,6 +599,24 @@
   line-height: 1.45;
   margin: 0;
 }
+
+/* Карточка авторских туров — кликабельная */
+.tr-card--tours:hover {
+  border-color: rgba(232,201,122,0.35) !important;
+  background: rgba(232,201,122,0.04);
+}
+.tr-card--tours:hover .tr-card-photo { transform: scale(1.04); }
+.tr-card-cta-hint {
+  display: inline-block;
+  margin-top: 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #e8c97a;
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+.tr-card--tours:hover .tr-card-cta-hint { opacity: 1; }
 
 .tr-services-cta {
   display: flex;

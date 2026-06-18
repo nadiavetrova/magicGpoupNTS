@@ -5,6 +5,8 @@ import SmoothScroll from "./components/SmoothScroll";
 import RequestModal from "./components/RequestModal";
 import TourismOverlay from "./components/TourismOverlay";
 import RealtyOverlay from "./components/RealtyOverlay";
+import TourDrawer from "./components/TourDrawer";
+import HomeScreen from "./components/HomeScreen";
 
 type PanelId = "tourism" | "insurance" | "realty";
 type SocialLink = { label: string; href: string };
@@ -111,6 +113,7 @@ export default function Home() {
   const [initialClip, setInitialClip] = useState("inset(0 0 0 0)");
   const [modalOpen, setModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [tourDrawerOpen, setTourDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (active) {
@@ -228,8 +231,8 @@ export default function Home() {
               Главное меню
             </button>
           )}
-          {/* Home icon — mobile only */}
-          <button
+          {/* Home icon — mobile only, только в разделе недвижимость */}
+          {active === "realty" && <button
             className={`header-burger${mobileMenuOpen ? " header-burger--open" : ""}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Меню"
@@ -244,7 +247,7 @@ export default function Home() {
                 <path d="M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/>
               </svg>
             )}
-          </button>
+          </button>}
         </div>
 
         {/* Mobile menu overlay */}
@@ -286,42 +289,8 @@ export default function Home() {
         )}
       </header>
 
-      {/* ── HERO PANELS ── */}
-      <section className="hero-panels">
-        {panels.map((panel) => {
-          const isActive = active === panel.id;
-          const isInactive = active !== null && !isActive;
-          const isLocked = panel.id === "insurance" || panel.id === "realty";
-          return (
-            <div
-              key={panel.id}
-              className={`panel${isActive ? " panel--active" : ""}`}
-              style={{
-                flex: isActive ? "8" : isInactive ? "0.15" : "1",
-                cursor: isLocked ? "default" : isInactive ? "pointer" : "default",
-                opacity: isLocked && !isActive ? 0.45 : 1,
-                pointerEvents: isLocked ? "none" : "auto",
-              }}
-              onClick={(e) => { if (!isActive && !isLocked) handleOpen(panel.id, e); }}
-            >
-              <div className={`panel-bg${isActive ? " panel-bg--expand" : ""}`}
-                style={{ background: panel.bg }} />
-              {!isActive && <div className="panel-overlay" />}
-              {!isActive && (
-                <div className="panel-content">
-                  <div className="panel-badge">
-                    {panel.id === "tourism" ? (
-                      <img src="/icons/logo_tur.png" alt="Magic Tour NTS" style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", display: "block", margin: "0 auto", background: "#e8c97a" }} />
-                    ) : panel.badge}
-                  </div>
-                  <div className="panel-title">{panel.title}</div>
-                </div>
-              )}
-              {isInactive && <div className="panel-side-label">{panel.title}</div>}
-            </div>
-          );
-        })}
-      </section>
+      {/* ── HOME SCREEN (когда раздел не открыт) ── */}
+      {!active && <HomeScreen onOpen={handleOpen} />}
 
       {/* ── FULL-SCREEN OVERLAY ── */}
       {active && p && (
@@ -353,6 +322,7 @@ export default function Home() {
               p={p}
               textVisible={textVisible}
               onOpenModal={() => setModalOpen(true)}
+              onOpenTours={() => setTourDrawerOpen(true)}
             />
           ) : active === "realty" ? (
             /* ── REALTY ── */
@@ -451,6 +421,13 @@ export default function Home() {
           services={p.services.items}
         />
       )}
+      <TourDrawer
+        isOpen={tourDrawerOpen}
+        onClose={() => setTourDrawerOpen(false)}
+        onBook={() => {
+          setModalOpen(true);
+        }}
+      />
 
       {/* FOOTER */}
       {active && (
