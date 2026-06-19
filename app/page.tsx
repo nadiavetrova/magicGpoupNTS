@@ -121,6 +121,15 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [tourDrawerOpen, setTourDrawerOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     if (active) {
@@ -170,11 +179,11 @@ export default function Home() {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className="header" style={{ background: "transparent", backdropFilter: "none", zIndex: 200 }}>
+      <header className={`header${active ? " header--section-active" : ""}${active === "realty" ? " header--realty" : ""}`} style={{ background: "transparent", backdropFilter: "none", zIndex: 200 }}>
         {/* Logo */}
-        <div className="header-logo" style={{ cursor: active ? "pointer" : "default" }} onClick={active ? handleClose : undefined}>
+        <div className="header-logo" style={{ cursor: active ? "pointer" : "default", overflow: "visible" }} onClick={active ? handleClose : undefined}>
           <div className="logo-main">MAGIC Group NTS</div>
-          <div className="logo-sub">
+          <div className="logo-sub" style={isMobile ? { whiteSpace: "nowrap", fontSize: "0.56rem", letterSpacing: "0.06em", gap: "0.1em" } : undefined}>
             {([ "tourism", "realty", "insurance" ] as PanelId[]).map((id, i) => {
               const label = id === "tourism" ? "Туризм" : id === "insurance" ? "Страхование" : "Недвижимость";
               return (
@@ -183,6 +192,7 @@ export default function Home() {
                   <button
                     className={`logo-sub-link${active === id ? " logo-sub-link--active" : ""}`}
                     onClick={e => { e.stopPropagation(); handleOpen(id); }}
+                    style={isMobile ? { padding: "5px 2px" } : undefined}
                   >
                     {label}
                   </button>
@@ -218,24 +228,42 @@ export default function Home() {
 
         {/* Right: phone + burger */}
         <div className="header-right">
-          <a className="header-phone" href="tel:+79178739655">+7 (917) 873-96-55</a>
+          <a className="header-phone" href="tel:+79178739655">
+            {isMobile ? "Позвонить" : "+7 (917) 873-96-55"}
+          </a>
           {active && (
             <button
               className="header-back-btn"
               onClick={handleClose}
+              style={isMobile ? {
+                width: "38px", height: "38px", padding: 0, gap: 0,
+                borderRadius: "3px", background: "none",
+                border: "1px solid rgba(255,255,255,0.15)",
+                justifyContent: "center"
+              } : undefined}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.color = "rgba(255,255,255,0.85)";
-                (el.querySelector(".back-line") as HTMLElement).style.width = "36px";
+                if (isMobile) el.style.borderColor = "rgba(232,201,122,0.5)";
+                const line = el.querySelector(".back-line") as HTMLElement | null;
+                if (line) line.style.width = "36px";
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.color = "rgba(255,255,255,0.4)";
-                (el.querySelector(".back-line") as HTMLElement).style.width = "20px";
+                if (isMobile) el.style.borderColor = "rgba(255,255,255,0.15)";
+                const line = el.querySelector(".back-line") as HTMLElement | null;
+                if (line) line.style.width = "20px";
               }}
             >
-              <span className="back-line"/>
-              Главное меню
+              {/* Десктоп: линия */}
+              <span className="back-line back-line--desktop"/>
+              {/* Мобиле: стрелка */}
+              <svg className="back-icon--mobile" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+              {/* Текст: только на десктопе */}
+              {!isMobile && <span>Главный экран</span>}
             </button>
           )}
           {/* Home icon — mobile only, только в разделе недвижимость */}

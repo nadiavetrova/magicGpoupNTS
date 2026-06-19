@@ -172,6 +172,11 @@
   line-height: 1.4;
 }
 
+/* desktop: name-row is just a block wrapper */
+.hs-card-name-row {
+  display: block;
+}
+
 .hs-card-arrow {
   position: absolute;
   right: 1.8rem;
@@ -234,10 +239,23 @@
   .hs-card-name { font-size: 1.3rem; }
   .hs-card-hint { font-size: 0.78rem; margin-top: 0.2rem; }
 
+  /* name + arrow в одну строку, стрелка справа, выровнены по центру */
+  .hs-card-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
   .hs-card-arrow {
     position: static;
-    margin-top: 0.6rem;
-    align-self: flex-end;
+    transform: none;
+    font-size: 1.3rem;
     color: rgba(255,255,255,0.35);
+    flex-shrink: 0;
+  }
+
+  .hs-card:hover:not(.hs-card--locked) .hs-card-arrow {
+    transform: translateX(4px);
   }
 }

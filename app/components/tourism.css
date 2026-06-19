@@ -956,16 +956,16 @@
   .tr-label           { font-size: 9px; letter-spacing: 0.2em; margin-bottom: 0.9rem; }
 
   /* About */
-  .tr-about           { padding: 3rem 0 4rem; }
+  .tr-about           { padding: 3rem 0 4rem; overflow: hidden; }
   .tr-about-inner     { padding: 0 1.5rem; gap: 1.8rem; }
   .tr-quote           { font-size: clamp(1.1rem, 4vw, 1.4rem); }
-  .tr-compass-wrap    { right: -120px; width: 420px; height: 420px; top: calc(50% - 210px); opacity: 0.12; }
+  .tr-compass-wrap    { right: -120px; width: 300px; height: 300px; top: calc(50% - 150px); opacity: 0.10; }
   .tr-compass-wrap--left { left: -120px; }
   .tr-about-tags      { gap: 0.35rem; }
   .tr-tag             { font-size: 10px; padding: 0.3rem 0.7rem; }
 
   /* Services */
-  .tr-services        { padding: 3rem 0 4rem; }
+  .tr-services        { padding: 3rem 0 4rem; overflow: hidden; }
   .tr-services-inner  { padding: 0 1.5rem; }
   .tr-services-title  { font-size: clamp(1.4rem, 6vw, 1.9rem); }
   .tr-services-grid   { grid-template-columns: 1fr; gap: 1.2rem; }

@@ -115,9 +115,11 @@ export default function HomeScreen({ onOpen }: Props) {
             disabled={card.locked}
           >
             <span className="hs-card-num">{card.num}</span>
-            <span className="hs-card-name">{card.name}</span>
+            <span className="hs-card-name-row">
+              <span className="hs-card-name">{card.name}</span>
+              {!card.locked && <span className="hs-card-arrow">⟶</span>}
+            </span>
             <span className="hs-card-hint">{card.hint}</span>
-            {!card.locked && <span className="hs-card-arrow">→</span>}
           </button>
         ))}
       </div>

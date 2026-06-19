@@ -221,6 +221,9 @@ body {
   white-space: nowrap;
 }
 
+/* По умолчанию (десктоп) — мобильная иконка скрыта */
+.back-icon--mobile  { display: none; }
+
 .back-line {
   display: inline-block;
   width: 20px;
@@ -1923,20 +1926,59 @@ body {
     height: 54px;
     grid-template-columns: 1fr auto;
   }
-  .header-logo { grid-column: 1; }
+  .header-logo { grid-column: 1; min-width: 0; }
+  .logo-sub { white-space: normal; flex-wrap: wrap; overflow: visible; }
   .header-nav  { display: none; }
   .header-right {
     grid-column: 2;
-    gap: 0;
+    gap: 0.5rem;
     justify-content: flex-end;
+    align-items: center;
   }
-  .header-phone { display: none; }
-  .header-back-btn { display: none; }
+  /* Телефон — компактно на мобиле, скрыт когда активен раздел */
+  .header-phone {
+    display: flex;
+    font-size: 0.62rem;
+    letter-spacing: 0.01em;
+    padding: 0.28rem 0.45rem;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .header--section-active .header-phone { display: none; }
+  /* Кнопка "Главный экран" — на мобиле (в туризме/страховании — pill с текстом) */
+  .header-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0.35rem 0.75rem;
+    background: rgba(255,255,255,0.09);
+    border-radius: 20px;
+    color: rgba(255,255,255,0.85);
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  /* На всех разделах мобиле — только стрелка, квадрат */
+  .header--section-active .header-back-btn {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    gap: 0;
+    border-radius: 3px;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    justify-content: center;
+  }
+  .back-line--desktop  { display: none; }
+  .back-text--desktop  { display: none; }
+  .back-icon--mobile   { display: block; }
   .header-burger { display: flex; }
   .header-mobile-menu { display: block; }
   .header-mobile-inner { top: 54px; }
   .logo-main { font-size: 0.82rem; letter-spacing: 0.05em; }
-  .logo-sub  { font-size: 0.42rem; letter-spacing: 0.1em; }
+  .logo-sub  { font-size: 0.62rem; letter-spacing: 0.12em; gap: 0.2em; margin-top: 2px; }
+  .logo-sub-link { padding: 4px 2px; }
 }
 
 /* Responsive */
@@ -2051,7 +2093,8 @@ body {
     white-space: nowrap;
   }
   .logo-main { font-size: 0.9rem; letter-spacing: 0.07em; }
-  .logo-sub  { font-size: 0.45rem; letter-spacing: 0.14em; }
+  .logo-sub  { font-size: 0.56rem; letter-spacing: 0.08em; }
+  .logo-sub-link { padding: 5px 1px; }
   .header-back-btn { font-size: 11px; }
   .footer {
     flex-direction: row;
