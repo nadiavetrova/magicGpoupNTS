@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./insurance.css";
 
 interface Panel {
@@ -104,9 +104,40 @@ const FAQS = [
 
 export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props) {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+
+    const setup = () => {
+      const scroller =
+        (document.querySelector(".fullscreen-overlay") as HTMLElement | null);
+      const els = overlay.querySelectorAll<HTMLElement>(".ins-reveal");
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target as HTMLElement;
+              const delay = el.dataset.delay ? parseFloat(el.dataset.delay) : 0;
+              setTimeout(() => el.classList.add("ins-reveal--visible"), delay * 1000);
+              io.unobserve(el);
+            }
+          });
+        },
+        { threshold: 0.1, root: scroller }
+      );
+      els.forEach((el) => io.observe(el));
+      return io.disconnect.bind(io);
+    };
+
+    const t = setTimeout(setup, 400);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
-    <div className="ins-overlay">
+    <div className="ins-overlay" ref={overlayRef}>
 
       {/* ══ HERO ══ */}
       <section className="ins-hero">
@@ -158,15 +189,15 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
       {/* ══ STATS BAR ══ */}
       <div className="ins-stats-bar">
         <div className="ins-stats-bar-inner">
-          <div className="ins-stat-item">
+          <div className="ins-stat-item ins-reveal" data-delay="0">
             <div className="ins-stat-big">11+</div>
             <div className="ins-stat-desc">Видов страхования</div>
           </div>
-          <div className="ins-stat-item">
+          <div className="ins-stat-item ins-reveal" data-delay="0.12">
             <div className="ins-stat-big">15</div>
             <div className="ins-stat-desc">Лет опыта</div>
           </div>
-          <div className="ins-stat-item">
+          <div className="ins-stat-item ins-reveal" data-delay="0.24">
             <div className="ins-stat-big">∞</div>
             <div className="ins-stat-desc">Довольных клиентов</div>
           </div>
@@ -176,13 +207,13 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
       {/* ══ COVERAGE ══ */}
       <section className="ins-coverage">
         <div className="ins-wrap">
-          <div className="ins-eyebrow">Виды страхования</div>
-          <h2 className="ins-section-title">{p.services.title}</h2>
+          <div className="ins-eyebrow ins-reveal">Виды страхования</div>
+          <h2 className="ins-section-title ins-reveal" data-delay="0.1">{p.services.title}</h2>
           <div className="ins-coverage-grid">
             {p.services.items.map((item, i) => {
               const Icon = ICONS[i] ?? IconShield;
               return (
-                <div key={item.name} className="ins-card">
+                <div key={item.name} className="ins-card ins-reveal" data-delay={String((i % 4) * 0.1)}>
                   <div className="ins-card-icon"><Icon /></div>
                   <span className="ins-card-num">{item.icon}</span>
                   <div className="ins-card-name">{item.name}</div>
@@ -197,11 +228,11 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
       {/* ══ PROCESS ══ */}
       <section className="ins-process">
         <div className="ins-wrap">
-          <div className="ins-eyebrow">Как это работает</div>
-          <h2 className="ins-section-title">От запроса до полиса — просто</h2>
+          <div className="ins-eyebrow ins-reveal">Как это работает</div>
+          <h2 className="ins-section-title ins-reveal" data-delay="0.1">От запроса до полиса — просто</h2>
           <div className="ins-process-grid">
-            {PROCESS.map(step => (
-              <div key={step.num} className="ins-step">
+            {PROCESS.map((step, i) => (
+              <div key={step.num} className="ins-step ins-reveal" data-delay={String(i * 0.13)}>
                 <div className="ins-step-circle">{step.num}</div>
                 <div className="ins-step-title">{step.title}</div>
                 <div className="ins-step-desc">{step.desc}</div>
@@ -216,7 +247,7 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
         <div className="ins-wrap">
           <div className="ins-why-grid">
             {/* Photo */}
-            <div className="ins-why-photo-wrap">
+            <div className="ins-why-photo-wrap ins-reveal ins-reveal--from-left">
               <img
                 className="ins-why-photo"
                 src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=900&auto=format&fit=crop"
@@ -225,7 +256,7 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
               <div className="ins-why-photo-badge">Ваш личный агент</div>
             </div>
             {/* Text */}
-            <div className="ins-why-text">
+            <div className="ins-why-text ins-reveal ins-reveal--from-right" data-delay="0.15">
               <div className="ins-eyebrow">Почему выбирают нас</div>
               <h2 className="ins-why-title">
                 Не просто агент —<br />ваш партнёр
@@ -246,14 +277,14 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
       <section className="ins-faq">
         <div className="ins-wrap">
           <div className="ins-faq-grid">
-            <div>
+            <div className="ins-reveal ins-reveal--from-left">
               <div className="ins-faq-label">Частые вопросы</div>
               <h2 className="ins-faq-title">Отвечаем честно</h2>
               <p className="ins-faq-sub">
                 Задайте любой вопрос — расскажем всё без скрытых условий и страховых уловок.
               </p>
             </div>
-            <div className="ins-faq-list">
+            <div className="ins-faq-list ins-reveal ins-reveal--from-right" data-delay="0.1">
               {FAQS.map((faq, i) => (
                 <div
                   key={i}
@@ -281,7 +312,7 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
           aria-hidden="true"
         />
         <div className="ins-cta-overlay" />
-        <div className="ins-cta-inner">
+        <div className="ins-cta-inner ins-reveal ins-reveal--scale">
           <div className="ins-eyebrow">Начать сейчас</div>
           <h2 className="ins-cta-heading">
             Подберём страховку<br />для вашей ситуации

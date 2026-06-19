@@ -36,6 +36,21 @@
 
 .ins-in { opacity: 1 !important; transform: translateY(0) !important; }
 
+/* ── Scroll-reveal base ── */
+.ins-reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.ins-reveal.ins-reveal--from-left  { transform: translateX(-40px); }
+.ins-reveal.ins-reveal--from-right { transform: translateX(40px); }
+.ins-reveal.ins-reveal--scale      { transform: scale(0.94); }
+
+.ins-reveal--visible {
+  opacity: 1 !important;
+  transform: translate(0) scale(1) !important;
+}
+
 /* ══════════════════
    HERO — split layout
    ══════════════════ */

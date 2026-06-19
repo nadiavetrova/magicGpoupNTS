@@ -54,8 +54,22 @@ body {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0 2rem;
-  background: #000000cc;
+  background: transparent;
 }
+
+/* ── Страхование: золотой хедер ── */
+.header--insurance {
+  background: #e8c97a !important;
+}
+.header--insurance .logo-main          { color: #1a1a1a; }
+.header--insurance .logo-sub           { color: rgba(0,0,0,0.4); }
+.header--insurance .logo-sub-dot       { color: rgba(0,0,0,0.2); }
+.header--insurance .logo-sub-link      { color: rgba(0,0,0,0.38); }
+.header--insurance .logo-sub-link:hover{ color: rgba(0,0,0,0.75); }
+.header--insurance .logo-sub-link--active { color: #1398c0; font-weight: 700; }
+.header--insurance .header-phone       { color: #1a1a1a; }
+.header--insurance .header-phone:hover { color: #3d7282; }
+.header--insurance .header-back-btn    { color: #1398c0 !important; }
 
 .header-logo { grid-column: 1; cursor: default; }
 .header-nav  { grid-column: 2; display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
@@ -106,24 +120,32 @@ body {
   align-items: center;
   justify-content: center;
   background: none;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.22);
   border-radius: 3px;
   width: 38px;
   height: 38px;
   padding: 0;
   cursor: pointer;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.6);
   transition: border-color 0.2s, color 0.2s;
   flex-shrink: 0;
-  margin-left: auto;
 }
 .header-burger--open {
-  border-color: rgba(232,201,122,0.4);
-  color: #e8c97a;
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
 }
 .header-burger:hover {
-  border-color: rgba(232,201,122,0.5);
-  color: #e8c97a;
+  border-color: rgba(255,255,255,0.55);
+  color: #fff;
+}
+/* Страхование: тёмные кнопки на золотом фоне */
+.header--insurance .header-burger {
+  border-color: rgba(0,0,0,0.18);
+  color: rgba(0,0,0,0.55);
+}
+.header--insurance .header-burger:hover {
+  border-color: rgba(0,0,0,0.5);
+  color: #1a1a1a;
 }
 
 /* Mobile menu */
@@ -210,10 +232,10 @@ body {
   gap: 0;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255,255,255,0.75);
   font-family: "DM Sans", Inter, sans-serif;
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 0.05em;
   padding: 0;
   cursor: pointer;
@@ -258,7 +280,7 @@ body {
   gap: 0.4em;
 }
 .logo-sub-dot {
-  color: rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.2);
   font-size: 0.5em;
   line-height: 1;
 }
@@ -271,12 +293,12 @@ body {
   font-weight: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
-  color: rgba(255,255,255,0.38);
+  color: rgba(255,255,255,0.4);
   cursor: pointer;
   transition: color 0.22s;
   line-height: 1;
 }
-.logo-sub-link:hover { color: rgba(255,255,255,0.75); }
+.logo-sub-link:hover { color: rgba(255,255,255,0.85); }
 .logo-sub-link--active {
   color: #e8c97a;
   font-weight: 700;
@@ -284,7 +306,7 @@ body {
 
 .header-phone {
   font-size: 0.9rem;
-  color: #e8c97a;
+  color: rgba(255,255,255,0.85);
   letter-spacing: 0.03em;
   text-decoration: none;
   font-weight: 600;
@@ -302,8 +324,8 @@ body {
 }
 .header--light .logo-main { color: #1a1a1a; }
 .header--light .logo-sub  { color: rgba(0,0,0,0.4); }
-.header--light .header-back-btn { color: rgba(0,0,0,0.45) !important; }
-.header--light .header-phone { color: #9b2335; }
+.header--light .header-back-btn { color: rgba(0,0,0,0.6); }
+.header--light .header-phone { color: #1a1a1a; }
 
 /* Hero panels */
 .hero-panels {
@@ -1919,6 +1941,19 @@ body {
   .pp-footer { padding: 1.2rem; flex-direction: column; gap: 0.5rem; text-align: center; }
 }
 
+/* ── Tablet header — realty: phone stacks under back button ─ */
+@media (min-width: 641px) and (max-width: 1060px) {
+  .header--realty .header-right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.15rem;
+  }
+  .header--realty .header-phone {
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+  }
+}
+
 /* ── Mobile header ───────────────────────────────────────── */
 @media (max-width: 640px) {
   .header {
@@ -1946,15 +1981,15 @@ body {
     white-space: nowrap;
   }
   .header--section-active .header-phone { display: none; }
-  /* Кнопка "Главный экран" — на мобиле (в туризме/страховании — pill с текстом) */
+  /* Кнопка "Главный экран" — на мобиле */
   .header-back-btn {
     display: flex;
     align-items: center;
     gap: 5px;
     padding: 0.35rem 0.75rem;
-    background: rgba(255,255,255,0.09);
+    background: none;
     border-radius: 20px;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.75);
     font-size: 0.7rem;
     letter-spacing: 0.03em;
     white-space: nowrap;
@@ -1967,8 +2002,13 @@ body {
     gap: 0;
     border-radius: 3px;
     background: none;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.22);
     justify-content: center;
+    color: rgba(255,255,255,0.75);
+  }
+  /* Страхование: тёмные кнопки на золотом хедере */
+  .header--insurance .header-back-btn {
+    border-color: rgba(0,0,0,0.18) !important;
   }
   .back-line--desktop  { display: none; }
   .back-text--desktop  { display: none; }

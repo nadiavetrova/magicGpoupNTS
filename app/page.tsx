@@ -180,7 +180,7 @@ export default function Home() {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className={`header${active ? " header--section-active" : ""}${active === "realty" ? " header--realty" : ""}`} style={{ background: "transparent", backdropFilter: "none", zIndex: 200 }}>
+      <header className={`header${active ? " header--section-active" : ""}${active === "realty" ? " header--realty" : ""}${active === "insurance" ? " header--insurance" : ""}`} style={{ zIndex: 200, ...(active === "insurance" ? { background: "#e8c97a", backdropFilter: "none", boxShadow: "none" } : {}) }}>
         {/* Logo */}
         <div className="header-logo" style={{ cursor: active ? "pointer" : "default", overflow: "visible" }} onClick={active ? handleClose : undefined}>
           <div className="logo-main">MAGIC Group NTS</div>
@@ -239,20 +239,22 @@ export default function Home() {
               style={isMobile ? {
                 width: "38px", height: "38px", padding: 0, gap: 0,
                 borderRadius: "3px", background: "none",
-                border: "1px solid rgba(255,255,255,0.15)",
-                justifyContent: "center"
-              } : undefined}
+                border: active === "insurance"
+                  ? "1px solid rgba(0,0,0,0.18)"
+                  : "1px solid rgba(255,255,255,0.2)",
+                justifyContent: "center",
+              } : {}}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.color = "rgba(255,255,255,0.85)";
-                if (isMobile) el.style.borderColor = "rgba(232,201,122,0.5)";
+                el.style.color = active === "insurance" ? "#0a6a90" : "#fff";
+                if (isMobile) el.style.borderColor = active === "insurance" ? "#3d7282" : "rgba(255,255,255,0.5)";
                 const line = el.querySelector(".back-line") as HTMLElement | null;
                 if (line) line.style.width = "36px";
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.color = "rgba(255,255,255,0.4)";
-                if (isMobile) el.style.borderColor = "rgba(255,255,255,0.15)";
+                el.style.color = "";
+                if (isMobile) el.style.borderColor = active === "insurance" ? "rgba(0,0,0,0.18)" : "rgba(255,255,255,0.2)";
                 const line = el.querySelector(".back-line") as HTMLElement | null;
                 if (line) line.style.width = "20px";
               }}

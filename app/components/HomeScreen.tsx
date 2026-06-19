@@ -4,26 +4,11 @@ import { useState, useEffect } from "react";
 import "./HomeScreen.css";
 
 const SLIDES = [
-  {
-    id: "tourism",
-    // Индия — крепость Амбер в Джайпуре
-    photo: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=1800&q=85",
-  },
-  {
-    id: "realty",
-    // Современный дом вечером
-    photo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=85",
-  },
-  {
-    id: "insurance",
-    // Страхование — локальное фото
-    photo: "/images/insurance.png",
-  },
-  {
-    id: "realty2",
-    // Современный тёмный дом вечером
-    photo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=85",
-  },
+  { id: "s0", photo: "/images/main.jpg"    },
+  { id: "s1", photo: "/images/main_01.jpg" },
+  { id: "s2", photo: "/images/main_02.png" },
+  { id: "s3", photo: "/images/main_04.jpg" },
+  { id: "s4", photo: "/images/main_05.jpg" },
 ];
 
 const CARDS = [

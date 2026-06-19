@@ -42,7 +42,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -54%);
+  transform: translate(-50%, -65%);
   text-align: center;
   color: #fff;
   opacity: 0;
@@ -65,7 +65,7 @@
 }
 
 .hs-title {
-  font-size: clamp(2.8rem, 7vw, 6rem);
+  font-size: clamp(2rem, 4.5vw, 4rem);
   font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.025em;
