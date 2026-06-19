@@ -5,6 +5,7 @@ import SmoothScroll from "./components/SmoothScroll";
 import RequestModal from "./components/RequestModal";
 import TourismOverlay from "./components/TourismOverlay";
 import RealtyOverlay from "./components/RealtyOverlay";
+import InsuranceOverlay from "./components/InsuranceOverlay";
 import TourDrawer from "./components/TourDrawer";
 import HomeScreen from "./components/HomeScreen";
 
@@ -336,8 +337,8 @@ export default function Home() {
             transition: overlayExpanded ? "clip-path 1.4s cubic-bezier(0.76, 0, 0.24, 1)" : "none",
           }}
         >
-          {/* Fixed background photo — not for tourism (manages own photos) */}
-          {active !== "tourism" && (
+          {/* Fixed background photo — not for tourism/insurance (manage own backgrounds) */}
+          {active !== "tourism" && active !== "insurance" && (
             <>
               <div
                 className="fullscreen-photo"
@@ -367,71 +368,12 @@ export default function Home() {
               onOpenModal={() => setModalOpen(true)}
             />
           ) : (
-            <>
-              {/* SECTION 1 — О направлении */}
-              <div className={`fullscreen-content${textVisible ? " fullscreen-content--visible" : ""}`}>
-                <div className="exp-label">{p.label}</div>
-                <h2 className="exp-heading">
-                  {p.heading.split("\n").map((l, i) => <span key={i}>{l}<br /></span>)}
-                </h2>
-                <div className="exp-role">{p.role}</div>
-
-                <div className="exp-right" style={{ marginTop: "1.2rem" }}>
-                  {p.stats.map((s) => (
-                    <div key={s.label} className="exp-stat">
-                      <div className="exp-stat-num" style={{ color: p.accent }}>{s.num}</div>
-                      <div className="exp-stat-label">{s.label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="exp-body" style={{ marginTop: "1.5rem" }}>
-                  {p.body.map((t, i) => <p key={i}>{t}</p>)}
-                </div>
-
-                <div className="exp-tags" style={{ marginTop: "1.5rem" }}>
-                  {p.tags.map((t) => (
-                    <span key={t} className="exp-tag" style={{ borderColor: `${p.accent}55`, color: `${p.accent}cc` }}>{t}</span>
-                  ))}
-                </div>
-
-                {/* Scroll hint */}
-                <div className="scroll-down-hint" style={{ color: `${p.accent}99` }}>
-                  <span>Листайте вниз</span>
-                  <div className="scroll-down-arrow" style={{ borderColor: `${p.accent}66` }} />
-                </div>
-              </div>
-
-              {/* SECTION 2 — Услуги */}
-              <div className={`services-section${textVisible ? " services-section--visible" : ""}`}>
-                <div className="services-inner">
-                  <div className="services-header">
-                    <div className="exp-label" style={{ color: `${p.accent}99` }}>Что мы предлагаем</div>
-                    <h3 className="services-title">{p.services.title}</h3>
-                  </div>
-
-                  <div className="services-grid">
-                    {p.services.items.map((item) => (
-                      <div key={item.name} className="service-card" style={{ "--card-accent": p.accent } as React.CSSProperties}>
-                        <div className="service-card-icon">{item.icon}</div>
-                        <div className="service-card-name">{item.name}</div>
-                        <div className="service-card-hint">{item.hint}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                    <button
-                      className="request-btn"
-                      style={{ background: p.accent }}
-                      onClick={() => setModalOpen(true)}
-                    >
-                      Оставить заявку
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </>
+            /* ── INSURANCE ── */
+            <InsuranceOverlay
+              p={p}
+              textVisible={textVisible}
+              onOpenModal={() => setModalOpen(true)}
+            />
           )}
         </div>
       )}
