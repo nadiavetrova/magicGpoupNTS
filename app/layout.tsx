@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, Inter, Cormorant_Garamond, Jost, Manrope, Oswald } from "next/font/google";
+import { Syne, DM_Sans, Inter, Cormorant_Garamond, Jost, Manrope, Oswald, Playfair_Display, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 
 // next/font/google скачивает шрифты при сборке и раздаёт с собственного домена —
@@ -58,6 +58,20 @@ const oswald = Oswald({
   display: "swap",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin", "cyrillic"],
+  weight: ["700", "800", "900"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-barlow",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "MAGIC Group NTS — Шухрат Азизов",
   description: "Международный туризм, страхование и недвижимость. Ваш надёжный партнёр.",
@@ -79,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable} ${oswald.variable}`}>
+    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable} ${oswald.variable} ${playfair.variable} ${barlowCondensed.variable}`}>
       <body>{children}</body>
     </html>
   );
