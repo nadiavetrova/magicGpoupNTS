@@ -653,8 +653,8 @@
 .t-heading-line {
   display: block;
   overflow: hidden;
-  padding-top: 0.08em;
-  margin-top: -0.08em;
+  padding-top: 0.15em;
+  margin-top: -0.15em;
 }
 .t-heading-line-inner {
   display: block;

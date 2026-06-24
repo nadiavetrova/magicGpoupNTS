@@ -46,6 +46,7 @@ const panels = [
       { label: "MX", href: "https://max.ru/join/w4v28odPKu06lp5xCdnyI6aD8T8o-i8vxT8p_6Gc9wo" },
       { label: "VK", href: "https://vk.ru/magic_tour_nts" },
       { label: "IN", href: "https://www.instagram.com/magic_tour_travel?igsh=MWhoMWtjYzZ3eHpwbQ%3D%3D&utm_source=qr" },
+      { label: "TG", href: "https://t.me/magic_tour_travel" },
     ],
   },
   {

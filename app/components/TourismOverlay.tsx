@@ -377,6 +377,7 @@ const SOCIAL_IMG: Record<string, string> = {
   VK: "/icons/tur-VK.png",
   IN: "/icons/tur-insta.png",
   MX: "/icons/tur-max.png",
+  TG: "/icons/tur-telegram.png",
 };
 
 const SOCIAL_ICONS: Record<string, React.ReactElement> = {
