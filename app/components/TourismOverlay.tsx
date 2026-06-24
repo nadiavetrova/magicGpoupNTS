@@ -448,13 +448,19 @@ export default function TourismOverlay({ p, onOpenModal, onOpenTours }: Props) {
     const handleScroll = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
-        document.querySelectorAll<HTMLElement>(".t-stat-grid__left").forEach((left) => {
-          const row = left.closest(".t-row") as HTMLElement;
-          if (!row) return;
-          const rect = row.getBoundingClientRect();
-          const progress = rect.top / window.innerHeight - 0.3;
-          left.style.transform = `translateY(${progress * 20}px)`;
-        });
+        if (window.innerWidth > 900) {
+          document.querySelectorAll<HTMLElement>(".t-stat-grid__left").forEach((left) => {
+            const row = left.closest(".t-row") as HTMLElement;
+            if (!row) return;
+            const rect = row.getBoundingClientRect();
+            const progress = rect.top / window.innerHeight - 0.3;
+            left.style.transform = `translateY(${progress * 20}px)`;
+          });
+        } else {
+          document.querySelectorAll<HTMLElement>(".t-stat-grid__left").forEach((left) => {
+            left.style.transform = "none";
+          });
+        }
       });
     };
     container.addEventListener("scroll", handleScroll, { passive: true });
