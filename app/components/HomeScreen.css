@@ -257,3 +257,12 @@
     transform: translateX(4px);
   }
 }
+
+@media (max-width: 600px) {
+  .hs-cards {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    inset: 57px 0 0;
+  }
+}
