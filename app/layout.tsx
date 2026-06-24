@@ -66,7 +66,7 @@ const playfair = Playfair_Display({
 });
 
 const barlowCondensed = Barlow_Condensed({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-barlow",
   display: "swap",
