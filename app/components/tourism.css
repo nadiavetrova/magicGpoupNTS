@@ -1,997 +1,1032 @@
-/* ════════════════════════════════════════════
-   TOURISM — Modern · No italic · Syne + DM Sans
-   ════════════════════════════════════════════ */
-
-/* ── WRAP ───────────────────────────────────── */
-
-.tr-wrap {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  background: #07070c;
-}
-
-/* ── DESIGN TOKENS ──────────────────────────── */
-
+/* ── Palette ── */
 :root {
-  --tr-gold: #e8c97a;
-  --tr-gold-dim: rgba(232, 201, 122, 0.55);
-  --tr-gold-faint: rgba(232, 201, 122, 0.12);
-  --tr-bg: #07070c;
-  --tr-border: rgba(255, 255, 255, 0.07);
+  --t-navy:       #002962;
+  --t-blue:       #0062B8;
+  --t-gold:       #FFDA6C;
+  --t-gold-warm:  #C9A96E;
+  --t-frost:      #DCE3EC;
+  --t-dark:       #1C1A16;
+  --t-cream:      #F8F6F2;
 }
 
-/* ── SHARED ─────────────────────────────────── */
-
-@keyframes label-color-cycle {
-  0%   { color: #e8c97a; }   /* золотой */
-  33%  { color: #a8d8a8; }   /* мягкий зелёный */
-  66%  { color: #7ab8e8; }   /* голубой */
-  100% { color: #e8c97a; }   /* снова золотой */
-}
-
-.tr-label {
-  display: block;
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  margin-bottom: 1.2rem;
-  animation: label-color-cycle 6s ease-in-out infinite;
-}
-
-.tr-btn {
-  display: inline-flex;
-  align-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-  font-family: "DM Sans", Inter, sans-serif;
-}
-
-/* ── Variant 2: Boarding Pass (PRIMARY) ── */
-.tr-btn--primary {
-  gap: 10px;
-  padding: 0.85rem 1.8rem;
-  background: #e8c97a;
-  border: 1px solid #e8c97a;
-  color: #0b0d0f;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  position: relative;
-  transition: border-color 0.25s, background 0.25s, color 0.25s;
-}
-/* perforation strip on the left */
-.tr-btn--primary::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 68%;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.35) 0px,
-    rgba(0,0,0,0.35) 3px,
-    transparent 3px,
-    transparent 7px
-  );
-  opacity: 0.7;
-}
-.tr-btn--primary:hover {
-  background: #f0d88e;
-  border-color: #f0d88e;
-  color: #0b0d0f;
-}
-.tr-btn-arrow {
-  display: inline-block;
-  font-size: 14px;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  line-height: 1;
-}
-.tr-btn--primary:hover .tr-btn-arrow {
-  transform: translate(3px, -3px);
-}
-
-/* ── Variant 1: Waypoint (GHOST) ── */
-.tr-btn--ghost {
-  gap: 0;
-  padding: 0;
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  transition: color 0.25s;
-}
-.tr-btn--ghost:hover {
-  color: rgba(255, 255, 255, 0.8);
-}
-.tr-btn-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 255, 255, 0.28);
-  flex-shrink: 0;
-  transition: background 0.22s, border-color 0.22s;
-}
-.tr-btn--ghost:hover .tr-btn-dot {
-  background: rgba(255, 255, 255, 0.28);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-.tr-btn-line {
-  width: 28px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.28);
-  margin: 0 10px;
-  flex-shrink: 0;
-  transition: width 0.38s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.tr-btn--ghost:hover .tr-btn-line {
-  width: 50px;
-}
-
-/* ── HERO ───────────────────────────────────── */
-
-.tr-hero {
-  position: relative;
-  width: 100%;
+/* ════════════════════════════════════
+   ROOT — split layout
+════════════════════════════════════ */
+.t-root {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   height: 100vh;
-  min-height: 600px;
-  display: flex;
-  align-items: flex-end;
   overflow: hidden;
-}
-
-.tr-hero-photo {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.4s ease;
-  transform: scale(1.06);
-}
-
-.tr-hero-photo--active {
-  opacity: 1;
-  animation: trHeroZoom 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-@keyframes trHeroZoom {
-  from { transform: scale(1.06); }
-  to   { transform: scale(1); }
-}
-
-/* ── SLIDE DOTS ─────────────────────────────── */
-
-.tr-hero-dots {
-  position: absolute;
-  bottom: 9rem;
-  left: 5rem;
-  z-index: 3;
-  display: flex;
-  gap: 0.55rem;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.8s ease 1.6s;
-}
-
-.tr-hero-dots--in {
-  opacity: 1;
-}
-
-.tr-hero-dot {
-  width: 20px;
-  height: 10px;          /* tall click area */
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 0;        /* vertical padding expands hit area */
+  font-family: var(--font-jost), sans-serif;
   position: relative;
-  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* the visible bar sits in the middle */
-.tr-hero-dot::after {
+/* Полноэкранное видео под обеими панелями */
+.t-bg-video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Затемнение слева к центру */
+.t-root::before {
   content: '';
-  position: absolute;
-  left: 0; right: 0;
-  top: 50%; transform: translateY(-50%);
-  height: 2px;
-  background: rgba(255, 255, 255, 0.3);
-  transition: background 0.3s;
-}
-
-.tr-hero-dot--active {
-  width: 36px;
-}
-
-.tr-hero-dot--active::after {
-  background: var(--tr-gold);
-}
-
-.tr-hero-dot:hover:not(.tr-hero-dot--active)::after {
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.tr-hero-overlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background:
-    /* снизу — жёсткое слияние со следующей секцией */
-    linear-gradient(to top, #07070c 0%, #07070c 4%, rgba(7,7,12,0.85) 18%, transparent 42%),
-    /* сверху — лёгкое затемнение для шапки */
-    linear-gradient(to bottom, rgba(7,7,12,0.45) 0%, transparent 30%);
+  background: linear-gradient(to right, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.5) 35%, transparent 55%);
+  z-index: 1;
+  pointer-events: none;
 }
 
-.tr-hero-body {
+/* ════════════════════════════════════
+   ЛЕВАЯ ПАНЕЛЬ — фиксированный герой
+════════════════════════════════════ */
+.t-left {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 4vw;
+  z-index: 1;
+}
+
+.t-left__content {
   position: relative;
-  z-index: 2;
-  padding: 0 5rem 5rem;
-  max-width: 780px;
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s;
+  z-index: 1;
+  width: 100%;
 }
 
-.tr-hero-body--in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.tr-heading {
-  font-family: "Syne", Inter, sans-serif;
+.t-left__heading {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(2.8rem, 5vw, 5.5rem);
   font-weight: 800;
-  font-size: clamp(3.8rem, 7.5vw, 8.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
-  color: #fff;
-  margin: 0 0 0.2rem;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--t-gold);
+  margin: 0 0 1.4rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.45);
 }
 
-.tr-heading-sub {
-  display: block;
-  font-family: "Syne", Inter, sans-serif;
-  font-weight: 600;
-  font-size: 0.52em;
-  letter-spacing: 0em;
-  color: rgba(255, 255, 255, 0.45);
-  margin-bottom: 1.8rem;
+.t-left__body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--t-frost);
+  margin: 0 0 2rem;
+  max-width: 420px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
 }
 
-.tr-hero-text {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-weight: 400;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.88);
-  max-width: 500px;
-  margin: 0 0 2.5rem;
-  text-shadow:
-    0 1px 12px rgba(0, 0, 0, 0.7),
-    0 2px 32px rgba(0, 0, 0, 0.5);
-}
-
-.tr-hero-actions {
+.t-left__actions {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
 
-/* Stats — bottom-right */
-.tr-hero-stats {
-  position: absolute;
-  right: 5rem;
-  bottom: 5rem;
+/* ════════════════════════════════════
+   ПРАВАЯ ПАНЕЛЬ — светлая колонка
+════════════════════════════════════ */
+.t-right {
+  background: rgba(248, 246, 242, 0.97);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
   z-index: 2;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.t-right::-webkit-scrollbar { width: 3px; }
+.t-right::-webkit-scrollbar-thumb {
+  background: rgba(201, 169, 110, 0.35);
+  border-radius: 2px;
+}
+.t-right::-webkit-scrollbar-track { background: transparent; }
+
+/* ════════════════════════════════════
+   SIDEBAR — sticky numbered nav
+════════════════════════════════════ */
+.t-sidebar {
+  width: 72px;
+  min-width: 72px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 1.5rem;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.9s ease 0.8s, transform 0.9s ease 0.8s;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5rem 0 2.5rem;
+  border-right: 1px solid #fedb6b;
+  flex-shrink: 0;
 }
 
-.tr-hero-stats--in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.tr-hero-stat {
+.t-sidebar__nums {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 0.15rem;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.tr-hero-stat-num {
-  font-family: "Syne", Inter, sans-serif;
-  font-weight: 800;
-  font-size: 3rem;
+.t-sidebar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.t-sidebar__num {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(28, 26, 22, 0.2);
+  transition: color 0.4s ease;
   line-height: 1;
-  color: var(--tr-gold);
-  letter-spacing: -0.04em;
+  text-shadow: none;
 }
 
-.tr-hero-stat-label {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+.t-sidebar__item.is-active .t-sidebar__num {
+  color: var(--t-gold-warm);
+}
+
+.t-sidebar__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(28, 26, 22, 0.12);
+  transition: background 0.4s ease;
+}
+
+.t-sidebar__item.is-active .t-sidebar__dot {
+  background: var(--t-gold-warm);
+}
+
+.t-sidebar__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.8rem;
+}
+
+.t-sidebar__scroll {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.28);
+  color: rgba(28, 26, 22, 0.18);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-shadow: none;
 }
 
-/* ── COMPASS DECORATION ─────────────────────── */
+.t-sidebar__pulse {
+  display: block;
+  width: 1px;
+  height: 22px;
+  background: linear-gradient(to bottom, rgba(28,26,22,0.25), transparent);
+  transform-origin: top center;
+  animation: t-pulse-line 2.4s ease-in-out infinite;
+}
 
-.tr-compass-wrap {
+@keyframes t-pulse-line {
+  0%, 100% { transform: scaleY(0.35); opacity: 0.25; }
+  50%       { transform: scaleY(1);    opacity: 0.75; }
+}
+
+.t-right__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ════════════════════════════════════
+   СТРОКИ (ROWS) — numbered sections
+════════════════════════════════════ */
+.t-row {
+  display: block;
+  border-bottom: 1px solid rgba(28, 26, 22, 0.08);
+  padding: 3rem 3.5rem;
+  flex-shrink: 0;
+}
+
+.t-right__main .t-row:first-child {
+  padding-top: 5rem;
+  border-top: none;
+}
+
+
+.t-row__cnt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* Заголовок строки — большой */
+.t-row__h {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #533930;
+  margin: 0;
+  text-shadow: none;
+}
+
+/* Заголовок строки — средний (для услуг) */
+.t-row__h--md {
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+}
+
+/* Параграф */
+.t-row__p {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: #7b6263;
+  margin: 0;
+  max-width: 460px;
+  text-shadow: none;
+}
+
+/* Ссылка "Узнать больше" */
+.t-row__link {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-gold-warm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: gap 0.25s ease, color 0.2s;
+  text-shadow: none;
+  margin-top: 0.5rem;
+}
+.t-row__link:hover { gap: 0.8rem; color: #a0814d; }
+
+/* ════════════════════════════════════
+   СТАТ-СТРОКИ
+════════════════════════════════════ */
+.t-row--stat {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.t-row--map {
+  position: relative;
+  overflow: hidden;
+}
+
+.t-world-map {
   position: absolute;
-  right: -100px;
-  top: calc(50% - 290px);
-  width: 580px;
-  height: 580px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.13;
   pointer-events: none;
-  opacity: 0.14;
-  z-index: 0;
+  user-select: none;
 }
 
-.tr-compass-wrap--left {
-  right: auto;
-  left: -100px;
-  top: calc(50% - 290px);
+.t-stat-grid {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-top: 0.5rem;
 }
 
-.tr-compass {
-  width: 100%;
-  height: 100%;
-  animation: trCompassSpin 120s linear infinite;
+.t-stat-grid__left {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  flex-shrink: 0;
 }
 
-.tr-compass-wrap.tr-compass-wrap--map {
-  right: auto;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 94%;
-  max-width: 900px;
-  height: 450px;
-  opacity: 0.1;
+.t-stat-num {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(5rem, 8vw, 8rem);
+  font-weight: 400;
+  line-height: 0.85;
+  color: var(--t-gold-warm);
+  letter-spacing: -0.04em;
+  will-change: transform;
+  display: inline-block;
+  text-shadow: none;
 }
 
-.tr-worldmap {
-  width: 100%;
-  height: 100%;
-  animation: none !important;
+.t-stat-sublabel {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(28, 26, 22, 0.45);
+  line-height: 1.4;
+  max-width: 100px;
+  text-shadow: none;
 }
 
-.tr-compass-wrap--left .tr-compass {
-  animation-direction: reverse;
+.t-stat-grid__right {
+  flex: 1;
+  min-width: 0;
+  max-width: 220px;
 }
 
-/* ── Compass arrow glow (sequential N→E→S→W) ── */
-@keyframes trCompassSpin {
+.t-stat-desc {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(28, 26, 22, 0.5);
+  margin: 0;
+  text-shadow: none;
+}
+
+.t-stat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.t-stat-list li {
+  font-size: 0.88rem;
+  color: rgba(28, 26, 22, 0.55);
+  padding-left: 1rem;
+  position: relative;
+  text-shadow: none;
+}
+
+.t-stat-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--t-gold-warm);
+}
+
+/* ════════════════════════════════════
+   ROW HOVER EFFECTS
+════════════════════════════════════ */
+.t-row {
+  transition: background 0.55s ease;
+}
+.t-row:hover {
+  background: rgba(201, 169, 110, 0.035);
+}
+
+/* ════════════════════════════════════
+   СЕРВИС LAYOUT — текст + иконка
+════════════════════════════════════ */
+.t-svc-layout {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 2rem;
+}
+
+.t-svc-layout__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.t-svc-layout__icon {
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  color: var(--t-gold-warm);
+  /* opacity managed by reveal animation; hover overrides below */
+  transition: opacity 0.45s ease, filter 0.45s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1);
+}
+
+.t-row:hover .t-svc-layout__icon {
+  opacity: 0.9 !important;
+  filter: drop-shadow(0 0 10px rgba(201, 169, 110, 0.28));
+  transform: scale(1.04);
+}
+
+/* ── Icon animations ── */
+
+/* Globe: meridian rotation */
+.t-icon-meridian {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: t-meridian-spin 6s ease-in-out infinite;
+}
+@keyframes t-meridian-spin {
+  0%   { transform: scaleX(1); }
+  25%  { transform: scaleX(0.05); }
+  50%  { transform: scaleX(-1); }
+  75%  { transform: scaleX(-0.05); }
+  100% { transform: scaleX(1); }
+}
+
+/* Globe: orbiting satellite */
+.t-icon-globe-orbit {
+  transform-origin: 45px 45px;
+  animation: t-orbit-spin 8s linear infinite;
+}
+@keyframes t-orbit-spin {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
 
-@keyframes compassArrowGlow {
-  0%, 15%, 85%, 100% { fill-opacity: 0.3; }
-  50% { fill-opacity: 1; filter: drop-shadow(0 0 8px #e8c97a) drop-shadow(0 0 3px #fff); }
+/* Route: path drawing */
+.t-icon-route-path {
+  stroke-dashoffset: 90;
+  animation: t-draw-route 2.8s cubic-bezier(0.4,0,0.2,1) infinite;
+}
+@keyframes t-draw-route {
+  0%   { stroke-dashoffset: 90; opacity: 0.4; }
+  60%  { stroke-dashoffset: 0;  opacity: 1; }
+  85%  { stroke-dashoffset: 0;  opacity: 1; }
+  100% { stroke-dashoffset: 0;  opacity: 0.4; }
 }
 
-.tr-compass-arrow {
-  fill: #e8c97a;
-  fill-opacity: 0.3;
-  animation: compassArrowGlow 4.8s ease-in-out infinite;
+/* Route: destination pulse */
+.t-icon-dest-pulse {
+  animation: t-dest-pulse 2.8s ease-in-out infinite;
 }
-.tr-compass-arrow--n { animation-delay: 0s; }
-.tr-compass-arrow--e { animation-delay: 1.2s; }
-.tr-compass-arrow--s { animation-delay: 2.4s; }
-.tr-compass-arrow--w { animation-delay: 3.6s; }
+@keyframes t-dest-pulse {
+  0%, 59% { opacity: 0; transform: scale(0.6); transform-box: fill-box; transform-origin: center; }
+  75%      { opacity: 1; transform: scale(1); }
+  100%     { opacity: 0.8; }
+}
 
-/* ── Map ping animation ── */
-@keyframes mapPing {
-  0%   { transform: scale(1); opacity: 0.9; }
-  100% { transform: scale(5); opacity: 0; }
-}
-.tr-map-ping {
-  animation: mapPing 2.4s ease-out infinite;
+/* Plane: floating */
+.t-icon-plane-group {
   transform-box: fill-box;
   transform-origin: center;
+  animation: t-plane-float 3.5s ease-in-out infinite;
+}
+@keyframes t-plane-float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%       { transform: translate(3px, -4px) rotate(-2deg); }
 }
 
-/* ── ABOUT ──────────────────────────────────── */
-
-.tr-about {
-  background: var(--tr-bg);
-  border-top: none;
-  padding: 5rem 0 6rem;
-  position: relative;
-  overflow: visible; /* компас выходит за границы — не обрезаем */
-  isolation: isolate; /* z-index контекст */
+/* ════════════════════════════════════
+   СЕКЦИЯ КОНТАКТОВ
+════════════════════════════════════ */
+.t-row--cta {
+  background: rgba(28, 26, 22, 0.02);
 }
 
-.tr-about-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 5rem;
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 6rem;
-  align-items: start;
-}
-
-.tr-about-left {
+.t-contacts-wrap {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
-.tr-quote {
-  font-family: "Syne", Inter, sans-serif;
+/* Список контактных строк */
+.t-contact-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(28, 26, 22, 0.09);
+  margin-top: 0.5rem;
+}
+
+.t-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(28, 26, 22, 0.09);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.t-contact-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(28, 26, 22, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--t-gold-warm);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.t-contact-item:hover .t-contact-icon {
+  border-color: var(--t-gold-warm);
+  background: rgba(201, 169, 110, 0.07);
+}
+
+.t-contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.t-contact-label {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.58rem;
   font-weight: 700;
-  font-size: clamp(1.3rem, 2.1vw, 1.75rem);
-  line-height: 1.38;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  padding: 0;
-  border: none;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(28, 26, 22, 0.32);
 }
 
-.tr-about-right {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  padding-top: 2.5rem;
-}
-
-.tr-about-role {
-  font-family: "DM Sans", Inter, sans-serif;
+.t-contact-value {
+  font-family: var(--font-jost), sans-serif;
   font-size: 0.95rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: 0.01em;
+  color: #4c8b13;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-.tr-about-company {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 10px;
-  font-weight: 500;
+.t-contact-value:hover { color: var(--t-gold-warm); }
+
+.t-contact-hours {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.72rem;
+  color: rgba(28, 26, 22, 0.36);
+  margin-top: 0.05rem;
+}
+
+/* Иконки соцсетей в кружочках */
+.t-contacts-socials {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.t-contact-social {
+  width: 48px;
+  height: 48px;
+  color: var(--t-navy);
+  background: #f3be0db3;
+  border: 2.5px solid #e5af1080;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  transition: border-color 0.4s, color 0.4s, background 0.4s, box-shadow 0.4s;
+  display: flex;
+}
+
+.t-contact-social:hover {
+  background: #e6c350;
+  box-shadow: 0 4px 16px rgba(255, 218, 108, 0.45);
+}
+
+.t-contact-social svg {
+  width: 20px;
+  height: 20px;
+}
+
+.t-contact-social__img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Карточка CTA — полная ширина внизу */
+.t-contacts-card {
+  background: #374d1e;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.t-contacts-card__pre {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.22);
-  margin: 0 0 1rem;
-}
-
-.tr-about-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 0.4rem;
-}
-
-.tr-tag {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  padding: 0.35rem 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 2px;
-  color: rgba(255, 255, 255, 0.38);
-  white-space: nowrap;
-}
-
-/* ── SERVICES ───────────────────────────────── */
-
-.tr-services {
-  background: var(--tr-bg);
-  border-top: 1px solid var(--tr-border);
-  padding: 5rem 0 7rem;
-  position: relative;
-  overflow: visible; /* CoordGrid пусть немного выходит за край */
-  isolation: isolate;
-}
-
-.tr-services-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 5rem;
-}
-
-.tr-services-header {
-  margin-bottom: 3rem;
-}
-
-.tr-services-title {
-  font-family: "Syne", Inter, sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
-  letter-spacing: -0.02em;
-  color: #fff;
-  line-height: 1.1;
+  color: var(--t-gold);
   margin: 0;
 }
 
-.tr-services-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  margin-bottom: 3.5rem;
+.t-contacts-card__h {
+  font-family: var(--font-playfair), serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+  margin: 0;
 }
 
-.tr-card {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid var(--tr-border);
-  overflow: hidden;
-  cursor: default;
-  transition: border-color 0.25s;
+.t-btn--contact-cta {
+  align-self: flex-start;
+  margin-top: 0.5rem;
 }
 
-.tr-card:hover {
-  border-color: rgba(232, 201, 122, 0.2);
+/* ════════════════════════════════════
+   HERO ENTRANCE — единственный раз при загрузке
+════════════════════════════════════ */
+@keyframes t-slide-mask {
+  from { transform: translateY(108%); }
+  to   { transform: translateY(0); }
 }
-
-/* Stagger cards when parent section reveals */
-.tr-services.tr-in .tr-card {
-  animation: trCardIn 0.55s ease both;
+@keyframes t-hero-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.tr-services.tr-in .tr-card:nth-child(1) { animation-delay: 0.05s; }
-.tr-services.tr-in .tr-card:nth-child(2) { animation-delay: 0.12s; }
-.tr-services.tr-in .tr-card:nth-child(3) { animation-delay: 0.19s; }
-.tr-services.tr-in .tr-card:nth-child(4) { animation-delay: 0.26s; }
-
-@keyframes trCardIn {
-  from { opacity: 0; transform: translateY(16px); }
+@keyframes t-hero-down {
+  from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.tr-card-photo {
-  width: 100%;
-  height: 160px;
-  background-size: cover;
-  background-position: center;
-  background-color: rgba(255, 255, 255, 0.04);
-  filter: brightness(0.55) saturate(0.75);
-  transition: filter 0.4s ease, transform 0.5s ease;
-}
-
-.tr-card:hover .tr-card-photo {
-  filter: brightness(0.72) saturate(1);
-  transform: scale(1.04);
-}
-
-.tr-card-body {
-  padding: 1.3rem 1.4rem 1.6rem;
-}
-
-.tr-card-num {
+/* Маска для каждой строки заголовка */
+.t-heading-line {
   display: block;
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  color: var(--tr-gold-dim);
-  margin-bottom: 0.55rem;
-}
-
-.tr-card-name {
-  font-family: "Syne", Inter, sans-serif;
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 0.4rem;
-}
-
-.tr-card-hint {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-weight: 300;
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.28);
-  line-height: 1.45;
-  margin: 0;
-}
-
-/* Карточка авторских туров — кликабельная */
-.tr-card--tours:hover {
-  border-color: rgba(232,201,122,0.35) !important;
-  background: rgba(232,201,122,0.04);
-}
-.tr-card--tours:hover .tr-card-photo { transform: scale(1.04); }
-.tr-card-cta-hint {
-  display: inline-block;
-  margin-top: 0.65rem;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: #e8c97a;
-  opacity: 0.75;
-  transition: opacity 0.2s;
-}
-.tr-card--tours:hover .tr-card-cta-hint { opacity: 1; }
-
-.tr-services-cta {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-/* ── SCROLL HINT (hero + sections) ─────────── */
-
-.tr-scroll-hint {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.8s ease 1.4s;
-}
-
-.tr-scroll-hint--in {
-  opacity: 1;
-}
-
-/* Section scroll hints — appear after tr-in fires */
-.tr-section-hint {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-[data-tr].tr-in .tr-section-hint {
-  opacity: 1;
-  transition-delay: 0.6s;
-}
-
-.tr-scroll-hint-line,
-.tr-section-hint-line {
-  display: block;
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(to bottom, transparent, rgba(232,201,122,0.45));
-  animation: trScrollPulse 2.2s ease-in-out infinite;
-}
-
-@keyframes trScrollPulse {
-  0%, 100% { opacity: 0.35; transform: scaleY(0.65); transform-origin: top; }
-  50%       { opacity: 1;    transform: scaleY(1);    transform-origin: top; }
-}
-
-.tr-scroll-hint-text,
-.tr-section-hint-text {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: rgba(232, 201, 122, 0.35);
-}
-
-/* ── CONTACTS ───────────────────────────────── */
-
-.tr-contacts {
-  background: #0a0a10;
-  border-top: 1px solid rgba(232, 201, 122, 0.12);
-  padding: 6rem 0 7rem;
-  position: relative;
   overflow: hidden;
-  /* Subtle radial glow from left for the compass area */
-  background-image: radial-gradient(ellipse 40% 60% at 8% 50%, rgba(232,201,122,0.03) 0%, transparent 70%);
+  padding-top: 0.08em;
+  margin-top: -0.08em;
 }
-
-.tr-contacts::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(232,201,122,0.35), transparent);
-}
-
-.tr-contacts-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6rem;
-  align-items: center;
-}
-
-.tr-contacts-left {
-  display: flex;
-  flex-direction: column;
-}
-
-.tr-contacts-heading {
-  font-family: "Syne", Inter, sans-serif;
-  font-weight: 800;
-  font-size: clamp(2.4rem, 4vw, 3.8rem);
-  letter-spacing: -0.03em;
-  color: #fff;
-  line-height: 1.05;
-  margin: 0 0 1.5rem;
-}
-
-.tr-contacts-sub {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-weight: 300;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.42);
-  margin: 0;
-}
-
-.tr-contacts-right {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.tr-phone {
-  font-family: "Syne", Inter, sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  letter-spacing: -0.02em;
-  color: var(--tr-gold);
-  text-decoration: none;
-  line-height: 1;
-  transition: color 0.2s;
+.t-heading-line-inner {
   display: block;
+  animation: t-slide-mask 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+.t-heading-line:nth-child(1) .t-heading-line-inner { animation-delay: 0.28s; }
+.t-heading-line:nth-child(2) .t-heading-line-inner { animation-delay: 0.46s; }
 
-.tr-phone:hover {
-  color: #f0d68a;
-}
-
-.tr-messengers {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.tr-messenger {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.9rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
-  color: rgba(255, 255, 255, 0.42);
-  text-decoration: none;
-  background: none;
-  border-left: none;
-  border-right: none;
-  border-radius: 0;
-  transition: color 0.22s;
-  cursor: pointer;
-}
-
-.tr-messenger-arrow {
-  margin-left: auto;
-  font-size: 13px;
-  opacity: 0.25;
-  transition: opacity 0.22s, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.tr-messenger:hover {
-  color: rgba(255, 255, 255, 0.85);
-}
-.tr-messenger:hover .tr-messenger-arrow {
-  opacity: 0.7;
-  transform: translateX(5px);
-}
-.tr-messenger-ig-wrap {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.tr-messenger-ig-wrap .tr-messenger {
-  border-bottom: none;
-}
-
-.tr-messenger-note {
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 9px;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.18);
-  line-height: 1.5;
-  padding: 0.4rem 0 0.6rem 26px;
-  margin: 0;
-}
-
-.tr-messenger--tg:hover { color: #7a1525; }
-.tr-messenger--wa:hover { color: #0f6b3d; }
-.tr-messenger--ig:hover { color: #2d2680; }
-.tr-messenger--mx:hover { color: #9a7520; }
-
-.tr-contacts-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 1rem 2.2rem;
-  background: none;
-  border: 1px solid rgba(232, 201, 122, 0.4);
-  font-family: "DM Sans", Inter, sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--tr-gold);
-  cursor: pointer;
-  position: relative;
-  align-self: flex-start;
-  transition: border-color 0.25s, background 0.25s;
-}
-.tr-contacts-cta::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 68%;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--tr-gold) 0px,
-    var(--tr-gold) 3px,
-    transparent 3px,
-    transparent 7px
-  );
-  opacity: 0.45;
-}
-.tr-contacts-cta:hover {
-  border-color: rgba(232, 201, 122, 0.72);
-  background: rgba(232, 201, 122, 0.06);
-}
-.tr-contacts-cta:hover .tr-btn-arrow {
-  transform: translate(3px, -3px);
-}
-
-/* ── SCROLL REVEAL ──────────────────────────── */
-
-/* Sections */
-[data-tr] {
+.t-left .t-eyebrow {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: t-hero-down 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+}
+.t-left__body {
+  opacity: 0;
+  animation: t-hero-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.72s forwards;
+}
+.t-left__actions {
+  opacity: 0;
+  animation: t-hero-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.92s forwards;
 }
 
-[data-tr].tr-in {
+/* ════════════════════════════════════
+   REVEAL ANIMATIONS — правая колонка
+════════════════════════════════════ */
+
+/* Родительский контейнер: быстро раскрывается, дети анимируются сами */
+.t-reveal {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.t-reveal.is-visible {
+  opacity: 1;
+}
+
+/* ── Eyebrow: лёгкий подъём ── */
+.t-reveal .t-eyebrow {
+  transform: translateY(8px);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
+}
+.t-reveal.is-visible .t-eyebrow {
+  transform: translateY(0);
+}
+
+/* ── Заголовки: clip-path wipe сверху вниз ── */
+.t-reveal .t-row__h {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.14s;
+}
+.t-reveal.is-visible .t-row__h {
+  clip-path: inset(0 0 0% 0);
+}
+
+/* ── Параграфы: fade + лёгкий подъём ── */
+.t-reveal .t-row__p {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.7s ease 0.36s,
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.36s;
+}
+.t-reveal.is-visible .t-row__p {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* About columns stagger */
-.tr-about.tr-in .tr-about-left {
-  animation: trReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.05s;
+/* ── Иконки сервисов: slide from right ── */
+.t-reveal .t-svc-layout__icon {
+  opacity: 0;
+  transform: translateX(18px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.28s,
+              transform 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s;
+}
+.t-reveal.is-visible .t-svc-layout__icon {
+  opacity: 0.55;
+  transform: translateX(0);
 }
 
-.tr-about.tr-in .tr-about-right {
-  animation: trReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.2s;
+/* ── Кнопки в строках услуг: fade up + сохраняем hover-переходы ── */
+.t-reveal .t-svc-layout__text .t-btn {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease 0.5s,
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s,
+              background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.35s ease,
+              border-color 0.45s ease;
+}
+.t-reveal.is-visible .t-svc-layout__text .t-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes trReveal {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ── Статистика: сначала цифра, потом подпись, потом текст справа ── */
+.t-reveal .t-stat-num {
+  opacity: 0;
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.05s;
+}
+.t-reveal.is-visible .t-stat-num {
+  opacity: 1;
+}
+.t-reveal .t-stat-sublabel {
+  opacity: 0;
+  transition: opacity 0.5s ease 0.75s;
+}
+.t-reveal.is-visible .t-stat-sublabel {
+  opacity: 1;
+}
+/* Текст справа появляется только ПОСЛЕ того, как левая сторона готова */
+.t-reveal .t-stat-desc,
+.t-reveal .t-stat-list {
+  opacity: 0;
+  transition: opacity 0.65s ease 1.1s;
+}
+.t-reveal.is-visible .t-stat-desc,
+.t-reveal.is-visible .t-stat-list {
+  opacity: 1;
 }
 
-/* Services title stagger */
-.tr-services.tr-in .tr-services-header {
-  animation: trReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: 0.05s;
+/* ── Контакты: каждая строка отдельно ── */
+.t-reveal .t-contact-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-reveal .t-contact-item:nth-child(1) { transition-delay: 0.28s; }
+.t-reveal .t-contact-item:nth-child(2) { transition-delay: 0.42s; }
+.t-reveal.is-visible .t-contact-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+.t-reveal .t-contacts-socials {
+  opacity: 0;
+  transition: opacity 0.65s ease 0.58s;
+}
+.t-reveal.is-visible .t-contacts-socials {
+  opacity: 1;
+}
+.t-reveal .t-contacts-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.38s,
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.38s;
+}
+.t-reveal.is-visible .t-contacts-card {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* ══ RESPONSIVE ══════════════════════════════ */
+.t-reveal[data-delay="1"] { transition-delay: 0.12s; }
+.t-reveal[data-delay="2"] { transition-delay: 0.24s; }
+.t-reveal[data-delay="3"] { transition-delay: 0.36s; }
 
-/* ── Tablet 960px ── */
-@media (max-width: 960px) {
-  /* Hero */
-  .tr-hero-body       { padding: 0 2.5rem 4.5rem; max-width: 620px; }
-  .tr-hero-stats      { right: 2.5rem; bottom: 4.5rem; gap: 1.2rem; }
-  .tr-hero-stat-num   { font-size: 2.4rem; }
-  .tr-hero-dots       { left: 2.5rem; bottom: 8rem; }
-
-  /* About */
-  .tr-about           { padding: 4rem 0 5rem; }
-  .tr-about-inner     { grid-template-columns: 1fr; gap: 2rem; padding: 0 2.5rem; }
-  .tr-about-right     { padding-top: 0; }
-  .tr-compass-wrap    { right: -140px; width: 480px; height: 480px; top: calc(50% - 240px); }
-  .tr-compass-wrap--left { left: -140px; }
-
-  /* Services */
-  .tr-services        { padding: 4rem 0 5rem; }
-  .tr-services-inner  { padding: 0 2.5rem; }
-  .tr-services-grid   { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-
-  /* Contacts */
-  .tr-contacts        { padding: 4rem 0 5rem; }
-  .tr-contacts-inner  { grid-template-columns: 1fr; gap: 3rem; padding: 0 2.5rem; }
+/* ════════════════════════════════════
+   ОБЩИЕ ЭЛЕМЕНТЫ
+════════════════════════════════════ */
+.t-eyebrow {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(220, 227, 236, 0.4);
+  margin: 0;
+  text-shadow: none;
 }
 
-/* ── Mobile 640px ── */
-@media (max-width: 640px) {
-  /* Hero */
-  .tr-hero-body       { padding: 0 1.5rem 4rem; }
-  .tr-heading         { font-size: clamp(3rem, 13vw, 4.5rem); }
-  .tr-heading-sub     { font-size: 0.48em; margin-bottom: 1.2rem; }
-  .tr-hero-text       { font-size: 0.95rem; line-height: 1.65; margin-bottom: 1.8rem; }
-  .tr-hero-stats      { display: none; }
-  .tr-scroll-hint     { display: none; }
-  .tr-hero-dots       { display: none; }
+.t-eyebrow--gold  { color: var(--t-gold); }
+.t-eyebrow--muted { color: var(--t-gold-warm); }
 
-  /* Hero action buttons — stack on small screens */
-  .tr-hero-actions    { flex-direction: column; align-items: flex-start; gap: 1rem; }
-  .tr-btn--primary    { width: 100%; justify-content: center; padding: 0.9rem 1.5rem; }
-  .tr-btn--ghost      { padding-left: 0; }
-
-  /* Label */
-  .tr-label           { font-size: 9px; letter-spacing: 0.2em; margin-bottom: 0.9rem; }
-
-  /* About */
-  .tr-about           { padding: 3rem 0 4rem; overflow: hidden; }
-  .tr-about-inner     { padding: 0 1.5rem; gap: 1.8rem; }
-  .tr-quote           { font-size: clamp(1.1rem, 4vw, 1.4rem); }
-  .tr-compass-wrap    { right: -120px; width: 300px; height: 300px; top: calc(50% - 150px); opacity: 0.10; }
-  .tr-compass-wrap--left { left: -120px; }
-  .tr-about-tags      { gap: 0.35rem; }
-  .tr-tag             { font-size: 10px; padding: 0.3rem 0.7rem; }
-
-  /* Services */
-  .tr-services        { padding: 3rem 0 4rem; overflow: hidden; }
-  .tr-services-inner  { padding: 0 1.5rem; }
-  .tr-services-title  { font-size: clamp(1.4rem, 6vw, 1.9rem); }
-  .tr-services-grid   { grid-template-columns: 1fr; gap: 1.2rem; }
-  .tr-card-photo      { height: 130px; }
-  .tr-card-body       { padding: 1rem 1.2rem 1.3rem; }
-  .tr-services-cta    { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
-  .tr-services-cta .tr-btn--primary { width: 100%; justify-content: center; }
-
-  /* Section scroll hints */
-  .tr-section-hint    { display: none; }
-
-  /* Contacts */
-  .tr-contacts        { padding: 3rem 0 4rem; }
-  .tr-contacts-inner  { padding: 0 1.5rem; gap: 2rem; }
-  .tr-contacts-heading { font-size: clamp(1.9rem, 8vw, 2.8rem); margin-bottom: 1rem; }
-  .tr-contacts-sub    { font-size: 0.9rem; }
-  .tr-messengers      { margin-top: 0; }
-  .tr-messenger       { font-size: 13px; padding: 0.85rem 0; }
-  .tr-contacts-cta    { width: 100%; justify-content: center; }
+/* Left panel eyebrow */
+.t-left .t-eyebrow {
+  color: rgba(220, 227, 236, 0.5);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  margin-bottom: 1rem;
 }
 
-/* ── Very small 380px ── */
-@media (max-width: 380px) {
-  .tr-hero-body       { padding: 0 1.2rem 3.5rem; }
-  .tr-heading         { font-size: clamp(2.6rem, 12vw, 3.8rem); }
-  .tr-about-inner,
-  .tr-services-inner,
-  .tr-contacts-inner  { padding: 0 1.2rem; }
+/* Глобальный text-shadow только для левой панели */
+.t-left * { text-shadow: 0 1px 3px rgba(0,0,0,0.18); }
+.t-right * { text-shadow: none; }
+
+/* ════════════════════════════════════
+   КНОПКИ — премиальный дизайн
+════════════════════════════════════ */
+.t-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 2.2rem;
+  font-family: var(--font-jost), sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 0;
+  text-shadow: none;
+}
+
+.t-btn__icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.t-btn:active { opacity: 0.82; }
+.t-btn--sm    { padding: 0.58rem 1.4rem; font-size: 0.6rem; }
+
+/* ── Золотая кнопка — основной CTA ── */
+.t-btn--gold {
+  background: var(--t-gold);
+  color: #583f36;
+  transition: background 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow  0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-btn--gold:hover {
+  background: #ffe880;
+  box-shadow: 0 6px 32px rgba(255, 218, 108, 0.4);
+}
+
+/* ── Ghost (левая панель) ── */
+.t-btn--ghost {
+  color: #fffefe;
+  background: none;
+  border: 1px solid #dce3ec47;
+  transition: border-color 0.5s, color 0.5s;
+}
+.t-btn--ghost:hover {
+  border-color: var(--t-gold);
+  color: var(--t-gold);
+}
+
+/* ── Outline gold (секция услуг) — золотая заливка, ховер → прозрачный ── */
+.t-btn--outline-dark {
+  background: var(--t-gold);
+  border: 1.5px solid var(--t-gold);
+  color: #533930;
+  margin-top: 0.5rem;
+  transition: background 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              color       0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow  0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.t-btn--outline-dark:hover {
+  background: transparent;
+  color: rgba(28, 26, 22, 0.85);
+  border-color: var(--t-gold-warm);
+  box-shadow: none;
+}
+
+/* ── Анимированная стрелка в outline-dark кнопках ── */
+.t-btn__arr {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 0.6rem;
+}
+.t-btn__arr-svg {
+  display: block;
+  width: 38px;
+  height: 8px;
+  overflow: visible;
+}
+.t-btn__arr-shaft {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: t-arr-shaft 2s ease-in-out infinite;
+}
+.t-btn__arr-tip {
+  animation: t-arr-tip 2s ease-in-out infinite;
+}
+@keyframes t-arr-shaft {
+  0%, 100% { transform: scaleX(0.45); }
+  50%       { transform: scaleX(1); }
+}
+@keyframes t-arr-tip {
+  0%, 100% { transform: translateX(-15px); }
+  50%      { transform: translateX(0); }
+}
+
+/* ════════════════════════════════════
+   DISCLAIMER
+════════════════════════════════════ */
+.t-contacts__disclaimer {
+  margin: 0.5rem 0 0;
+  font-size: 0.58rem;
+  line-height: 1.6;
+  color: rgba(28, 26, 22, 0.28);
+  max-width: 400px;
+}
+
+/* ════════════════════════════════════
+   RESPONSIVE — мобильный стек
+════════════════════════════════════ */
+@media (max-width: 900px) {
+  .t-root {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    overflow-x: hidden;
+  }
+
+  .t-left {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .t-right {
+    height: auto;
+    overflow-y: visible;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .t-sidebar {
+    display: none;
+  }
+
+  .t-right__main {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .t-row {
+    padding: 2rem 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .t-row__cnt {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .t-stat-grid {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .t-stat-grid__right {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .t-svc-layout {
+    flex-direction: row !important;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .t-svc-layout__icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 64px;
+    height: 64px;
+    opacity: 0.55 !important;
+  }
+
+  .t-svc-layout__text {
+    width: 100%;
+    padding-right: 72px;
+  }
+
+  .t-left__content {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }

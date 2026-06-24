@@ -158,7 +158,13 @@ export default function TourDrawer({ isOpen, onClose, onBook }: Props) {
               {/* CTA */}
               <div className="td-cta">
                 <button className="td-btn-book" onClick={() => { onBook(selectedTour.name); onClose(); }}>
-                  Записаться на тур ↗
+                  Записаться на тур
+                  <span className="td-btn-book__arr" aria-hidden="true">
+                    <svg viewBox="0 0 38 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <line className="td-btn-book__shaft" x1="0" y1="4" x2="28" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                      <path className="td-btn-book__tip" d="M23.5 1L28 4L23.5 7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
                 </button>
               </div>
             </div>

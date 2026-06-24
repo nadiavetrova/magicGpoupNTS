@@ -11,7 +11,7 @@ import HomeScreen from "./components/HomeScreen";
 
 type PanelId = "tourism" | "insurance" | "realty";
 type SocialLink = { label: string; href: string };
-type Panel = { id: PanelId; badge?: string; title: string; bg: string; bgSize?: string; bgPos?: string; accent: string; label: string; heading: string; role: string; body: string[]; tags: string[]; stats: { num: string; label: string }[]; services: { title: string; items: { icon: string; name: string; hint: string }[]; cta: string; ctaHref: string }; socials: SocialLink[] };
+type Panel = { id: PanelId; badge?: string; title: string; bg: string; bgSize?: string; bgPos?: string; accent: string; label: string; heading: string; role: string; body: string[]; tags: string[]; stats: { num: string; label: string; sublabel?: string; desc?: string; items?: string[] }[]; services: { title: string; items: { icon: string; name: string; hint: string }[]; cta: string; ctaHref: string }; socials: SocialLink[] };
 
 const panels = [
   {
@@ -24,16 +24,19 @@ const panels = [
     role: "Наш опыт в международном туризме — 15 лет",
     body: [
       "Мы начинали с экскурсий, работали гидами в одной из крупнейших туроператорских компаний мира. Прошли путь от первой поездки до маршрутов, которые не найти в каталоге.",
-      "Турция, Индия, ОАЭ — мы знаем эти направления изнутри. Не по буклетам, а по реальному опыту: где лучшие пляжи, какой отель не обманет, что стоит увидеть за пределами туристических троп.",
+      "Мы знаем направления изнутри. Не по буклетам, а по реальному опыту: где лучшие пляжи, какой отель не обманет, что стоит увидеть за пределами туристических троп.",
     ],
-    tags: ["Пакетные туры", "Авторские маршруты", "Турция · Индия · ОАЭ"],
-    stats: [{ num: "15", label: "Лет опыта" }, { num: "5+", label: "Стран" }],
+    tags: ["Пакетные туры", "Авторские маршруты", "Турция · Египет · Греция · Индия · Тайланд · Вьетнам · Мальдивы · Маврикий · Занзибар · Куба и т.д."],
+    stats: [
+      { num: "15+", label: "Опыт", sublabel: "лет опыта в туризме", desc: "За это время мы объехали десятки стран и собрали лучшее для ваших путешествий." },
+      { num: "10+", label: "Направления", sublabel: "стран", items: ["Турция", "Египет", "Греция", "Индия", "Таиланд", "Вьетнам", "Мальдивы", "Маврикий", "Занзибар", "Куба", "и другие."] },
+    ],
     services: {
       title: "Подберём путёвку или экскурсию",
       items: [
-        { icon: "01", name: "Пляжный отдых", hint: "Курорты на любой вкус" },
-        { icon: "02", name: "Авторские экскурсионные туры", hint: "Наши неповторимые маршруты" },
-        { icon: "03", name: "Авиабилеты + отель", hint: "Лучшие цены, быстрое оформление" },
+        { icon: "01", name: "Подбор путёвки", hint: "Любое направление на ваш вкус", description: "Помогаем выбрать идеальный отдых — от пляжного релакса до активных путешествий. Подбираем отели, трансферы и страховку. Работаем только с проверенными туроператорами и напрямую с отелями." },
+        { icon: "02", name: "Авторские экскурсионные туры", hint: "Наши неповторимые маршруты", description: "Уникальные маршруты, которые мы разработали сами — на основе личного опыта, а не каталогов. Небольшие группы, живое общение с местными, нестандартные точки и неожиданные открытия." },
+        { icon: "03", name: "Авиабилеты + отель", hint: "Лучшие цены, быстрое оформление", description: "Находим лучшие цены на перелёты и размещение, оформляем быстро — от заявки до билетов за несколько часов. Любые направления, любой бюджет, без скрытых наценок." },
       ],
       cta: "Подобрать путёвку самостоятельно →",
       ctaHref: "#",
@@ -41,8 +44,8 @@ const panels = [
     socials: [
       { label: "WA", href: "https://chat.whatsapp.com/DJCE0e6AfgqAlnjcYQXU8V?mode=gi_t" },
       { label: "MX", href: "https://max.ru/join/w4v28odPKu06lp5xCdnyI6aD8T8o-i8vxT8p_6Gc9wo" },
-      { label: "IN", href: "https://www.instagram.com/magic_tour_travel?igsh=MWhoMWtjYzZ3eHpwbQ%3D%3D&utm_source=qr" },
       { label: "VK", href: "https://vk.ru/magic_tour_nts" },
+      { label: "IN", href: "https://www.instagram.com/magic_tour_travel?igsh=MWhoMWtjYzZ3eHpwbQ%3D%3D&utm_source=qr" },
     ],
   },
   {
@@ -87,8 +90,7 @@ const panels = [
     heading: "Страхование,\nкоторое работает",
     role: "Страховой агент · Все виды",
     body: [
-      "«Многие летят с минимальной страховкой. Когда случается серьёзная ситуация — оказывается, что случай не страховой.»",
-      "15 лет я видел, что происходит без нормальной страховки. Теперь помогаю подобрать защиту, которая реально покроет нужный случай.",
+      "Жду новый текст",
     ],
     tags: ["Авто", "Жизнь и здоровье", "Имущество", "Выезд за рубеж", "Бизнес"],
     stats: [{ num: "∞", label: "Клиентов" }, { num: "11+", label: "Видов" }],
@@ -399,17 +401,6 @@ export default function Home() {
         }}
       />
 
-      {/* FOOTER */}
-      {active && (
-        <footer className="footer" style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 60, background: "rgba(5,5,5,0.75)", backdropFilter: "blur(10px)" }}>
-          <div className="footer-copy">© 2025 MAGIC Group NTS · Шухрат Азизов</div>
-          <div className="social-links">
-            {p?.socials.map((s) => (
-              <a key={s.label} className="social-link" href={s.href} target="_blank" rel="noreferrer">{s.label}</a>
-            ))}
-          </div>
-        </footer>
-      )}
     </>
   );
 }

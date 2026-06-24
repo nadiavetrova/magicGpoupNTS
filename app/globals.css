@@ -54,7 +54,10 @@ body {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0 2rem;
-  background: transparent;
+  background: rgba(10, 7, 3, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 /* ── Страхование: золотой хедер ── */
@@ -1295,8 +1298,8 @@ body {
 
 .modal-box {
   position: relative;
-  background: #0d0d12;
-  border: 1px solid rgba(232, 201, 122, 0.14);
+  background: #F8F6F2;
+  border: 1px solid rgba(201, 169, 110, 0.25);
   border-radius: 4px;
   padding: 2.8rem 2.5rem 2.2rem;
   width: 100%;
@@ -1316,8 +1319,8 @@ body {
   top: 1.2rem;
   right: 1.2rem;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(28, 26, 22, 0.15);
+  color: rgba(28, 26, 22, 0.35);
   width: 30px;
   height: 30px;
   border-radius: 3px;
@@ -1328,7 +1331,7 @@ body {
   justify-content: center;
   transition: border-color 0.2s, color 0.2s;
 }
-.modal-close:hover { border-color: rgba(232,201,122,0.4); color: #e8c97a; }
+.modal-close:hover { border-color: rgba(201,169,110,0.6); color: #C9A96E; }
 
 .modal-label {
   font-family: "DM Sans", Inter, sans-serif;
@@ -1340,21 +1343,21 @@ body {
 }
 
 .modal-title {
-  font-family: "Syne", Inter, sans-serif;
+  font-family: var(--font-playfair), Georgia, serif;
   font-size: 1.55rem;
   font-weight: 700;
   font-style: normal;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: #1C1A16;
   line-height: 1.2;
   margin-bottom: 0.5rem;
 }
 
 .modal-sub {
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 0.82rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(28, 26, 22, 0.48);
   margin-bottom: 2rem;
   line-height: 1.55;
 }
@@ -1370,49 +1373,49 @@ body {
   align-items: center;
   gap: 1rem;
   padding: 0.85rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(28, 26, 22, 0.08);
   border-radius: 3px;
   cursor: pointer;
   transition: border-color 0.18s, background 0.18s;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(28, 26, 22, 0.02);
 }
-.modal-service-item:hover { background: rgba(232,201,122,0.05); border-color: rgba(232,201,122,0.2); }
+.modal-service-item:hover { background: rgba(201,169,110,0.06); border-color: rgba(201,169,110,0.3); }
 
 .modal-service-check {
   width: 18px;
   height: 18px;
-  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(28, 26, 22, 0.2);
   border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.65rem;
-  color: #0d0d12;
+  color: #F8F6F2;
   flex-shrink: 0;
   transition: background 0.18s, border-color 0.18s;
 }
 
 .modal-service-name {
-  font-family: "Syne", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 0.85rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.88);
+  color: rgba(28, 26, 22, 0.88);
   margin-bottom: 0.1rem;
 }
 
 .modal-service-hint {
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 0.72rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(28, 26, 22, 0.4);
 }
 
 /* ── Tour sub-panel ─────────────────────────────────────────── */
 .modal-tour-panel {
-  background: rgba(232,201,122,0.03);
-  border: 1px solid rgba(232,201,122,0.12);
+  background: rgba(201,169,110,0.04);
+  border: 1px solid rgba(201,169,110,0.18);
   border-top: none;
-  border-left: 2px solid rgba(232,201,122,0.28);
+  border-left: 2px solid rgba(201,169,110,0.4);
   padding: 0.9rem 1rem 1rem 1.1rem;
   animation: modalFadeIn 0.2s ease;
   margin-bottom: 2px;
@@ -1422,7 +1425,7 @@ body {
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.28);
+  color: rgba(28,26,22,0.35);
   margin: 0 0 0.65rem;
 }
 .modal-tour-countries {
@@ -1433,19 +1436,20 @@ body {
 }
 .modal-tour-chip {
   padding: 0.38rem 0.85rem;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(28,26,22,0.12);
   border-radius: 3px;
-  background: rgba(255,255,255,0.03);
-  color: rgba(255,255,255,0.5);
+  background: rgba(28,26,22,0.03);
+  color: rgba(28,26,22,0.5);
   font-size: 0.78rem;
   font-weight: 500;
   cursor: pointer;
   transition: border-color 0.18s, background 0.18s, color 0.18s;
+  font-family: var(--font-jost), sans-serif;
 }
 .modal-tour-chip:hover {
-  border-color: rgba(232,201,122,0.3);
-  color: rgba(255,255,255,0.85);
-  background: rgba(232,201,122,0.06);
+  border-color: rgba(201,169,110,0.4);
+  color: rgba(28,26,22,0.85);
+  background: rgba(201,169,110,0.08);
 }
 .modal-tour-chip.active { font-weight: 600; }
 
@@ -1453,13 +1457,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(28,26,22,0.07);
   padding-top: 0.65rem;
   margin-top: 0.1rem;
 }
 .modal-tour-soon {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.28);
+  color: rgba(28,26,22,0.32);
   margin: 0;
   padding: 0.35rem 0;
   font-style: italic;
@@ -1470,25 +1474,26 @@ body {
   align-items: center;
   gap: 0.6rem;
   padding: 0.55rem 0.85rem;
-  border: 1px solid rgba(255,255,255,0.07);
+  border: 1px solid rgba(28,26,22,0.07);
   border-radius: 3px;
-  background: rgba(255,255,255,0.02);
-  color: rgba(255,255,255,0.5);
+  background: rgba(28,26,22,0.02);
+  color: rgba(28,26,22,0.55);
   font-size: 0.8rem;
   text-align: left;
   cursor: pointer;
   transition: border-color 0.18s, background 0.18s, color 0.18s;
   width: 100%;
+  font-family: var(--font-jost), sans-serif;
 }
 .modal-tour-excursion-item:hover {
-  border-color: rgba(232,201,122,0.22);
-  background: rgba(232,201,122,0.05);
-  color: rgba(255,255,255,0.85);
+  border-color: rgba(201,169,110,0.35);
+  background: rgba(201,169,110,0.06);
+  color: rgba(28,26,22,0.85);
 }
 .modal-tour-excursion-item.active {
-  border-color: rgba(232,201,122,0.35);
-  background: rgba(232,201,122,0.08);
-  color: #e8c97a;
+  border-color: rgba(201,169,110,0.45);
+  background: rgba(201,169,110,0.1);
+  color: #8a6830;
   font-weight: 600;
 }
 
@@ -1512,20 +1517,20 @@ body {
 
 .modal-input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(28, 26, 22, 0.03);
+  border: 1px solid rgba(28, 26, 22, 0.12);
   border-radius: 3px;
   padding: 0.85rem 1rem;
-  color: #fff;
+  color: #1C1A16;
   font-size: 0.88rem;
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-weight: 400;
   outline: none;
   transition: border-color 0.2s;
   box-sizing: border-box;
 }
-.modal-input::placeholder { color: rgba(255, 255, 255, 0.22); }
-.modal-input:focus { border-color: rgba(232, 201, 122, 0.45); }
+.modal-input::placeholder { color: rgba(28, 26, 22, 0.3); }
+.modal-input:focus { border-color: rgba(201, 169, 110, 0.55); }
 
 .modal-textarea {
   resize: vertical;
@@ -1537,14 +1542,14 @@ body {
 .modal-phone-row {
   display: flex;
   gap: 0;
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(28, 26, 22, 0.12);
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(28, 26, 22, 0.03);
   overflow: visible;
   transition: border-color 0.2s;
 }
-.modal-phone-row:focus-within { border-color: rgba(232, 201, 122, 0.45); }
-.modal-phone-row--error { border-color: rgba(232, 122, 122, 0.5) !important; }
+.modal-phone-row:focus-within { border-color: rgba(201, 169, 110, 0.55); }
+.modal-phone-row--error { border-color: rgba(180, 60, 60, 0.5) !important; }
 
 .modal-country-wrap {
   position: relative;
@@ -1560,25 +1565,25 @@ body {
   min-height: 48px;
   background: none;
   border: none;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  color: #fff;
+  border-right: 1px solid rgba(28, 26, 22, 0.1);
+  color: #1C1A16;
   cursor: pointer;
   font-size: 0.85rem;
   white-space: nowrap;
   transition: background 0.15s;
 }
-.modal-country-btn:hover { background: rgba(255, 255, 255, 0.04); }
+.modal-country-btn:hover { background: rgba(28, 26, 22, 0.03); }
 
 .modal-country-code {
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 0.82rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(28, 26, 22, 0.75);
   letter-spacing: 0.02em;
 }
 .modal-country-arrow {
   font-size: 0.55rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(28, 26, 22, 0.35);
   margin-left: 2px;
 }
 
@@ -1597,13 +1602,13 @@ body {
   top: calc(100% + 4px);
   left: 0;
   z-index: 200;
-  background: #131318;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #F0EDE8;
+  border: 1px solid rgba(28, 26, 22, 0.12);
   border-radius: 4px;
   min-width: 240px;
   max-height: 260px;
   overflow-y: auto;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 32px rgba(28, 26, 22, 0.12);
   animation: modalSlideUp 0.15s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .modal-country-option {
@@ -1614,19 +1619,19 @@ body {
   padding: 9px 14px;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(28, 26, 22, 0.72);
   font-size: 0.82rem;
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   cursor: pointer;
   text-align: left;
   transition: background 0.12s;
 }
-.modal-country-option:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
-.modal-country-option.active { background: rgba(232, 201, 122, 0.08); }
+.modal-country-option:hover { background: rgba(28, 26, 22, 0.05); color: #1C1A16; }
+.modal-country-option.active { background: rgba(201, 169, 110, 0.1); }
 .modal-country-option-name { flex: 1; }
 .modal-country-option-code {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(28, 26, 22, 0.38);
   font-weight: 500;
 }
 
@@ -1636,10 +1641,10 @@ body {
   gap: 0.75rem;
   margin-bottom: 1.4rem;
   cursor: pointer;
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 0.75rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.35);
+  color: rgba(28, 26, 22, 0.42);
   line-height: 1.55;
 }
 .modal-consent a { text-decoration: underline; text-underline-offset: 2px; }
@@ -1648,13 +1653,13 @@ body {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(28, 26, 22, 0.22);
   border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.65rem;
-  color: #0d0d12;
+  color: #F8F6F2;
   transition: background 0.18s, border-color 0.18s;
   margin-top: 2px;
 }
@@ -1664,16 +1669,39 @@ body {
   padding: 0.95rem;
   border: none;
   border-radius: 3px;
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 13px;
   font-weight: 600;
   font-style: normal;
   letter-spacing: 0.04em;
-  color: #0d0d12;
+  color: #3f1a17;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
 }
+.modal-submit__arr {
+  display: inline-flex;
+  align-items: center;
+}
+.modal-submit__arr svg {
+  display: block;
+  width: 38px;
+  height: 8px;
+  overflow: visible;
+}
+.modal-submit__shaft {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: t-arr-shaft 2s ease-in-out infinite;
+}
+.modal-submit__tip {
+  animation: t-arr-tip 2s ease-in-out infinite;
+}
+.modal-submit:hover:not(:disabled) { box-shadow: 0 6px 24px rgba(255,218,108,0.35); }
 .modal-submit:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
 .modal-submit:disabled { opacity: 0.4; cursor: not-allowed; }
 .modal-submit--loading { opacity: 0.7 !important; cursor: wait !important; }
@@ -1724,10 +1752,10 @@ body {
 }
 
 .modal-note {
-  font-family: "DM Sans", Inter, sans-serif;
+  font-family: var(--font-jost), Inter, sans-serif;
   font-size: 0.62rem;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.18);
+  color: rgba(28, 26, 22, 0.28);
   text-align: center;
   line-height: 1.55;
 }

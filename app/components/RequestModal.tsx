@@ -301,7 +301,7 @@ export default function RequestModal({
                             onClick={() => setTourExcursion(ex)}
                           >
                             <span style={{
-                              width: 14, height: 14, border: `1.5px solid ${tourExcursion === ex ? accent : "rgba(255,255,255,0.18)"}`,
+                              width: 14, height: 14, border: `1.5px solid ${tourExcursion === ex ? accent : "rgba(28,26,22,0.25)"}`,
                               borderRadius: 2, display: "inline-flex", alignItems: "center", justifyContent: "center",
                               flexShrink: 0, fontSize: "0.6rem", color: tourExcursion === ex ? accent : "transparent",
                               transition: "all 0.15s", marginRight: "0.55rem"
@@ -428,7 +428,17 @@ export default function RequestModal({
           disabled={status === "loading"}
           onClick={handleSubmit}
         >
-          {status === "loading" ? "Отправляем…" : "Отправить заявку →"}
+          {status === "loading" ? "Отправляем…" : (
+            <>
+              Отправить заявку
+              <span className="modal-submit__arr" aria-hidden="true">
+                <svg viewBox="0 0 38 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line className="modal-submit__shaft" x1="0" y1="4" x2="28" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+                  <path className="modal-submit__tip" d="M23.5 1L28 4L23.5 7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </>
+          )}
         </button>
 
         <p className="modal-note">

@@ -1,217 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./tourism.css";
-
-function CompassRose({ className }: { className?: string }) {
-  const C = 210, R = 190;
-
-  // Внешние риски (72 деления × 5°)
-  const ticks = Array.from({ length: 72 }, (_, i) => {
-    const deg = i * 5;
-    const rad = (deg - 90) * Math.PI / 180;
-    const isCardinal = deg % 90 === 0;
-    const isMajor    = deg % 45 === 0;
-    const isMid      = deg % 10 === 0;
-    const len = isCardinal ? 26 : isMajor ? 18 : isMid ? 12 : 6;
-    const x1 = C + R * Math.cos(rad), y1 = C + R * Math.sin(rad);
-    const x2 = C + (R - len) * Math.cos(rad), y2 = C + (R - len) * Math.sin(rad);
-    return { x1, y1, x2, y2, w: isCardinal ? 1.6 : isMajor ? 1.0 : isMid ? 0.55 : 0.3 };
-  });
-
-  // Внутренние риски на r=148 (каждые 10°)
-  const innerTicks = Array.from({ length: 36 }, (_, i) => {
-    const deg = i * 10;
-    const rad = (deg - 90) * Math.PI / 180;
-    const isCard = deg % 90 === 0;
-    const r2 = 148;
-    const x1 = C + r2 * Math.cos(rad), y1 = C + r2 * Math.sin(rad);
-    const x2 = C + (r2 - (isCard ? 12 : 7)) * Math.cos(rad), y2 = C + (r2 - (isCard ? 12 : 7)) * Math.sin(rad);
-    return { x1, y1, x2, y2, w: isCard ? 0.7 : 0.3 };
-  });
-
-  const DIRS = ['n','e','s','w'] as const;
-
-  return (
-    <svg className={className} viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      {/* Концентрические окружности */}
-      <circle cx={C} cy={C} r={R}   stroke="#e8c97a" strokeWidth="0.9"/>
-      <circle cx={C} cy={C} r={172} stroke="#e8c97a" strokeWidth="0.2" opacity="0.5"/>
-      <circle cx={C} cy={C} r={155} stroke="#e8c97a" strokeWidth="0.4"/>
-      <circle cx={C} cy={C} r={120} stroke="#e8c97a" strokeWidth="0.35"/>
-      <circle cx={C} cy={C} r={82}  stroke="#e8c97a" strokeWidth="0.4"/>
-      <circle cx={C} cy={C} r={48}  stroke="#e8c97a" strokeWidth="0.35"/>
-      <circle cx={C} cy={C} r={18}  stroke="#e8c97a" strokeWidth="0.5"/>
-      <circle cx={C} cy={C} r={8}   stroke="#e8c97a" strokeWidth="0.5"/>
-      <circle cx={C} cy={C} r={3.5} fill="#e8c97a"   fillOpacity="0.8"/>
-
-      {/* Крестовые линии — кардинальные */}
-      <line x1={C} y1={C-R} x2={C} y2={C+R} stroke="#e8c97a" strokeWidth="0.5"/>
-      <line x1={C-R} y1={C} x2={C+R} y2={C} stroke="#e8c97a" strokeWidth="0.5"/>
-      {/* Диагонали — промежуточные */}
-      <line x1={C-134} y1={C-134} x2={C+134} y2={C+134} stroke="#e8c97a" strokeWidth="0.3"/>
-      <line x1={C+134} y1={C-134} x2={C-134} y2={C+134} stroke="#e8c97a" strokeWidth="0.3"/>
-      {/* 22.5° линии */}
-      {[22.5,67.5,112.5,157.5].map((deg) => {
-        const r1 = (deg-90)*Math.PI/180, r2 = r1+Math.PI;
-        return <line key={deg}
-          x1={C+R*Math.cos(r1)} y1={C+R*Math.sin(r1)}
-          x2={C+R*Math.cos(r2)} y2={C+R*Math.sin(r2)}
-          stroke="#e8c97a" strokeWidth="0.2"/>;
-      })}
-
-      {/* Внешние риски */}
-      {ticks.map((t, i) => (
-        <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#e8c97a" strokeWidth={t.w}/>
-      ))}
-      {/* Внутренние риски */}
-      {innerTicks.map((t, i) => (
-        <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#e8c97a" strokeWidth={t.w} opacity="0.55"/>
-      ))}
-
-      {/* 4 стрелки N/E/S/W — классический шеврон со срезанным основанием */}
-      {[0,90,180,270].map((deg,i) => {
-        const rad = (deg-90)*Math.PI/180;
-        // Острый кончик
-        const tx = C + 178*Math.cos(rad),  ty = C + 178*Math.sin(rad);
-        // Плечи (широкая часть)
-        const lx = C + 152*Math.cos(rad-0.19), ly = C + 152*Math.sin(rad-0.19);
-        const rx = C + 152*Math.cos(rad+0.19), ry = C + 152*Math.sin(rad+0.19);
-        // Основание со срезом (вогнутое)
-        const bl = C + 140*Math.cos(rad-0.07), bly = C + 140*Math.sin(rad-0.07);
-        const br = C + 140*Math.cos(rad+0.07), bry = C + 140*Math.sin(rad+0.07);
-        const notch = C + 132*Math.cos(rad),   notchy = C + 132*Math.sin(rad);
-        // Итоговая форма: tip → leftShoulder → leftBase → notch → rightBase → rightShoulder
-        return <polygon key={deg}
-          className={`tr-compass-arrow tr-compass-arrow--${DIRS[i]}`}
-          points={`${tx},${ty} ${lx},${ly} ${bl},${bly} ${notch},${notchy} ${br},${bry} ${rx},${ry}`}/>;
-      })}
-    </svg>
-  );
-}
-
-// Карта мира — упрощённые контуры материков
-// Карта мира — детальные контуры (equirectangular 1000×500)
-// x=(lon+180)/360*1000  y=(90−lat)/180*500
-function WorldMap({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 1000 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-
-      {/* Сетка */}
-      {[-150,-120,-90,-60,-30,0,30,60,90,120,150].map(lon => {
-        const x=(lon+180)/360*1000;
-        return <line key={lon} x1={x} y1={0} x2={x} y2={500} stroke="#e8c97a" strokeWidth="0.35" opacity="0.28"/>;
-      })}
-      {[-60,-30,0,30,60].map(lat => {
-        const y=(90-lat)/180*500;
-        return <line key={lat} x1={0} y1={y} x2={1000} y2={y} stroke="#e8c97a" strokeWidth="0.35" opacity="0.28"/>;
-      })}
-      <line x1={0} y1={250} x2={1000} y2={250} stroke="#e8c97a" strokeWidth="0.7" opacity="0.4"/>
-
-      {/* Северная Америка */}
-      <path d="M105,85 L120,72 L138,65 L158,62 L180,65 L200,72 L218,80 L235,90 L248,105 L255,120 L258,138 L252,155 L245,168 L248,178 L240,188 L228,192 L215,185 L205,172 L198,162 L192,148 L185,162 L188,178 L182,188 L172,195 L160,188 L150,175 L140,158 L128,142 L118,125 L108,108 Z"
-        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
-      <path d="M228,192 L232,205 L228,215 L222,212 L220,200 Z"
-        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
-      <path d="M215,185 L228,192 L222,200 L218,215 L208,225 L198,225 L192,215 L195,202 L205,192 Z"
-        stroke="#e8c97a" strokeWidth="0.8" fill="rgba(232,201,122,0.1)"/>
-      <path d="M255,42 L272,38 L290,42 L298,55 L292,70 L275,78 L258,72 L248,58 Z"
-        stroke="#e8c97a" strokeWidth="0.8" fill="rgba(232,201,122,0.1)"/>
-
-      {/* Южная Америка */}
-      <path d="M205,248 L220,240 L238,238 L256,242 L272,250 L285,265 L290,285 L290,308 L284,332 L272,355 L258,375 L242,392 L226,405 L212,412 L202,402 L196,382 L192,358 L192,332 L196,308 L194,282 L198,262 Z"
-        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
-
-      {/* Европа */}
-      <path d="M452,168 L455,158 L450,142 L450,125 L452,112 L448,98 L452,85 L460,75 L472,68 L488,65 L505,65 L520,70 L532,78 L535,90 L530,102 L522,112 L512,118 L520,128 L528,140 L525,150 L518,155 L508,160 L495,162 L482,162 L470,165 L460,170 Z"
-        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
-      <path d="M488,65 L495,55 L505,50 L518,52 L526,62 L530,72 L520,70 L505,65 Z"
-        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
-      <path d="M500,132 L505,145 L510,158 L508,172 L502,175 L496,162 L494,148 Z"
-        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
-      <path d="M448,98 L445,88 L450,78 L458,78 L462,88 L458,98 Z"
-        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
-
-      {/* Африка */}
-      <path d="M458,170 L470,165 L485,158 L505,152 L525,150 L545,150 L568,150 L582,152 L598,150 L612,160 L616,175 L612,195 L625,208 L638,218 L645,232 L640,250 L628,265 L612,275 L600,288 L588,308 L572,328 L556,345 L545,352 L535,342 L522,325 L515,305 L518,282 L520,262 L515,245 L508,235 L495,230 L480,228 L465,222 L452,212 L448,195 L450,178 Z"
-        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
-      <path d="M618,288 L625,278 L632,285 L635,305 L628,320 L618,318 L614,305 Z"
-        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
-
-      {/* Азия — основной массив */}
-      <path d="M525,150 L538,140 L552,132 L568,125 L585,118 L602,108 L622,98 L648,88 L678,78 L712,70 L748,65 L780,62 L812,65 L842,72 L865,82 L882,95 L892,110 L888,125 L872,135 L852,138 L832,138 L815,142 L805,150 L795,162 L785,172 L775,185 L762,198 L752,212 L748,225 L752,238 L742,242 L728,240 L718,232 L708,222 L698,212 L690,202 L680,195 L665,192 L652,195 L645,208 L638,218 L625,208 L612,195 L612,175 L612,160 L598,150 L582,150 L568,150 L545,150 Z"
-        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
-      <path d="M612,160 L625,162 L640,170 L652,180 L660,195 L662,212 L655,225 L642,232 L630,225 L620,215 L618,202 L614,192 L612,175 Z"
-        stroke="#e8c97a" strokeWidth="0.9" fill="rgba(232,201,122,0.12)"/>
-      <path d="M698,178 L712,180 L724,192 L730,208 L730,228 L722,242 L710,244 L700,238 L692,225 L688,210 L690,195 L695,185 Z"
-        stroke="#e8c97a" strokeWidth="0.9" fill="rgba(232,201,122,0.12)"/>
-      <path d="M758,185 L765,190 L770,205 L764,218 L755,222 L748,215 L750,200 Z"
-        stroke="#e8c97a" strokeWidth="0.7" fill="rgba(232,201,122,0.1)"/>
-      <path d="M802,130 L810,125 L815,135 L810,145 L800,145 L796,138 Z"
-        stroke="#e8c97a" strokeWidth="0.6" fill="rgba(232,201,122,0.1)"/>
-      <path d="M818,115 L830,110 L840,118 L836,130 L824,134 L814,128 Z"
-        stroke="#e8c97a" strokeWidth="0.6" fill="rgba(232,201,122,0.1)"/>
-
-      {/* Австралия */}
-      <path d="M735,300 L752,285 L772,280 L795,282 L818,288 L838,298 L848,318 L848,340 L840,358 L825,372 L805,378 L782,378 L760,372 L742,360 L730,345 L726,325 L728,310 Z"
-        stroke="#e8c97a" strokeWidth="1.2" fill="rgba(232,201,122,0.12)"/>
-
-      {/* Одна точка — Средиземноморье/Европа (над кнопками в секции)
-          lon=15°E lat=45°N → x=542 y=125 */}
-      {[0, 0.85, 1.7].map((d, i) => (
-        <circle key={i} cx={542} cy={125} r={6}
-          stroke="#e8c97a" strokeWidth="1.4" fill="none"
-          className="tr-map-ping"
-          style={{ animationDelay: `${d}s` }}/>
-      ))}
-      <circle cx={542} cy={125} r={3.5} fill="#e8c97a" fillOpacity="0.95"/>
-      <circle cx={542} cy={125} r={8} stroke="#e8c97a" strokeWidth="0.5" fill="none" opacity="0.35"/>
-    </svg>
-  );
-}
-
-// Сетка координат — глобус-проекция
-function CoordGrid({ className }: { className?: string }) {
-  const C = 210, R = 190;
-  // Параллели (горизонтальные эллипсы)
-  const parallels = [-60,-30,0,30,60].map(lat => {
-    const ry = R * Math.sin((Math.abs(lat) / 90) * Math.PI / 2);
-    const y  = C - R * Math.sin((lat / 90) * Math.PI / 2);
-    const rx = R * Math.cos((lat / 90) * Math.PI / 2);
-    return { y, rx, ry: rx * 0.22, isEquator: lat === 0 };
-  });
-  // Меридианы (вертикальные эллипсы)
-  const meridians = [0,30,60,90,120,150].map(lon => ({
-    rx: R * Math.sin((lon / 90) * Math.PI / 2),
-  }));
-
-  return (
-    <svg className={className} viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <circle cx={C} cy={C} r={R} stroke="#e8c97a" strokeWidth="0.7"/>
-      {/* Меридианы */}
-      {meridians.map((m, i) => (
-        <ellipse key={i} cx={C} cy={C} rx={m.rx} ry={R} stroke="#e8c97a" strokeWidth={m.rx < 5 ? 0.7 : 0.35}/>
-      ))}
-      {/* Параллели */}
-      {parallels.map((p, i) => (
-        <ellipse key={i} cx={C} cy={p.y} rx={p.rx} ry={p.ry}
-          stroke="#e8c97a" strokeWidth={p.isEquator ? 0.7 : 0.35}/>
-      ))}
-      {/* Полюса */}
-      <circle cx={C} cy={C - R} r={3} fill="#e8c97a" fillOpacity="0.5"/>
-      <circle cx={C} cy={C + R} r={3} fill="#e8c97a" fillOpacity="0.5"/>
-      {/* Метки направлений */}
-      {[{a:0,t:"N"},{a:90,t:"E"},{a:180,t:"S"},{a:270,t:"W"}].map(({a,t})=>{
-        const rad=(a-90)*Math.PI/180;
-        return <text key={t}
-          x={C+(R+18)*Math.cos(rad)} y={C+(R+18)*Math.sin(rad)}
-          fill="#e8c97a" fillOpacity="0.35" fontSize="10"
-          textAnchor="middle" dominantBaseline="middle"
-          fontFamily="DM Sans, sans-serif" letterSpacing="0.1em">{t}</text>;
-      })}
-    </svg>
-  );
-}
 
 interface Props {
   p: {
@@ -220,327 +10,678 @@ interface Props {
     role: string;
     body: string[];
     tags: string[];
-    stats: { num: string; label: string }[];
+    stats: { num: string; label: string; sublabel?: string; desc?: string; items?: string[] }[];
     services: {
       title: string;
-      items: { icon: string; name: string; hint: string }[];
+      items: { icon: string; name: string; hint: string; description?: string }[];
       cta: string;
       ctaHref: string;
     };
     accent: string;
     bg: string;
+    socials: { label: string; href: string }[];
   };
   textVisible: boolean;
   onOpenModal: () => void;
   onOpenTours: () => void;
 }
 
-const HERO_PHOTOS = [
-  "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?w=2000&q=90", // Istanbul
-  "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=2000&q=90", // Dubai
-  "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=2000&q=90", // Taj Mahal
-  "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=2000&q=90", // Maldives
-];
+/* ── Service icons ── */
+function GlobeIcon() {
+  return (
+    <svg width="88" height="88" viewBox="0 0 88 88" fill="none" aria-hidden="true">
+      <circle cx="44" cy="44" r="35" stroke="currentColor" strokeWidth="1.4"/>
+      <ellipse cx="44" cy="44" rx="18" ry="35" stroke="currentColor" strokeWidth="1.1" className="t-icon-meridian"/>
+      <ellipse cx="44" cy="44" rx="18" ry="35" stroke="currentColor" strokeWidth="0.5" strokeOpacity="0.3" transform="rotate(60 44 44)"/>
+      <path d="M9 44 Q44 38 79 44" stroke="currentColor" strokeWidth="1"/>
+      <path d="M14 27 Q44 21 74 27" stroke="currentColor" strokeWidth="0.6" strokeOpacity="0.5"/>
+      <path d="M14 61 Q44 67 74 61" stroke="currentColor" strokeWidth="0.6" strokeOpacity="0.5"/>
+      <line x1="44" y1="9" x2="44" y2="79" stroke="currentColor" strokeWidth="0.5" strokeOpacity="0.25"/>
+    </svg>
+  );
+}
 
-const SERVICE_PHOTOS: Record<string, string> = {
-  "01": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
-  "02": "/images/authors_excursion_tours.png",
-  "03": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
-  "04": "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=600&q=80",
+function CompassIcon() {
+  return (
+    <svg width="88" height="88" viewBox="0 0 88 88" fill="none" aria-hidden="true" className="t-icon-compass">
+      <circle cx="44" cy="44" r="35" stroke="currentColor" strokeWidth="1.4"/>
+      <circle cx="44" cy="44" r="4" stroke="currentColor" strokeWidth="1.2"/>
+      <polygon points="44,13 47,41 44,40 41,41" fill="currentColor"/>
+      <polygon points="44,75 41,47 44,48 47,47" fill="currentColor" fillOpacity="0.3"/>
+      <polygon points="13,44 41,41 40,44 41,47" fill="currentColor" fillOpacity="0.3"/>
+      <polygon points="75,44 47,47 48,44 47,41" fill="currentColor" fillOpacity="0.3"/>
+      <line x1="44" y1="9" x2="44" y2="20" stroke="currentColor" strokeWidth="0.6" strokeOpacity="0.2"/>
+      <line x1="44" y1="68" x2="44" y2="79" stroke="currentColor" strokeWidth="0.6" strokeOpacity="0.2"/>
+      <line x1="9" y1="44" x2="20" y2="44" stroke="currentColor" strokeWidth="0.6" strokeOpacity="0.2"/>
+      <line x1="68" y1="44" x2="79" y2="44" stroke="currentColor" strokeWidth="0.6" strokeOpacity="0.2"/>
+    </svg>
+  );
+}
+
+function PlaneIcon() {
+  return (
+    <svg width="88" height="88" viewBox="0 0 88 88" fill="none" aria-hidden="true">
+      <circle cx="44" cy="44" r="35" stroke="currentColor" strokeWidth="1.4"/>
+      <g className="t-icon-plane-group">
+        {/* Top-down airplane silhouette */}
+        <path
+          d="M44 16
+             C46.5 16 48.5 21 48.5 30
+             L48.5 38
+             L71 51 L71 56 L48.5 48
+             L48.5 61
+             L56 65 L56 69 L44 67 L32 69 L32 65 L39.5 61
+             L39.5 48 L17 56 L17 51 L39.5 38
+             L39.5 30
+             C39.5 21 41.5 16 44 16 Z"
+          stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"
+          fill="currentColor" fillOpacity="0.13"
+        />
+      </g>
+    </svg>
+  );
+}
+
+const MESSENGER: Record<string, string> = {
+  WA: "WhatsApp", MX: "Max", IN: "Instagram", VK: "ВКонтакте", TG: "Telegram",
 };
 
-const TOUR_SERVICE = "Авторские экскурсионные туры";
+/* ── Карта мира — координаты: x=(lon+180)*2.803, y=(90-lat)*2.806 ── */
+function WorldMapBg() {
+  const c = "#374d1e";
+  const fo = 0.11;
+  return (
+    <svg className="t-world-map" viewBox="0 0 1009 505" fill="none" aria-hidden="true">
+      {/* Сетка параллелей/меридианов */}
+      <line x1="0" y1="252" x2="1009" y2="252" stroke={c} strokeWidth="0.4" strokeDasharray="5 8" opacity="0.4"/>
+      <line x1="504" y1="0" x2="504" y2="505" stroke={c} strokeWidth="0.3" strokeDasharray="5 8" opacity="0.3"/>
+      {[126,379].map(y=><line key={y} x1="0" y1={y} x2="1009" y2={y} stroke={c} strokeWidth="0.2" strokeDasharray="3 10" opacity="0.18"/>)}
+      {[252,756].map(x=><line key={x} x1={x} y1="0" x2={x} y2="505" stroke={c} strokeWidth="0.2" strokeDasharray="3 10" opacity="0.18"/>)}
 
-export default function TourismOverlay({ p, textVisible, onOpenModal, onOpenTours }: Props) {
+      {/* ── Гренландия ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.6" d="
+        M 351,36 L 362,22 L 378,14 L 397,12 L 416,16 L 428,28
+        L 432,44 L 426,60 L 413,70 L 396,74 L 378,72 L 364,62 L 351,48 Z
+      "/>
+
+      {/* ── Северная Америка (полный контур часовой стрелки) ── */}
+      {/* Тихоокеанское побережье → Центральная Америка → Карибское → Мексиканский залив → Флорида → Атлантика → Арктика */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.85" d="
+        M 34,67
+        L 48,98 L 90,87 L 123,93 L 140,98 L 157,115 L 157,120
+        L 162,148 L 168,157 L 173,160 L 176,163
+        L 182,175 L 190,186 L 196,188
+        L 207,186 L 210,196 L 225,206 L 238,207
+        L 252,213 L 259,214 L 263,219 L 268,228 L 279,229
+        L 271,222 L 260,210 L 254,208 L 248,207 L 244,204
+        L 252,192 L 260,188 L 245,190
+        L 236,199 L 233,190 L 233,178 L 236,172
+        L 252,170 L 264,170 L 276,173
+        L 278,181 L 279,181
+        L 281,181 L 280,174 L 279,169
+        L 292,155 L 297,138 L 309,135 L 334,127
+        L 349,121 L 358,121
+        L 349,104 L 326,64 L 315,48
+        L 258,39 L 168,45 L 123,59 L 90,56 L 65,54 Z
+      "/>
+
+      {/* ── Полуостров Баха Калифорния ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 176,163 L 180,168 L 186,176 L 192,184 L 196,188
+        L 198,184 L 197,176 L 193,170 L 188,166 L 183,162 Z
+      "/>
+
+      {/* ── Куба ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 226,196 L 238,192 L 252,194 L 259,200 L 256,208
+        L 246,212 L 234,210 L 224,204 Z
+      "/>
+
+      {/* ── Южная Америка (полный контур) ── */}
+      {/* Тихоокеанское побережье → Мыс Горн → Атлантика → Карибское */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.85" d="
+        M 287,231
+        L 279,247 L 279,258 L 281,272 L 283,284
+        L 286,296 L 290,308 L 298,319 L 303,331
+        L 306,342 L 307,354 L 308,364 L 310,374
+        L 312,386 L 312,398 L 314,408
+        L 317,400 L 320,390 L 322,378 L 323,366
+        L 324,353 L 325,342 L 327,335
+        L 324,326 L 321,316 L 317,303 L 315,291
+        L 316,278 L 316,265 L 318,254
+        L 323,246 L 330,240 L 337,236
+        L 341,240 L 344,249 L 350,252 L 357,252
+        L 365,249 L 373,244 L 382,240
+        L 391,258 L 394,268 L 398,275 L 406,275
+        L 399,258 L 390,245 L 383,237
+        L 358,228 L 340,222 L 328,222 L 317,222 L 311,222
+        L 299,222 L 292,228 L 287,231 Z
+      "/>
+
+      {/* ── Европа ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.7" d="
+        M 477,150 L 480,142 L 480,135 L 481,128 L 483,126
+        L 490,126 L 494,118 L 492,113 L 497,109 L 504,110
+        L 504,104 L 498,100 L 492,96 L 492,88 L 498,84
+        L 510,82 L 523,80 L 531,84 L 536,92 L 534,100
+        L 524,106 L 516,108 L 514,114 L 519,118 L 528,120
+        L 536,124 L 542,130 L 547,128 L 548,122 L 544,116
+        L 548,110 L 548,102 L 545,97 L 540,96 L 530,98
+        L 522,102 L 516,110 L 510,112
+        L 516,120 L 522,126 L 522,134 L 518,140
+        L 524,144 L 530,150 L 528,156 L 523,162
+        L 518,162 L 514,157 L 508,151 L 504,146
+        L 498,144 L 492,146 L 490,152 L 488,157 L 484,156
+        L 480,152 L 477,150 Z
+      "/>
+
+      {/* ── Скандинавия (отдельно чётче) ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 510,82 L 516,72 L 524,62 L 534,56 L 546,54 L 556,60
+        L 558,70 L 552,80 L 540,88 L 530,92 L 523,88 L 516,82 Z
+      "/>
+
+      {/* ── Великобритания ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 490,108 L 494,100 L 497,94 L 497,86 L 492,88
+        L 488,96 L 484,106 L 486,112 L 490,113 Z
+      "/>
+
+      {/* ── Африка (точный контур) ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.85" d="
+        M 510,152
+        L 490,154 L 480,150 L 474,145 L 466,147 L 460,156
+        L 460,168 L 458,180 L 456,193 L 455,212
+        L 462,222 L 468,230 L 474,237 L 484,240
+        L 492,240 L 504,238 L 514,235 L 524,240
+        L 531,244 L 531,252 L 534,260 L 537,268
+        L 540,278 L 540,288 L 540,298 L 542,310
+        L 544,320 L 544,330 L 548,340 L 554,348
+        L 560,354 L 570,354 L 576,350 L 582,344
+        L 587,338 L 592,328 L 598,314 L 605,298
+        L 610,278 L 612,263 L 614,250 L 619,237
+        L 624,226 L 628,220 L 636,218 L 644,220
+        L 629,218 L 622,217 L 609,208
+        L 604,196 L 598,182 L 595,170
+        L 589,164 L 574,163 L 558,162
+        L 540,158 L 530,150 L 520,148 L 512,149 Z
+      "/>
+
+      {/* ── Мадагаскар ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 548,268 L 554,258 L 560,258 L 563,268 L 562,282
+        L 558,296 L 552,308 L 546,310 L 540,303
+        L 538,290 L 542,278 Z
+      "/>
+
+      {/* ── Аравийский полуостров ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.6" d="
+        M 570,161 L 582,156 L 594,156 L 602,162 L 608,172
+        L 612,186 L 610,202 L 605,216 L 598,228
+        L 590,234 L 580,236 L 570,230 L 562,220
+        L 557,206 L 557,192 L 560,180 L 565,170 Z
+      "/>
+
+      {/* ── Россия + Центральная/Восточная Азия ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.8" d="
+        M 543,74 L 562,66 L 584,58 L 613,52 L 644,48
+        L 676,44 L 708,46 L 737,52 L 762,60
+        L 785,70 L 804,82 L 820,98 L 829,117
+        L 832,136 L 826,154 L 813,168 L 798,178
+        L 782,184 L 764,184 L 746,178 L 730,168
+        L 714,156 L 700,146 L 684,138 L 667,130
+        L 650,124 L 632,122 L 615,124 L 598,130
+        L 583,138 L 570,147 L 558,152
+        L 547,152 L 538,146 L 532,136 L 530,124
+        L 532,110 L 536,98 L 542,86 Z
+      "/>
+
+      {/* ── Индия ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.65" d="
+        M 619,149 L 634,143 L 648,145 L 660,153
+        L 667,165 L 670,179 L 668,195 L 661,211
+        L 650,223 L 638,228 L 626,225 L 616,216
+        L 609,202 L 607,188 L 610,176 L 614,163 Z
+      "/>
+
+      {/* ── Индокитай/Малайзия (п-ов) ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.6" d="
+        M 730,168 L 746,162 L 758,163 L 767,170
+        L 772,182 L 770,196 L 762,208 L 751,216
+        L 740,220 L 729,216 L 720,205 L 716,193
+        L 719,181 L 725,172 Z
+      "/>
+
+      {/* ── Китай/Восточная Азия (прибрежная часть) ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.7" d="
+        M 782,184 L 798,178 L 813,178 L 828,186
+        L 840,198 L 848,214 L 848,232 L 840,248
+        L 828,258 L 813,264 L 796,260 L 782,250
+        L 772,235 L 768,220 L 772,204 L 780,192 Z
+      "/>
+
+      {/* ── Япония ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 857,146 L 865,138 L 874,138 L 879,148
+        L 877,160 L 868,166 L 860,162 L 855,154 Z
+      "/>
+      <path fill={c} fillOpacity="0.08" stroke={c} strokeWidth="0.45" d="
+        M 839,164 L 845,158 L 852,160 L 854,168
+        L 849,176 L 841,176 L 837,170 Z
+      "/>
+
+      {/* ── Борнео ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 762,232 L 776,226 L 792,228 L 800,240
+        L 802,254 L 797,268 L 784,276 L 770,276
+        L 759,266 L 755,252 L 758,240 Z
+      "/>
+
+      {/* ── Суматра ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.5" d="
+        M 696,220 L 712,212 L 727,215 L 738,226
+        L 743,240 L 739,252 L 727,260 L 712,260
+        L 700,250 L 695,237 Z
+      "/>
+
+      {/* ── Ява ── */}
+      <path fill={c} fillOpacity="0.08" stroke={c} strokeWidth="0.45" d="
+        M 744,262 L 756,256 L 770,258 L 778,266
+        L 775,275 L 762,278 L 750,274 L 742,268 Z
+      "/>
+
+      {/* ── Австралия ── */}
+      <path fill={c} fillOpacity={fo} stroke={c} strokeWidth="0.85" d="
+        M 822,280 L 838,272 L 856,268 L 874,269
+        L 890,275 L 902,287 L 909,303 L 913,321
+        L 915,340 L 914,358 L 910,375 L 902,390
+        L 890,402 L 873,410 L 854,412 L 834,408
+        L 816,400 L 802,386 L 794,370 L 791,352
+        L 791,333 L 795,315 L 803,300 L 814,288 Z
+      "/>
+      {/* Залив Карпентария */}
+      <path fill="rgba(248,246,242,0.7)" stroke="none" d="
+        M 851,268 L 862,274 L 868,287 L 862,298 L 849,298 L 840,286 L 839,274 Z
+      "/>
+
+      {/* ── Тасмания ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.4" d="
+        M 858,418 L 866,410 L 874,414 L 875,424 L 868,430 L 860,426 Z
+      "/>
+
+      {/* ── Новая Зеландия Северный о-в ── */}
+      <path fill={c} fillOpacity="0.09" stroke={c} strokeWidth="0.45" d="
+        M 940,366 L 946,356 L 954,356 L 958,366 L 954,378 L 946,382 L 940,374 Z
+      "/>
+      {/* Южный о-в */}
+      <path fill={c} fillOpacity="0.08" stroke={c} strokeWidth="0.4" d="
+        M 950,386 L 956,380 L 962,382 L 963,392 L 958,400 L 951,400 L 948,393 Z
+      "/>
+    </svg>
+  );
+}
+
+/* ── Иконки соцсетей ── */
+function WAIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M10 1.5C5.3 1.5 1.5 5.3 1.5 10c0 1.6.4 3.1 1.2 4.4L1.5 18.5l4.3-1.1A8.5 8.5 0 1010 1.5z" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round"/>
+      <path d="M7.2 7.5c.1.8.6 1.7 1.4 2.5.8.8 1.7 1.3 2.5 1.4l.6-.8.7.3c.5.2.6.7.4 1.1-.3.6-1 1-1.7.8-1-.3-2.4-1.1-3.3-3-.6-1.3-.6-2.7.3-3.2.3-.2.8-.1 1 .3l.3.6-.7.6-.5.4z" stroke="currentColor" strokeWidth="1.1" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+function TGIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M2.5 9.5L17 3.5 13.5 17 9.5 12.5 6.5 14.5 7 10.5" stroke="currentColor" strokeWidth="1.25" strokeLinejoin="round" strokeLinecap="round"/>
+      <path d="M9.5 12.5L13 8.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/>
+    </svg>
+  );
+}
+function VKIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      {/* V */}
+      <path d="M2 5.5L5.5 14.5L9 5.5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"/>
+      {/* K */}
+      <line x1="11.5" y1="5.5" x2="11.5" y2="14.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M11.5 10L15.5 5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M11.5 10L15.5 14.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+  );
+}
+function INIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <rect x="3" y="3" width="14" height="14" rx="4" stroke="currentColor" strokeWidth="1.25"/>
+      <circle cx="10" cy="10" r="3.5" stroke="currentColor" strokeWidth="1.15"/>
+      <circle cx="14.2" cy="5.8" r="0.9" fill="currentColor"/>
+    </svg>
+  );
+}
+function MXIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      {/* Outer ring — большой круг */}
+      <circle cx="10" cy="9.5" r="7.2" stroke="currentColor" strokeWidth="1.3"/>
+      {/* Inner circle — «дырка» пончика */}
+      <circle cx="10" cy="9.5" r="3.3" stroke="currentColor" strokeWidth="1.2"/>
+      {/* Tail — хвостик пузыря снизу-слева */}
+      <path d="M5.5 15L2.5 18.5L8 17" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+const SOCIAL_IMG: Record<string, string> = {
+  WA: "/icons/tur-WP.png",
+  VK: "/icons/tur-VK.png",
+  IN: "/icons/tur-insta.png",
+  MX: "/icons/tur-max.png",
+};
+
+const SOCIAL_ICONS: Record<string, React.ReactElement> = {
+  WA: <WAIcon />, TG: <TGIcon />, VK: <VKIcon />, IN: <INIcon />, MX: <MXIcon />,
+};
+
+export default function TourismOverlay({ p, onOpenModal, onOpenTours }: Props) {
+  const rightRef = useRef<HTMLDivElement>(null);
   const [line1, line2] = p.heading.split("\n");
-  const [slideIdx, setSlideIdx] = useState(0);
-
-  // Auto-advance slides every 5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSlideIdx(i => (i + 1) % HERO_PHOTOS.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const totalSections = 1 + p.stats.length + p.services.items.length + 1;
 
   const scrollToContacts = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    const container = document.querySelector(".fullscreen-overlay") as HTMLElement | null;
-    const target = document.getElementById("tr-contacts");
-    if (!container || !target) return;
-
-    const start = container.scrollTop;
-    const end = target.getBoundingClientRect().top
-               - container.getBoundingClientRect().top
-               + container.scrollTop;
-    const duration = 1100;
-    const startTime = performance.now();
-
-    const ease = (t: number) =>
-      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-
-    const step = (now: number) => {
-      const progress = Math.min((now - startTime) / duration, 1);
-      container.scrollTop = start + (end - start) * ease(progress);
-      if (progress < 1) requestAnimationFrame(step);
-    };
-
-    requestAnimationFrame(step);
+    document.getElementById("t-contacts")?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
+  // Активная секция — подсветка номера в сайдбаре
   useEffect(() => {
-    if (!textVisible) return;
-    const container = document.querySelector(".fullscreen-overlay") as HTMLElement | null;
-    if (!container) return;
+    const rows = document.querySelectorAll<HTMLElement>(".t-row");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Array.from(rows).indexOf(entry.target as HTMLElement);
+            if (idx !== -1) setActiveIdx(idx);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+    rows.forEach((r) => observer.observe(r));
+    return () => observer.disconnect();
+  }, []);
 
-    const check = () => {
-      const bottom = container.getBoundingClientRect().bottom;
-      container.querySelectorAll<HTMLElement>("[data-tr]").forEach((el) => {
-        if (el.getBoundingClientRect().top < bottom - 60) {
-          el.classList.add("tr-in");
+  // Reveal on scroll
+  useEffect(() => {
+    const els = document.querySelectorAll<HTMLElement>(".t-reveal");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+    );
+    els.forEach((el) => observer.observe(el));
+    requestAnimationFrame(() => {
+      els.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+          el.classList.add("is-visible");
+          observer.unobserve(el);
         }
       });
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // Parallax на больших числах — слушаем скролл правой панели
+  useEffect(() => {
+    const container = rightRef.current;
+    if (!container) return;
+    let rafId: number;
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        document.querySelectorAll<HTMLElement>(".t-stat-grid__left").forEach((left) => {
+          const row = left.closest(".t-row") as HTMLElement;
+          if (!row) return;
+          const rect = row.getBoundingClientRect();
+          const progress = rect.top / window.innerHeight - 0.3;
+          left.style.transform = `translateY(${progress * 20}px)`;
+        });
+      });
     };
-
-    const header = document.querySelector(".header") as HTMLElement | null;
-
-    const updateHeader = () => {
-      const about = document.querySelector(".tr-about");
-      if (!header || !about) return;
-      const top = about.getBoundingClientRect().top;
-      if (top <= 80) {
-        header.style.background = "rgba(92, 83, 62, 0.24)";
-        header.style.backdropFilter = "blur(12px)";
-        header.style.boxShadow = "0 1px 0 rgba(0,0,0,0.08)";
-      } else {
-        header.style.background = "transparent";
-        header.style.backdropFilter = "none";
-        header.style.boxShadow = "none";
-      }
-    };
-
-    check();
-    updateHeader();
-    container.addEventListener("scroll", check, { passive: true });
-    container.addEventListener("scroll", updateHeader, { passive: true });
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
     return () => {
-      container.removeEventListener("scroll", check);
-      container.removeEventListener("scroll", updateHeader);
-      // сбрасываем шапку при закрытии
-      if (header) {
-        header.style.background = "transparent";
-        header.style.backdropFilter = "none";
-        header.style.boxShadow = "none";
-      }
+      container.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
     };
-  }, [textVisible]);
+  }, []);
+
+  // Счётчик анимации для статистики
+  useEffect(() => {
+    const nums = document.querySelectorAll<HTMLElement>(".t-stat-num");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          const original = el.textContent ?? "";
+          const match = original.match(/^(\d+)(.*)$/);
+          if (!match) return;
+          const target = parseInt(match[1], 10);
+          const suffix = match[2];
+          const duration = 1400;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const prog = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - prog, 3);
+            el.textContent = Math.round(eased * target) + suffix;
+            if (prog < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+          observer.unobserve(el);
+        });
+      },
+      { threshold: 0.6 }
+    );
+    nums.forEach((n) => observer.observe(n));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="tr-wrap">
+    <div className="t-root">
 
-      {/* ══ HERO ══════════════════════════════════════════ */}
-      <section className="tr-hero">
-        {/* Slides */}
-        {HERO_PHOTOS.map((url, i) => (
-          <div
-            key={url}
-            className={`tr-hero-photo${i === slideIdx ? " tr-hero-photo--active" : ""}`}
-            style={{ backgroundImage: `url(${url})` }}
-          />
-        ))}
-        <div className="tr-hero-overlay" />
+      {/* ── Фоновое видео на весь экран ── */}
+      <video className="t-bg-video" src="/video/tur_video.mp4"
+        autoPlay muted loop playsInline />
 
-        <div className={`tr-hero-body${textVisible ? " tr-hero-body--in" : ""}`}>
-          <span className="tr-label">{p.label} · Международный туризм</span>
-
-          <h1 className="tr-heading">
-            {line1}
-            <span className="tr-heading-sub">{line2}</span>
+      {/* ── ЛЕВАЯ ПАНЕЛЬ: фиксированный герой ── */}
+      <div className="t-left">
+        <div className="t-left__content">
+          <p className="t-eyebrow">{p.label} · Международный туризм</p>
+          <h1 className="t-left__heading">
+            <span className="t-heading-line"><span className="t-heading-line-inner">{line1}</span></span>
+            {line2 && <span className="t-heading-line"><span className="t-heading-line-inner">{line2}</span></span>}
           </h1>
-
-          <p className="tr-hero-text">{p.body[0]}</p>
-
-          <div className="tr-hero-actions">
-            <button className="tr-btn tr-btn--primary" onClick={onOpenModal}>
-              Оставить заявку <span className="tr-btn-arrow">↗</span>
+          <p className="t-left__body">{p.body[0]}</p>
+          <div className="t-left__actions">
+            <button className="t-btn t-btn--gold" onClick={onOpenModal}>
+              Оставить заявку
+              <img src="/icons/tur_button.png" alt="" className="t-btn__icon" />
             </button>
-            <a href="#tr-contacts" className="tr-btn tr-btn--ghost" onClick={scrollToContacts}>
-              <span className="tr-btn-dot" />
-              <span className="tr-btn-line" />
-              <span>Контакты</span>
+            <a className="t-btn t-btn--ghost" href="#t-contacts" onClick={scrollToContacts}>
+              Контакты
             </a>
           </div>
         </div>
+      </div>
 
-        {/* Scroll hint */}
-        <div className={`tr-scroll-hint${textVisible ? " tr-scroll-hint--in" : ""}`}>
-          <span className="tr-scroll-hint-line" />
-          <span className="tr-scroll-hint-text">Листайте</span>
-        </div>
+      {/* ── ПРАВАЯ ПАНЕЛЬ ── */}
+      <div className="t-right" ref={rightRef}>
 
-        {/* Slide dots */}
-        <div className={`tr-hero-dots${textVisible ? " tr-hero-dots--in" : ""}`}>
-          {HERO_PHOTOS.map((_, i) => (
-            <button
-              key={i}
-              className={`tr-hero-dot${i === slideIdx ? " tr-hero-dot--active" : ""}`}
-              onClick={() => setSlideIdx(i)}
-              aria-label={`Слайд ${i + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Stats — bottom-right */}
-        <div className={`tr-hero-stats${textVisible ? " tr-hero-stats--in" : ""}`}>
-          {p.stats.map((s) => (
-            <div key={s.label} className="tr-hero-stat">
-              <span className="tr-hero-stat-num">{s.num}</span>
-              <span className="tr-hero-stat-label">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══ ABOUT ═════════════════════════════════════════ */}
-      <section className="tr-about" data-tr>
-        <div className="tr-section-hint">
-          <span className="tr-section-hint-line" />
-          <span className="tr-section-hint-text">Листайте</span>
-        </div>
-        {/* Decorative compass rose */}
-        <div className="tr-compass-wrap">
-          <CompassRose className="tr-compass" />
-        </div>
-
-        <div className="tr-about-inner">
-          <div className="tr-about-left">
-            <span className="tr-label">О команде</span>
-            <blockquote className="tr-quote">{p.body[1]}</blockquote>
+        {/* Сайдбар с номерами секций */}
+        <nav className="t-sidebar" aria-hidden="true">
+          <div className="t-sidebar__nums">
+            {Array.from({ length: totalSections }, (_, i) => (
+              <div key={i} className={`t-sidebar__item${i === activeIdx ? " is-active" : ""}`}>
+                <span className="t-sidebar__num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="t-sidebar__dot" />
+              </div>
+            ))}
           </div>
-          <div className="tr-about-right">
-            <p className="tr-about-role">{p.role}</p>
-            <p className="tr-about-company">MAGIC Group NTS</p>
-            <div className="tr-about-tags">
-              {p.tags.map((t) => (
-                <span key={t} className="tr-tag">{t}</span>
+          <div className="t-sidebar__bottom">
+            <span className="t-sidebar__scroll">Scroll</span>
+            <span className="t-sidebar__pulse" aria-hidden="true" />
+          </div>
+        </nav>
+
+        {/* Основной контент */}
+        <div className="t-right__main">
+
+          {/* 01 — О команде */}
+          <div className="t-row">
+            <div className="t-row__cnt">
+              <p className="t-eyebrow t-eyebrow--muted">О команде</p>
+              <h2 className="t-row__h">{p.role}</h2>
+              {p.body.map((line, i) => (
+                <p key={i} className="t-row__p">{line}</p>
               ))}
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ══ SERVICES ══════════════════════════════════════ */}
-      <section className="tr-services" data-tr>
-        <div className="tr-compass-wrap tr-compass-wrap--left">
-          <CoordGrid className="tr-compass" />
-        </div>
-        <div className="tr-section-hint">
-          <span className="tr-section-hint-line" />
-          <span className="tr-section-hint-text">Листайте</span>
-        </div>
-        <div className="tr-services-inner">
-          <div className="tr-services-header">
-            <span className="tr-label">Что предлагаем</span>
-            <h2 className="tr-services-title">{p.services.title}</h2>
-          </div>
-
-          <div className="tr-services-grid">
-            {p.services.items.map((item) => {
-              const isTour = item.name === TOUR_SERVICE;
-              return (
-                <div
-                  key={item.name}
-                  className={`tr-card${isTour ? " tr-card--tours" : ""}`}
-                  onClick={isTour ? onOpenTours : undefined}
-                  style={isTour ? { cursor: "pointer" } : undefined}
-                >
-                  <div
-                    className="tr-card-photo"
-                    style={{ backgroundImage: `url(${SERVICE_PHOTOS[item.icon] || ""})` }}
-                  />
-                  <div className="tr-card-body">
-                    <span className="tr-card-num">{item.icon}</span>
-                    <h3 className="tr-card-name">{item.name}</h3>
-                    <p className="tr-card-hint">{item.hint}</p>
-                    {isTour && (
-                      <span className="tr-card-cta-hint">Смотреть туры →</span>
-                    )}
+          {/* Статистика */}
+          {p.stats.map((s) => (
+            <div key={s.label} className={`t-row t-row--stat t-reveal${s.items ? " t-row--map" : ""}`} data-delay="1">
+              {s.items && <WorldMapBg />}
+              <div className="t-row__cnt">
+                <p className="t-eyebrow t-eyebrow--muted">{s.label}</p>
+                <div className="t-stat-grid">
+                  <div className="t-stat-grid__left">
+                    <span className="t-stat-num">{s.num}</span>
+                    {s.sublabel && <span className="t-stat-sublabel">{s.sublabel}</span>}
                   </div>
+                  {s.desc && (
+                    <p className="t-stat-grid__right t-stat-desc">{s.desc}</p>
+                  )}
+                  {s.items && (
+                    <ul className="t-stat-grid__right t-stat-list">
+                      {s.items.map(item => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
-              );
-            })}
-          </div>
-
-          <div className="tr-services-cta">
-            <button className="tr-btn tr-btn--primary" onClick={onOpenModal}>
-              Оставить заявку <span className="tr-btn-arrow">↗</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ══ CONTACTS ══════════════════════════════════════ */}
-      <section className="tr-contacts" id="tr-contacts" data-tr>
-        {/* WorldMap centered behind contacts */}
-        <div className="tr-compass-wrap tr-compass-wrap--left tr-compass-wrap--map">
-          <WorldMap className="tr-worldmap" />
-        </div>
-        <div className="tr-contacts-inner">
-
-          <div className="tr-contacts-left">
-            <span className="tr-label">Связаться с нами</span>
-            <h2 className="tr-contacts-heading">
-              Давайте обсудим<br />ваш маршрут
-            </h2>
-            <p className="tr-contacts-sub">
-              Отвечаем быстро — обычно в течение часа.<br />
-              Расскажите куда хотите, и мы подберём лучший вариант.
-            </p>
-          </div>
-
-          <div className="tr-contacts-right">
-            <div className="tr-messengers">
-              <a href="https://t.me/username" target="_blank" rel="noreferrer" className="tr-messenger tr-messenger--tg">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{flexShrink: 0}}>
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.883 13.99l-2.938-.918c-.638-.203-.651-.638.136-.944l11.439-4.41c.532-.194.998.13.374.503z"/>
-                </svg>
-                Написать в Telegram
-                <span className="tr-messenger-arrow">→</span>
-              </a>
-              <a href="https://wa.me/79000000000" target="_blank" rel="noreferrer" className="tr-messenger tr-messenger--wa">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{flexShrink: 0}}>
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                Написать в WhatsApp
-                <span className="tr-messenger-arrow">→</span>
-              </a>
-              <a href="https://max.ru/join/w4v28odPKu06lp5xCdnyI6aD8T8o-i8vxT8p_6Gc9wo" target="_blank" rel="noreferrer" className="tr-messenger tr-messenger--mx">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{flexShrink: 0}}>
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.5 16.5h-2.25v-4.5L12 14.25l-2.25-2.25v4.5H7.5v-9h2.25l2.25 2.25 2.25-2.25H16.5v9z"/>
-                </svg>
-                Написать в Max
-                <span className="tr-messenger-arrow">→</span>
-              </a>
-              <div className="tr-messenger-ig-wrap">
-                <a href="https://instagram.com/username" target="_blank" rel="noreferrer" className="tr-messenger tr-messenger--ig">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{flexShrink: 0}}>
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-                  </svg>
-                  Написать в Instagram
-                  <span className="tr-messenger-arrow">→</span>
-                </a>
-                <p className="tr-messenger-note">* Instagram принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.</p>
               </div>
             </div>
+          ))}
 
-            <button className="tr-contacts-cta" onClick={onOpenModal}>
-              Оставить заявку <span className="tr-btn-arrow">↗</span>
-            </button>
+          {/* Услуги */}
+          {p.services.items.map((item, i) => (
+            <div key={item.name} className="t-row t-reveal" data-delay="1">
+              <div className="t-row__cnt t-svc-layout">
+                <div className="t-svc-layout__text">
+                  <p className="t-eyebrow t-eyebrow--muted">{item.hint}</p>
+                  <h3 className="t-row__h t-row__h--md">{item.name}</h3>
+                  {item.description && <p className="t-row__p">{item.description}</p>}
+                  {i === 0 && (
+                    <button className="t-btn t-btn--outline-dark t-btn--sm" onClick={onOpenModal}>
+                      Смотреть путёвки <span className="t-btn__arr" aria-hidden="true"><svg className="t-btn__arr-svg" viewBox="0 0 38 8" fill="none" xmlns="http://www.w3.org/2000/svg"><line className="t-btn__arr-shaft" x1="0" y1="4" x2="28" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><path className="t-btn__arr-tip" d="M23.5 1L28 4L23.5 7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                    </button>
+                  )}
+                  {i === 1 && (
+                    <button className="t-btn t-btn--outline-dark t-btn--sm" onClick={onOpenTours}>
+                      Смотреть туры <span className="t-btn__arr" aria-hidden="true"><svg className="t-btn__arr-svg" viewBox="0 0 38 8" fill="none" xmlns="http://www.w3.org/2000/svg"><line className="t-btn__arr-shaft" x1="0" y1="4" x2="28" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><path className="t-btn__arr-tip" d="M23.5 1L28 4L23.5 7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                    </button>
+                  )}
+                  {i === 2 && (
+                    <button className="t-btn t-btn--outline-dark t-btn--sm" onClick={onOpenModal}>
+                      Авиабилеты и отели <span className="t-btn__arr" aria-hidden="true"><svg className="t-btn__arr-svg" viewBox="0 0 38 8" fill="none" xmlns="http://www.w3.org/2000/svg"><line className="t-btn__arr-shaft" x1="0" y1="4" x2="28" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/><path className="t-btn__arr-tip" d="M23.5 1L28 4L23.5 7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                    </button>
+                  )}
+                </div>
+                <div className="t-svc-layout__icon">
+                  {i === 0 && <GlobeIcon />}
+                  {i === 1 && <CompassIcon />}
+                  {i === 2 && <PlaneIcon />}
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Контакты */}
+          <div id="t-contacts" className="t-row t-row--cta t-reveal">
+            <div className="t-contacts-wrap">
+
+              <p className="t-eyebrow t-eyebrow--muted">Контакты</p>
+              <h2 className="t-row__h">Свяжитесь<br />с нами</h2>
+              <p className="t-row__p">Мы на связи 24/7 и готовы ответить на любые вопросы о ваших будущих путешествиях.</p>
+
+              <div className="t-contact-list">
+                <a href="tel:+79178739655" className="t-contact-item" aria-label="Позвонить">
+                  <div className="t-contact-icon">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <path d="M3.5 2h3l1.3 3.5L6 6.8c.7 1.4 1.8 2.5 3.2 3.2l1.3-1.8L14 9.5V13a1.5 1.5 0 01-1.5 1.5C5.5 14.5 3.5 8 3.5 3.5A1.5 1.5 0 015 2H3.5z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <div className="t-contact-info">
+                    <span className="t-contact-label">Телефон</span>
+                    <span className="t-contact-value">+7 (917) 873-96-55</span>
+                    <span className="t-contact-hours">Ежедневно с 09:00 до 21:00</span>
+                  </div>
+                </a>
+
+                <a href="mailto:info@magicgroupnts.com" className="t-contact-item" aria-label="Написать письмо">
+                  <div className="t-contact-icon">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <rect x="2" y="4" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                      <path d="M2 5.5L9 10l7-4.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <div className="t-contact-info">
+                    <span className="t-contact-label">Email</span>
+                    <span className="t-contact-value">info@magicgroupnts.com</span>
+                    <span className="t-contact-hours">Ответим в течение 15 минут</span>
+                  </div>
+                </a>
+              </div>
+
+              <div className="t-contacts-socials">
+                {p.socials.map(s => (
+                  <a key={s.label} href={s.href} className="t-contact-social"
+                    target="_blank" rel="noopener noreferrer"
+                    title={MESSENGER[s.label] ?? s.label}>
+                    {SOCIAL_IMG[s.label]
+                      ? <img src={SOCIAL_IMG[s.label]} alt={s.label} className="t-contact-social__img" />
+                      : (SOCIAL_ICONS[s.label] ?? <span className="t-contact-social__abbr">{s.label}</span>)}
+                  </a>
+                ))}
+              </div>
+
+              <p className="t-contacts__disclaimer">
+                * Instagram принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.
+              </p>
+
+              {/* CTA карточка — в самом низу */}
+              <div className="t-contacts-card">
+                <p className="t-contacts-card__pre">Готовы путешествовать?</p>
+                <h3 className="t-contacts-card__h">Давайте создадим ваше идеальное путешествие</h3>
+                <button className="t-btn t-btn--gold t-btn--contact-cta" onClick={onOpenModal}>
+                  Оставить заявку →
+                </button>
+              </div>
+
+            </div>
           </div>
 
-        </div>
-      </section>
-
+        </div>{/* /t-right__main */}
+      </div>
     </div>
   );
 }
