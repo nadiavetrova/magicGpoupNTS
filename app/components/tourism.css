@@ -1035,8 +1035,8 @@
 
   .t-stat-grid {
     grid-template-columns: auto 1fr;
-    gap: 1rem;
     align-items: start;
+    gap: 4rem;
   }
 
   .t-stat-grid__left {
