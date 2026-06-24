@@ -2049,6 +2049,12 @@ body {
   .logo-sub-link { padding: 4px 2px; }
 }
 
+@media (max-width: 640px) {
+  .header-mobile-inner {
+    top: 0px;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .hero-panels {

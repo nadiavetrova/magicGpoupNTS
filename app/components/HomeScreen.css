@@ -265,4 +265,8 @@
     position: absolute;
     inset: 57px 0 0;
   }
+
+  .hs-card-name {
+    font-size: 2rem;
+  }
 }
