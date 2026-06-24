@@ -1988,6 +1988,10 @@ body {
     padding: 0 1rem;
     height: 54px;
     grid-template-columns: 1fr auto;
+    z-index: 200;
+    background: #000000c9;
+    backdrop-filter: none;
+    box-shadow: none;
   }
   .header-logo { grid-column: 1; min-width: 0; }
   .logo-sub { white-space: normal; flex-wrap: wrap; overflow: visible; }
