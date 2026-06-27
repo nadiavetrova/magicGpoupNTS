@@ -214,7 +214,17 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
               const Icon = ICONS[i] ?? IconShield;
               return (
                 <div key={item.name} className="ins-card ins-reveal" data-delay={String((i % 4) * 0.1)}>
-                  <div className="ins-card-icon"><Icon /></div>
+                  <div className="ins-card-icon">
+                    {i === 0
+                      ? <img src="/icons/kasko.png" alt="КАСКО" style={{display:"block"}} />
+                      : i === 1
+                      ? <img src="/icons/ocago.png" alt="ОСАГО" style={{display:"block"}} />
+                      : i === 2
+                      ? <img src="/icons/NS.png" alt="НС" style={{display:"block"}} />
+                      : i === 3
+                      ? <img src="/icons/sport.png" alt="Спорт" style={{display:"block"}} />
+                      : <Icon />}
+                  </div>
                   <span className="ins-card-num">{item.icon}</span>
                   <div className="ins-card-name">{item.name}</div>
                   <div className="ins-card-hint">{item.hint}</div>
