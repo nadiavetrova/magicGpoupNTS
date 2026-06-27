@@ -235,6 +235,8 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
                       ? <img src="/icons/freightTransportation.png" alt="Грузы" style={{display:"block"}} />
                       : i === 9
                       ? <img src="/icons/business.png" alt="МСБ" style={{display:"block"}} />
+                      : i === 10
+                      ? <img src="/icons/AssetsOfLegalEntities.png" alt="Имущество юр. лиц" style={{display:"block"}} />
                       : <Icon />}
                   </div>
                   <span className="ins-card-num">{item.icon}</span>
