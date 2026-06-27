@@ -285,13 +285,14 @@
   border: none;
   border-radius: 0 0 12px 0;
   padding: 0;
-  transition: transform 0.22s, background 0.2s;
+  transition: transform 0.22s, background 0.2s, box-shadow 0.5s ease;
   cursor: default;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   align-items: stretch;
+  box-shadow: inset 0 -3px 0 0 transparent;
 }
 
 .ins-card::before {
@@ -315,6 +316,7 @@
 .ins-card:hover {
   background: #122f3d;
   transform: translateY(-3px);
+  box-shadow: inset 0 -3px 0 0 #3beaef;
 }
 
 .ins-card-icon {
