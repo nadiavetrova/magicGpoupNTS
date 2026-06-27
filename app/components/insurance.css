@@ -283,7 +283,7 @@
 .ins-card {
   background: #0d2b35;
   border: none;
-  border-radius: 0 12px 12px 0;
+  border-radius: 0 0 12px 0;
   padding: 0;
   transition: transform 0.22s, background 0.2s;
   cursor: default;
