@@ -166,7 +166,7 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
           </div>
           <div className="ins-hero-actions">
             <button className="ins-btn-primary" onClick={onOpenModal}>
-              Оставить заявку →
+              Оставить заявку
             </button>
             <a className="ins-btn-outline" href="tel:+79178739655">
               Позвонить
@@ -292,7 +292,7 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
                 {p.tags.map(t => <span key={t} className="ins-tag">{t}</span>)}
               </div>
               <button className="ins-btn-primary" onClick={onOpenModal}>
-                Получить консультацию →
+                Получить консультацию
               </button>
             </div>
           </div>
@@ -348,12 +348,24 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
           </p>
           <div className="ins-cta-actions">
             <button className="ins-btn-primary" onClick={onOpenModal}>
-              Оставить заявку →
+              Оставить заявку
             </button>
-            <a className="ins-phone-link" href="tel:+79178739655">
-              +7 (917) 873-96-55
+            <a className="ins-btn-outline" href="tel:+79178739655">
+              Позвонить нам
             </a>
           </div>
+          {p.socials.length > 0 && (
+            <>
+              <div className="ins-cta-socials">
+                {p.socials.map(s => (
+                  <a key={s.label} href={s.href} className="ins-cta-social" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                    <img src={`/icons/tur-${s.label === "TG" ? "telegram" : s.label === "WA" ? "WP" : s.label === "IN" ? "insta" : s.label === "MX" ? "max" : s.label}.png`} alt={s.label} />
+                  </a>
+                ))}
+              </div>
+              <p className="ins-cta-disclaimer">* Instagram принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.</p>
+            </>
+          )}
         </div>
       </section>
 

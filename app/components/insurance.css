@@ -703,6 +703,46 @@
 
 .ins-phone-link:hover { color: #dfd0b1; border-color: #dfd0b1; }
 
+.ins-cta-socials {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.ins-cta-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.ins-cta-social:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-2px);
+}
+
+.ins-cta-social img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.ins-cta-disclaimer {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.3);
+  text-align: center;
+  margin-top: 0.8rem;
+  line-height: 1.5;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ══════════════════
    TABLET ≤900px
    ══════════════════ */

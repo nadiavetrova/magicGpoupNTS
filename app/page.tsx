@@ -113,7 +113,13 @@ const panels = [
       cta: "Оставить заявку →",
       ctaHref: "#",
     },
-    socials: [],
+    socials: [
+      { label: "TG", href: "https://t.me/magic_tour_travel" },
+      { label: "WA", href: "https://chat.whatsapp.com/DJCE0e6AfgqAlnjcYQXU8V?mode=gi_t" },
+      { label: "VK", href: "https://vk.ru/magic_tour_nts" },
+      { label: "IN", href: "https://www.instagram.com/magic_tour_travel?igsh=MWhoMWtjYzZ3eHpwbQ%3D%3D" },
+      { label: "MX", href: "https://max.ru/join/w4v28odPKu06lp5xCdnyI6aD8T8o-i8vxT8p_6Gc9wo" },
+    ],
   },
 ];
 
