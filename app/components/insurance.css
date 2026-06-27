@@ -6,6 +6,7 @@
 .ins-overlay {
   position: relative;
   width: 100%;
+  overflow-x: hidden;
   background: #faf8f4;
   font-family: "PTSerif", Georgia, serif;
   color: #1a1a1a;
@@ -87,17 +88,18 @@
 .ins-hero-left .ins-eyebrow { color: rgba(59,234,239,0.75); margin-bottom: 1.5rem; }
 
 .ins-hero-heading {
+  font-family: var(--font-oswald), sans-serif;
   font-size: clamp(2.6rem, 5vw, 4.5rem);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.01em;
   color: #fff;
   margin: 0 0 0.1em;
 }
 
 .ins-hero-heading-italic {
   display: block;
-  font-style: italic;
+  font-style: normal;
   color: #3beaef;
 }
 
