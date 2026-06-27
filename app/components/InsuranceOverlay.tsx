@@ -223,11 +223,19 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
                       ? <img src="/icons/NS.png" alt="НС" style={{display:"block"}} />
                       : i === 3
                       ? <img src="/icons/sport.png" alt="Спорт" style={{display:"block"}} />
+                      : i === 4
+                      ? <img src="/icons/house.png" alt="Дом" style={{display:"block"}} />
+                      : i === 5
+                      ? <img src="/icons/ipoteka.png" alt="Ипотека" style={{display:"block"}} />
+                      : i === 6
+                      ? <img src="/icons/DMS.png" alt="ДМС" style={{display:"block"}} />
                       : <Icon />}
                   </div>
                   <span className="ins-card-num">{item.icon}</span>
-                  <div className="ins-card-name">{item.name}</div>
-                  <div className="ins-card-hint">{item.hint}</div>
+                  <div className="ins-card-body">
+                    <div className="ins-card-name">{item.name}</div>
+                    <div className="ins-card-hint">{item.hint}</div>
+                  </div>
                 </div>
               );
             })}

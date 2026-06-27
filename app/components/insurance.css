@@ -284,11 +284,14 @@
   background: #0d2b35;
   border: none;
   border-radius: 12px;
-  padding: 1.4rem 1.4rem 1.6rem;
+  padding: 0;
   transition: transform 0.22s, background 0.2s;
   cursor: default;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
 }
 
 .ins-card::before {
@@ -305,30 +308,38 @@
 }
 
 .ins-card-icon {
-  width: 46px;
-  height: 46px;
+  width: 76px;
+  flex-shrink: 0;
   background: rgba(255,255,255,0.9);
-  border-radius: 10px;
+  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.9rem;
   color: #3beaef;
-  flex-shrink: 0;
+  align-self: stretch;
 }
 
-.ins-card-icon svg { width: 26px; height: 26px; }
+.ins-card-icon svg { width: 36px; height: 36px; }
 
 .ins-card-icon img {
-  width: 36px;
-  height: 36px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
 
+.ins-card-body {
+  flex: 1;
+  min-width: 0;
+  padding: 1.1rem 1.1rem 1.1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .ins-card-num {
   position: absolute;
-  top: 1.2rem; right: 1.2rem;
+  top: 0.7rem; right: 0.9rem;
   font-size: 0.55rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -336,17 +347,19 @@
 }
 
 .ins-card-name {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
   line-height: 1.25;
+  word-break: break-word;
 }
 
 .ins-card-hint {
-  font-size: 0.76rem;
+  font-size: 0.73rem;
   color: rgba(223,208,177,0.55);
-  line-height: 1.55;
+  line-height: 1.5;
+  word-break: break-word;
 }
 
 /* ══════════════════
@@ -783,10 +796,13 @@
   .ins-stat-desc { font-size: 0.62rem; }
 
   .ins-coverage { padding: 3.5rem 0; }
-  .ins-coverage-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-  .ins-card { padding: 1.4rem 1.2rem; }
-  .ins-card-name { font-size: 0.88rem; }
-  .ins-card-hint { font-size: 0.72rem; }
+  .ins-coverage-grid { grid-template-columns: 1fr; gap: 0.7rem; }
+  .ins-card-icon { width: 68px; }
+  .ins-card-icon svg { width: 32px; height: 32px; }
+  .ins-card-icon img { width: 46px; height: 46px; }
+  .ins-card-body { padding: 1rem 1rem 1rem 0.9rem; }
+  .ins-card-name { font-size: 0.88rem; word-break: normal; }
+  .ins-card-hint { font-size: 0.72rem; word-break: normal; }
 
   .ins-process { padding: 3.5rem 0; }
   .ins-process-grid {
