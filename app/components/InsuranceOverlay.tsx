@@ -10,6 +10,7 @@ interface Panel {
   body: string[];
   tags: string[];
   stats: { num: string; label: string }[];
+  socials: { label: string; href: string }[];
   services: {
     title: string;
     items: { icon: string; name: string; hint: string }[];
