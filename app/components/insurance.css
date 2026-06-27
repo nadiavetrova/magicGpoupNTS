@@ -110,7 +110,7 @@
   margin: 1.6rem 0 2.4rem;
   border-left: 2px solid rgba(59,234,239,0.35);
   padding-left: 1rem;
-  font-style: italic;
+  font-style: normal;
   max-width: 420px;
 }
 
@@ -724,6 +724,7 @@
   }
 
   .ins-hero-right { height: 42vw; min-height: 220px; }
+  .ins-hero-tag { display: none; }
 
   .ins-stats-bar-inner {
     padding: 0 1rem;
