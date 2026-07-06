@@ -189,7 +189,7 @@ export default function Home() {
   return (
     <>
       {/* ── HEADER ── */}
-      <header className={`header${active ? " header--section-active" : ""}${active === "realty" ? " header--realty" : ""}${active === "insurance" ? " header--insurance" : ""}`} style={{ zIndex: 200, ...(active === "insurance" ? { background: "#e8c97a", backdropFilter: "none", boxShadow: "none" } : {}) }}>
+      <header className={`header${active ? " header--section-active" : ""}${active === "tourism" ? " header--tourism" : ""}${active === "realty" ? " header--realty" : ""}${active === "insurance" ? " header--insurance" : ""}`} style={{ zIndex: 200, ...(active === "insurance" ? { background: "#e8c97a", backdropFilter: "none", boxShadow: "none" } : {}) }}>
         {/* Logo */}
         <div className="header-logo" style={{ cursor: active ? "pointer" : "default", overflow: "visible" }} onClick={active ? handleClose : undefined}>
           <div className="logo-main">MAGIC Group NTS</div>

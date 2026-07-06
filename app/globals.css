@@ -70,6 +70,11 @@ body {
 .header--insurance .logo-sub-link      { color: rgba(0,0,0,0.38); }
 .header--insurance .logo-sub-link:hover{ color: rgba(0,0,0,0.75); }
 .header--insurance .logo-sub-link--active { color: #1398c0; font-weight: 700; }
+.header--tourism .header-phone          { color: #e8c97a !important; }
+.header--tourism .header-phone:hover    { color: #f5dfa0 !important; }
+.header--tourism .header-back-btn       { color: #e8c97a !important; }
+.header--tourism .header-back-btn:hover { color: #f5dfa0 !important; }
+
 .header--insurance .header-phone       { color: #1a1a1a; }
 .header--insurance .header-phone:hover { color: #3d7282; }
 .header--insurance .header-back-btn    { color: #1398c0 !important; }
