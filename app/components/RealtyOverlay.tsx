@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 import "./realty.css";
 
@@ -136,7 +136,7 @@ const EXPERT = {
   teamName:  "MAGIC Group NTS",
   title:     "Команда по недвижимости",
   subtitle:  "Работаем с людьми, а не с объектами",
-  bio:       "Недвижимость — это не просто сделка. Мы внимательно выслушаем ваши планы и сомнения, чтобы вместе найти решение, которое будет по-настоящему вашим. Работаем с квартирами, домами, участками и коммерческими объектами в России и за рубежом.",
+  bio:       "Недвижимость — это не просто сделку. Мы внимательно выслушаем ваши планы и сомнения, чтобы вместе найти решение, которое будет по-настоящему вашим. Работаем с квартирами, домами, участками и коммерческими объектами в России и за рубежом.",
   quote:     "В первую очередь мы работаем не с объектами, а с людьми и их мечтами.",
   stats:     [
     { num: "15",   label: "лет опыта" },
@@ -152,7 +152,7 @@ const CHAPTERS = [
     title: "Поиск",
     lead:  "Найдём идеальный вариант по вашим запросам и бюджету",
     story: "Прежде чем открыть первую ссылку — слушаем вас. Узнаём, как вы живёте, что важно в пространстве и какой горизонт инвестиции. Только после этого начинается точечный поиск: без лишнего шума и навязанных объектов.",
-    photo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1800&auto=format&fit=crop",
+    photo: "/images/zhk_01.jpg",
     photoAlt: "Modern white villa exterior",
   },
   {
@@ -160,7 +160,7 @@ const CHAPTERS = [
     title: "Продажа",
     lead:  "Продадим вашу квартиру по максимальной рыночной цене",
     story: "Соберём и оформим все документы, чтобы не было проволочек. Организуем сделку так, чтобы вы получили лучший результат — без стресса и потери времени.",
-    photo: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=1400&auto=format&fit=crop",
+    photo: "/images/house.jpg",
     photoAlt: "Bright luxury interior, soft light",
   },
   {
@@ -168,13 +168,13 @@ const CHAPTERS = [
     title: "Сопровождение",
     lead:  "От первого звонка до ключей — мы рядом",
     story: "Переговоры, нотариус, документы, регистрация — берём на себя. Работаем с любыми объектами: квартиры, дома, участки, коммерция. Хотите купить или продать — обеспечим вам спокойствие и выгоду.",
-    photo: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1400&auto=format&fit=crop",
+    photo: "/images/house_01.jpg",
     photoAlt: "Luxury interior living room",
   },
 ];
 
 // Hero — современная архитектурная вилла, минимализм, тёплый свет
-const HERO_PHOTO = "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1800&auto=format&fit=crop";
+const HERO_PHOTO = "/images/zhk.jpg";
 
 const MARKET_PHOTOS: Record<string, string> = {
   "Россия":  "https://images.unsplash.com/photo-1513326738677-b964603b136d?q=80&w=600&auto=format&fit=crop",
@@ -311,9 +311,9 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
             <span>Направление 02 · Недвижимость</span>
           </motion.div>
 
-          <div className="re-hero-title-wrap" aria-label="Ваш дом в любой точке мира">
+          <div className="re-hero-title-wrap" aria-label="Ваша квартира в любой точке мира">
             {[
-              { text: "Ваш дом",    italic: false },
+              { text: "Ваша квартира",    italic: false },
               { text: "в любой",    italic: true  },
               { text: "точке мира", italic: false },
             ].map((line, i) => (
