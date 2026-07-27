@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Слишком много запросов" }, { status: 429 });
     }
 
-    const { section, name, phone, services, message } = await req.json();
+    const { section, name, phone, services, message, tourDest, tourExcursion } = await req.json();
 
     const validationError = validateRequest(section, name, phone, services, message);
     if (validationError) {
@@ -98,6 +98,8 @@ export async function POST(req: NextRequest) {
       `📞 <b>Телефон:</b> ${esc(phone)}`,
       `📋 <b>Интересует:</b>`,
       ...(services as string[]).map((s: string) => `  • ${esc(s)}`),
+      ...(tourDest ? [``, `🌍 <b>Направление:</b> ${esc(tourDest)}`] : []),
+      ...(tourExcursion ? [`🗺 <b>Экскурсия:</b> ${esc(tourExcursion)}`] : []),
       ...(message ? [``, `💬 <b>Сообщение:</b> ${esc(message)}`] : []),
     ].join("\n");
 

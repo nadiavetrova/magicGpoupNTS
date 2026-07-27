@@ -116,6 +116,7 @@ export default function RequestModal({
   const [nameTouched,     setNameTouched]     = useState(false);
   const [phoneTouched,    setPhoneTouched]    = useState(false);
   const [servicesTouched, setServicesTouched] = useState(false);
+  const [consentTouched,  setConsentTouched]  = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +153,7 @@ export default function RequestModal({
   const handleClose = () => {
     setSelected([]); setName(""); setLocalPhone(""); setMessage("");
     setConsent(false); setStatus("idle"); setErrorMsg("");
-    setNameTouched(false); setPhoneTouched(false); setServicesTouched(false);
+    setNameTouched(false); setPhoneTouched(false); setServicesTouched(false); setConsentTouched(false);
     setCountryOpen(false); setTourDest(null); setTourExcursion(null);
     onClose();
   };
@@ -181,7 +182,7 @@ export default function RequestModal({
 
   const handleSubmit = async () => {
     if (!canSubmit) {
-      setNameTouched(true); setPhoneTouched(true); setServicesTouched(true);
+      setNameTouched(true); setPhoneTouched(true); setServicesTouched(true); setConsentTouched(true);
       return;
     }
     setStatus("loading"); setErrorMsg("");
@@ -403,7 +404,7 @@ export default function RequestModal({
         <label className="modal-consent">
           <div
             className={`modal-consent-check${consent ? " checked" : ""}`}
-            style={consent ? { background: accent, borderColor: accent } : {}}
+            style={consent ? { background: accent, borderColor: accent } : consentTouched && !consent ? { borderColor: "#e53e3e" } : {}}
             onClick={() => setConsent((v) => !v)}
           >
             {consent && <span>✓</span>}

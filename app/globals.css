@@ -1302,6 +1302,7 @@ body {
   justify-content: center;
   padding: 1.5rem;
   animation: modalFadeIn 0.22s ease;
+  overflow: hidden;
 }
 
 @keyframes modalFadeIn {
@@ -3111,6 +3112,9 @@ body {
     max-height: 100dvh;
     height: 100dvh;
     border: none;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   .modal-title {
