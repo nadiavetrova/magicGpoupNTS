@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import "./insurance.css";
+import SiteFooter from "./SiteFooter";
 
 interface Panel {
   label: string;
@@ -369,7 +370,7 @@ export default function InsuranceOverlay({ p, textVisible, onOpenModal }: Props)
           )}
         </div>
       </section>
-
+      <SiteFooter theme="light" />
     </div>
   );
 }

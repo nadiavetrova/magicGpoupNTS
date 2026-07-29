@@ -190,7 +190,18 @@
 
 .hs-card--locked {
   cursor: default;
-  opacity: 0.38;
+  opacity: 0.5;
+}
+.hs-card-badge {
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1c1a16;
+  background: #e8c97a;
+  border-radius: 3px;
+  padding: 2px 6px;
+  white-space: nowrap;
 }
 
 .hs-card-num {
@@ -272,8 +283,10 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.2rem 1.4rem 1.4rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1.2rem 1.4rem;
     background: rgba(0, 0, 0, 0.45);
     border-right: none;
     border-top: 1px solid rgba(255,255,255,0.1);
@@ -312,7 +325,17 @@
     inset: 57px 0 0;
   }
 
+  .hs-card {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
   .hs-card-name {
     font-size: 2rem;
+  }
+
+  .hs-card-name-row {
+    justify-content: center;
   }
 }

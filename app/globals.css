@@ -319,6 +319,11 @@ body {
   color: #e8c97a;
   font-weight: 700;
 }
+.logo-sub-link--locked {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
 
 .header-phone {
   font-size: 0.9rem;

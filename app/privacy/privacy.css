@@ -1,0 +1,94 @@
+.prv-root {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: #faf9f7;
+  font-family: "PTSerif", Georgia, serif;
+  color: #1c1a16;
+  -webkit-overflow-scrolling: touch;
+}
+
+.prv-wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+
+.prv-back {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: rgba(28, 26, 22, 0.45);
+  text-decoration: none;
+  margin-bottom: 2.5rem;
+  transition: color 0.2s;
+}
+.prv-back:hover { color: #1c1a16; }
+
+.prv-title {
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 2px solid #1c1a16;
+  text-wrap: balance;
+}
+
+.prv-section {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(28, 26, 22, 0.08);
+}
+.prv-section:last-child {
+  border-bottom: none;
+}
+.prv-section--requisites {
+  background: rgba(28, 26, 22, 0.03);
+  border-radius: 6px;
+  padding: 1.5rem;
+  border: 1px solid rgba(28, 26, 22, 0.07);
+}
+
+.prv-h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 1rem;
+  color: #1c1a16;
+}
+
+.prv-section p {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(28, 26, 22, 0.8);
+  margin-bottom: 0.65rem;
+}
+.prv-section p:last-child { margin-bottom: 0; }
+
+.prv-section ul {
+  margin: 0.4rem 0 0.65rem 1.2rem;
+  padding: 0;
+}
+.prv-section ul li {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: rgba(28, 26, 22, 0.8);
+  margin-bottom: 0.25rem;
+}
+
+.prv-link {
+  color: #b8924a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prv-link:hover { color: #8a6830; }
+
+@media (max-width: 600px) {
+  .prv-wrap {
+    padding: 2rem 1.2rem 4rem;
+  }
+  .prv-title {
+    font-size: 1.2rem;
+  }
+}

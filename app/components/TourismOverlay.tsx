@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./tourism.css";
+import SiteFooter from "./SiteFooter";
 
 interface Props {
   p: {
@@ -519,8 +520,8 @@ export default function TourismOverlay({ p, onOpenModal, onOpenTours }: Props) {
           </h1>
           <p className="t-left__body">{p.body[0]}</p>
           <div className="t-left__actions">
-            <button className="t-btn t-btn--gold" onClick={onOpenModal}>
-              Оставить заявку
+            <button className="t-btn t-btn--gold" onClick={onOpenTours}>
+              Авторские туры и экскурсии
               <img src="/icons/tur_button.png" alt="" className="t-btn__icon" />
             </button>
             <a className="t-btn t-btn--ghost" href="#t-contacts" onClick={scrollToContacts}>
@@ -687,6 +688,7 @@ export default function TourismOverlay({ p, onOpenModal, onOpenTours }: Props) {
             </div>
           </div>
 
+          <SiteFooter theme="light" />
         </div>{/* /t-right__main */}
       </div>
     </div>

@@ -32,6 +32,7 @@ const CARDS = [
     name: "Страхование",
     hint: "Все виды страхования",
     locked: false,
+    badge: "в разработке",
   },
 ];
 
@@ -95,14 +96,15 @@ export default function HomeScreen({ onOpen }: Props) {
         {CARDS.map((card) => (
           <button
             key={card.id}
-            className={`hs-card${card.locked ? " hs-card--locked" : ""}`}
-            onClick={card.locked ? undefined : (e) => onOpen(card.id, e)}
-            disabled={card.locked}
+            className="hs-card"
+            onClick={(e) => onOpen(card.id, e)}
           >
             <span className="hs-card-num">{card.num}</span>
             <span className="hs-card-name-row">
               <span className="hs-card-name">{card.name}</span>
-              {!card.locked && <span className="hs-card-arrow">⟶</span>}
+              {"badge" in card && card.badge
+                ? <span className="hs-card-badge">{card.badge}</span>
+                : <span className="hs-card-arrow">⟶</span>}
             </span>
             <span className="hs-card-hint">{card.hint}</span>
           </button>

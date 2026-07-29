@@ -90,7 +90,9 @@ export default function TourDrawer({ isOpen, onClose, onBook }: Props) {
                         {tour.tagline && <p className="td-tour-tagline">{tour.tagline}</p>}
                         <div className="td-tour-meta">
                           <span>📍 {tour.location}</span>
-                          <span className="td-tour-price-from">от {tour.pricing[tour.pricing.length - 1].price}</span>
+                          {tour.pricing.length > 0 && (
+                            <span className="td-tour-price-from">от {tour.pricing[tour.pricing.length - 1].price}</span>
+                          )}
                         </div>
                       </div>
                       <span className="td-tour-arrow">→</span>

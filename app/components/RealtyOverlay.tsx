@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "motion/react";
 import "./realty.css";
+import SiteFooter from "./SiteFooter";
 
 /* ── Decorative house blueprint SVG ─────────────────────── */
 function HouseBlueprint({ className }: { className?: string }) {
@@ -598,7 +599,7 @@ export default function RealtyOverlay({ p, textVisible, onOpenModal }: Props) {
           </div>
         </div>
       </section>
-
+      <SiteFooter />
     </div>
   );
 }
