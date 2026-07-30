@@ -72,9 +72,30 @@ const barlowCondensed = Barlow_Condensed({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://magic-group-nts.ru";
+
 export const metadata: Metadata = {
-  title: "MAGIC Group NTS — Шухрат Азизов",
-  description: "Международный туризм, страхование и недвижимость. Ваш надёжный партнёр.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "MAGIC Group NTS — Туризм, Страхование, Недвижимость",
+    template: "%s | MAGIC Group NTS",
+  },
+  description: "MAGIC Group NTS — авторские туры и экскурсии, страхование, недвижимость в России и за рубежом. Русскоязычный гид Шухрат Азизов. Туры в Турцию, Азербайджан и другие страны.",
+  keywords: [
+    "туры в Турцию", "авторские экскурсии", "туризм", "Каппадокия тур",
+    "русскоязычный гид Турция", "Шухрат Азизов", "MAGIC Group NTS",
+    "страхование", "недвижимость за рубежом", "туры из России",
+  ],
+  authors: [{ name: "MAGIC Group NTS" }],
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: SITE_URL,
+    siteName: "MAGIC Group NTS",
+    title: "MAGIC Group NTS — Туризм, Страхование, Недвижимость",
+    description: "Авторские туры и экскурсии, страхование, недвижимость. Русскоязычный гид Шухрат Азизов.",
+    images: [{ url: "/images/main.jpg", width: 1200, height: 630, alt: "MAGIC Group NTS" }],
+  },
   icons: {
     icon: [
       { url: "/favicon/favicon.ico", rel: "shortcut icon" },
@@ -85,6 +106,7 @@ export const metadata: Metadata = {
   },
   manifest: "/favicon/site.webmanifest",
   appleWebApp: { title: "MAGIC Group NTS" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
