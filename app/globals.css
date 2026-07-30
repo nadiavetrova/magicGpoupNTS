@@ -2012,6 +2012,11 @@ body {
     backdrop-filter: none;
     box-shadow: none;
   }
+  .header--tourism {
+    background: rgba(10, 7, 3, 0.78) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
   .header-logo { grid-column: 1; min-width: 0; }
   .logo-sub { white-space: normal; flex-wrap: wrap; overflow: visible; }
   .header-nav  { display: none; }
