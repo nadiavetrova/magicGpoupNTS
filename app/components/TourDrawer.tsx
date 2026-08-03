@@ -119,6 +119,12 @@ export default function TourDrawer({ isOpen, onClose, onBook }: Props) {
                 {selectedTour.days.map((day, i) => (
                   <div key={i} className="td-day">
                     <p className="td-day-title">{day.title}</p>
+                    {day.photo && (
+                      <div
+                        className="td-day-photo"
+                        style={{ backgroundImage: `url(${day.photo})` }}
+                      />
+                    )}
                     <ul className="td-day-list">
                       {day.items.map((item, j) => (
                         <li key={j}>{item}</li>
