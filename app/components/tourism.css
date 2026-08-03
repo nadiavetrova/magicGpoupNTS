@@ -571,20 +571,20 @@
 .t-contact-social {
   width: 48px;
   height: 48px;
-  color: var(--t-navy);
-  background: #f3be0db3;
-  border: 2.5px solid #e5af1080;
+  color: #F8F6F2;
+  background: #533930;
+  border: 1.5px solid #533930;
   border-radius: 50%;
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  transition: border-color 0.4s, color 0.4s, background 0.4s, box-shadow 0.4s;
+  transition: border-color 0.3s, color 0.3s, background 0.3s, box-shadow 0.3s;
   display: flex;
 }
 
 .t-contact-social:hover {
-  background: #e6c350;
-  box-shadow: 0 4px 16px rgba(255, 218, 108, 0.45);
+  box-shadow: 0 0 20px 5px rgba(83, 57, 48, 0.45), 0 0 6px 2px rgba(83, 57, 48, 0.3);
+  border-color: rgba(83, 57, 48, 0.5);
 }
 
 .t-contact-social svg {
