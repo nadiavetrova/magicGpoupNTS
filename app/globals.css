@@ -80,8 +80,8 @@ body {
 .header--insurance .logo-sub-link--active { color: #1398c0; font-weight: 700; }
 .header--tourism .header-phone          { color: #e8c97a !important; }
 .header--tourism .header-phone:hover    { color: #f5dfa0 !important; }
-.header--tourism .header-back-btn       { color: #e8c97a !important; }
-.header--tourism .header-back-btn:hover { color: #f5dfa0 !important; }
+.header--tourism .header-back-btn       { color: #08720c !important; }
+.header--tourism .header-back-btn:hover { color: var(--t-gold-warm) !important; }
 
 .header--insurance .header-phone       { color: #1a1a1a; }
 .header--insurance .header-phone:hover { color: #3d7282; }

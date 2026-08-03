@@ -238,9 +238,11 @@ export default function Home() {
 
         {/* Right: phone + burger */}
         <div className="header-right">
-          <a className="header-phone" href="tel:+79178739655">
-            {isMobile ? "Позвонить" : "+7 (917) 873-96-55"}
-          </a>
+          {!active && (
+            <a className="header-phone" href="tel:+79178739655">
+              {isMobile ? "Позвонить" : "+7 (917) 873-96-55"}
+            </a>
+          )}
           {active && (
             <button
               className="header-back-btn"
