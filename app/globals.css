@@ -1612,6 +1612,7 @@ body {
   background: transparent !important;
   border-radius: 0 !important;
   padding-left: 12px !important;
+  font-size: 16px;
 }
 .modal-phone-input:focus { border-color: transparent !important; }
 
@@ -3171,11 +3172,11 @@ body {
 
   .modal-input {
     padding: 0.7rem 0.85rem;
-    font-size: 0.82rem;
+    font-size: 16px;
   }
 
   .modal-textarea {
-    font-size: 0.82rem;
+    font-size: 16px;
   }
 }
 
