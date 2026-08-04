@@ -84,6 +84,9 @@ export const metadata: Metadata = {
   manifest: "/favicon/site.webmanifest",
   appleWebApp: { title: "MAGIC Group NTS" },
   robots: { index: true, follow: true },
+  verification: {
+    yandex: "e3c417199a976ebd",
+  },
 };
 
 export default function RootLayout({
