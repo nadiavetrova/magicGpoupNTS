@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, Inter, Cormorant_Garamond, Jost, Manrope, Oswald, Playfair_Display, Barlow_Condensed } from "next/font/google";
+import { Syne, DM_Sans, Inter, Jost, Oswald, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 // next/font/google скачивает шрифты при сборке и раздаёт с собственного домена —
@@ -25,28 +25,11 @@ const inter = Inter({
   display: "swap",
 });
 
-// Cormorant Garamond — ультраутончённый editorial серифный с кириллицей
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-cormorant",
-  display: "swap",
-});
-
 // Jost — мягкая геометрическая гротеска для body-текстов
 const jost = Jost({
   subsets: ["latin", "cyrillic"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-jost",
-  display: "swap",
-});
-
-// Manrope — современная геометрическая гротеска для заголовков недвижимости
-const manrope = Manrope({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-manrope",
   display: "swap",
 });
 
@@ -65,12 +48,6 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-const barlowCondensed = Barlow_Condensed({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-barlow",
-  display: "swap",
-});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://magic-group-nts.ru";
 
@@ -115,7 +92,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${cormorant.variable} ${jost.variable} ${manrope.variable} ${oswald.variable} ${playfair.variable} ${barlowCondensed.variable}`}>
+    <html lang="ru" className={`h-full ${syne.variable} ${dmSans.variable} ${inter.variable} ${jost.variable} ${oswald.variable} ${playfair.variable}`}>
       <body>{children}</body>
     </html>
   );
