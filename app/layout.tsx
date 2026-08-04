@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     default: "MAGIC Group NTS — Туризм, Страхование, Недвижимость",
     template: "%s | MAGIC Group NTS",
   },
-  description: "MAGIC Group NTS — авторские туры и экскурсии, страхование, недвижимость в России и за рубежом. Русскоязычный гид Шухрат Азизов. Туры в Турцию, Азербайджан и другие страны.",
+  description: "Авторские экскурсионные туры в Турцию, Азербайджан, Индию. Туризм, страхование и недвижимость. MAGIC Group NTS.",
   keywords: [
     "туры в Турцию", "авторские экскурсии", "туризм", "Каппадокия тур",
     "русскоязычный гид Турция", "Шухрат Азизов", "MAGIC Group NTS",
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "MAGIC Group NTS",
     title: "MAGIC Group NTS — Туризм, Страхование, Недвижимость",
-    description: "Авторские туры и экскурсии, страхование, недвижимость. Русскоязычный гид Шухрат Азизов.",
+    description: "Авторские экскурсионные туры в Турцию, Азербайджан, Индию. Туризм, страхование и недвижимость. MAGIC Group NTS.",
     images: [{ url: "/images/main.jpg", width: 1200, height: 630, alt: "MAGIC Group NTS" }],
   },
   icons: {
