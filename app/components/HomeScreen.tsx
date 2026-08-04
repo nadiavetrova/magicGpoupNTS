@@ -6,7 +6,7 @@ import "./HomeScreen.css";
 const SLIDES = [
   { id: "s0", photo: "/images/main.jpg"    },
   { id: "s1", photo: "/images/main_01.jpg" },
-  { id: "s2", photo: "/images/main_02.png" },
+  { id: "s2", photo: "/images/main_02.jpg" },
   { id: "s3", photo: "/images/main_04.jpg" },
   { id: "s4", photo: "/images/main_05.jpg" },
 ];

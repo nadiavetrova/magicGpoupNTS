@@ -35,7 +35,7 @@ export const TOURS: Tour[] = [
     duration: "3 ночи / 4 дня",
     location: "Баку и Апшеронский полуостров",
     season: "2026",
-    photo: "/images/baku.png",
+    photo: "/images/baku.jpg",
     days: [
       {
         title: "День 1 — Прилёт и вечерний Баку",
@@ -103,7 +103,7 @@ export const TOURS: Tour[] = [
     duration: "4 дня / 3 ночи",
     location: "Баку · Хызы · Лагич",
     season: "2026",
-    photo: "/images/azerb.png",
+    photo: "/images/azerb.jpg",
     days: [
       {
         title: "День 1 — Привет, Баку!",
@@ -171,7 +171,7 @@ export const TOURS: Tour[] = [
     duration: "5 дней / 4 ночи",
     location: "Баку · Шемаха · Габала",
     season: "2026",
-    photo: "/images/vin_tur.png",
+    photo: "/images/vin_tur.jpg",
     days: [
       {
         title: "День 1 — Прибытие в Баку",
