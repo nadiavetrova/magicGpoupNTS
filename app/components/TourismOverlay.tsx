@@ -645,7 +645,7 @@ export default function TourismOverlay({ p, onOpenModal, onOpenTours }: Props) {
                   </div>
                 </a>
 
-                <a href="mailto:info@magicgroupnts.com" className="t-contact-item" aria-label="Написать письмо">
+                <a href="mailto:magic_tour_travel@mail.ru" className="t-contact-item" aria-label="Написать письмо">
                   <div className="t-contact-icon">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                       <rect x="2" y="4" width="14" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
@@ -654,7 +654,7 @@ export default function TourismOverlay({ p, onOpenModal, onOpenTours }: Props) {
                   </div>
                   <div className="t-contact-info">
                     <span className="t-contact-label">Email</span>
-                    <span className="t-contact-value">info@magicgroupnts.com</span>
+                    <span className="t-contact-value">magic_tour_travel@mail.ru</span>
                     <span className="t-contact-hours">Ответим в течение 15 минут</span>
                   </div>
                 </a>
