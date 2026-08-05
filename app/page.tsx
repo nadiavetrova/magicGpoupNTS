@@ -200,10 +200,9 @@ export default function Home() {
                 <span key={id}>
                   {i > 0 && <span className="logo-sub-dot">·</span>}
                   <button
-                    className={`logo-sub-link${active === id ? " logo-sub-link--active" : ""}${id === "insurance" ? " logo-sub-link--locked" : ""}`}
-                    onClick={e => { e.stopPropagation(); if (id !== "insurance") handleOpen(id); }}
+                    className={`logo-sub-link${active === id ? " logo-sub-link--active" : ""}`}
+                    onClick={e => { e.stopPropagation(); handleOpen(id); }}
                     style={isMobile ? { padding: "5px 2px" } : undefined}
-                    disabled={id === "insurance"}
                   >
                     {label}
                   </button>

@@ -96,9 +96,8 @@ export default function HomeScreen({ onOpen }: Props) {
         {CARDS.map((card) => (
           <button
             key={card.id}
-            className={`hs-card${card.id === "insurance" ? " hs-card--locked" : ""}`}
-            onClick={(e) => { if (card.id !== "insurance") onOpen(card.id, e); }}
-            disabled={card.id === "insurance"}
+            className="hs-card"
+            onClick={(e) => { onOpen(card.id, e); }}
           >
             <span className="hs-card-num">{card.num}</span>
             <span className="hs-card-name-row">
